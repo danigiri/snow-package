@@ -1,22 +1,18 @@
+
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
-import { AppComponent } from './app.component';
-
-const routes: Routes = [
-						{path: '', component: AppComponent},
-						//{path 'jsx'}
-						{path: 'test', loadChildren: () => import('./test/test.module')
-															.then(mod => mod.TestModule)
-						}
-];
+import {TestRoutingModule} from './test-routing.module';
 
 @NgModule({
-	imports: [RouterModule.forRoot(routes, { enableTracing: false })],
-	exports: [RouterModule]
+	declarations: [],
+	imports: [
+		CommonModule,
+		TestRoutingModule
+	]
 })
 
-export class AppRoutingModule { }
+export class TestModule {}
 
 /*
  *	  Copyright 2020 Daniel Giribet

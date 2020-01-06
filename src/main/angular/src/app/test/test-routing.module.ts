@@ -1,22 +1,31 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+// TEST - ROUTING . MODULE . TS
 
-import { AppComponent } from './app.component';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+
 
 const routes: Routes = [
-						{path: '', component: AppComponent},
-						//{path 'jsx'}
-						{path: 'test', loadChildren: () => import('./test/test.module')
-															.then(mod => mod.TestModule)
-						}
+						//{path: 'cell-editor-test/:case_', component: CellEditorTestComponent},
+						//{path: 'presentation-test/:case_', component: PresentationTestComponent}
 ];
 
 @NgModule({
-	imports: [RouterModule.forRoot(routes, { enableTracing: false })],
-	exports: [RouterModule]
+	imports: [
+				CommonModule,
+				FormsModule,
+				RouterModule.forChild(routes)
+	],
+	exports: [RouterModule],
+	declarations: [
+//					CellEditorTestComponent,
+//					PresentationTestComponent
+	]
 })
 
-export class AppRoutingModule { }
+
+export class TestRoutingModule { }
 
 /*
  *	  Copyright 2020 Daniel Giribet
