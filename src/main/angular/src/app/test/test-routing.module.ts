@@ -1,13 +1,15 @@
 // TEST - ROUTING . MODULE . TS
 
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
+import { JSXTestComponent } from '../jsx/jsx-test.component';
 
 const routes: Routes = [
-						//{path: 'cell-editor-test/:case_', component: CellEditorTestComponent},
+						{path: 'jsx-test', component: JSXTestComponent},
+//						{path: 'jsx-test/:case_', component: JSXTestComponent},
 						//{path: 'presentation-test/:case_', component: PresentationTestComponent}
 ];
 
@@ -19,7 +21,7 @@ const routes: Routes = [
 	],
 	exports: [RouterModule],
 	declarations: [
-//					CellEditorTestComponent,
+					JSXTestComponent,
 //					PresentationTestComponent
 	]
 })
