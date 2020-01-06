@@ -42,7 +42,10 @@ ReactDOM.render(element, document.getElementById('root'));
 	this.ast = parse(code, {plugins: _plugins});
 	console.debug(this.ast);
 
-/*
+	// please see https://github.com/just-jeb/angular-builders/tree/master/packages/custom-webpack
+	// https://netbasal.com/customize-webpack-configuration-in-your-angular-application-d09683f6bd22
+	// and https://github.com/webpack-contrib/css-loader/issues/447
+	// to explain what needs to be done to make traverse actually work
 	traverse(this.ast, {
 		enter(path) {
 			if (path.node.type === 'Identifier') {
@@ -51,6 +54,7 @@ ReactDOM.render(element, document.getElementById('root'));
 
 		}
 	});
+/*
 */
 
 }
