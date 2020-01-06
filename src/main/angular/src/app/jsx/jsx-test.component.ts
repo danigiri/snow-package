@@ -3,17 +3,18 @@
 import { Component, Inject, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { File } from '@babel/types';
+import { File,  } from '@babel/types';
 import { parse, ParserPlugin } from '@babel/parser';
+import { traverse } from '@babel/core';
 
 @Component({
 	selector: 'jsx-test',
-	template: `{{parsed}}`
+	template: `{{ast}}`
 })
 
 export class JSXTestComponent {
 
-parsed: File;
+ast: File;
 
 constructor() {
 
@@ -34,10 +35,23 @@ const element =
 
 ReactDOM.render(element, document.getElementById('root'));
 `;
-
+	// we ignore this as the ParserPlugin type is closed and does not list plugins
+	// @ts-ignore
 	const _plugins: ParserPlugin[] = ['jsx', '@babel/plugin-transform-react-jsx-source'];
-	this.parsed = parse(code, {plugins: _plugins});
-	console.debug(this.parsed);
+
+	this.ast = parse(code, {plugins: _plugins});
+	console.debug(this.ast);
+
+/*
+	traverse(this.ast, {
+		enter(path) {
+			if (path.node.type === 'Identifier') {
+				console.debug(path.node);
+			}
+
+		}
+	});
+*/
 
 }
 

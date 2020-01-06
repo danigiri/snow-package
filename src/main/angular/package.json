@@ -22,6 +22,8 @@
     "@babel/polyfill": "^7.7.0",
     "babel-traverse": "^6.26.0",
     "babel-types": "^6.26.0",
+    "@babel/plugin-transform-react-jsx-source": "^7.7.4",
+    "@babel/plugin-transform-typescript": "^7.7.4",
     "react-jsx": "^1.0.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
