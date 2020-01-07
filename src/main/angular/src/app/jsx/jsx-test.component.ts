@@ -3,9 +3,9 @@
 import { Component, Inject, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { File,  } from '@babel/types';
+import { File, Node, isIdentifier } from '@babel/types';
 import { parse, ParserPlugin } from '@babel/parser';
-import { traverse } from '@babel/core';
+import { traverse, NodePath } from '@babel/core';
 
 @Component({
 	selector: 'jsx-test',
@@ -45,17 +45,17 @@ ReactDOM.render(element, document.getElementById('root'));
 	// please see https://github.com/just-jeb/angular-builders/tree/master/packages/custom-webpack
 	// https://netbasal.com/customize-webpack-configuration-in-your-angular-application-d09683f6bd22
 	// and https://github.com/webpack-contrib/css-loader/issues/447
-	// to explain what needs to be done to make traverse actually work
+	// to explain what needs to be done to make traverse actually work, namely modifying the build to redefine
+	// an object called 'fs'
 	traverse(this.ast, {
-		enter(path) {
-			if (path.node.type === 'Identifier') {
+		enter(path: NodePath) {	// not sure if this is the right type
+			const node: Node = path.node;
+			if (isIdentifier(path.node)) {
 				console.debug(path.node);
 			}
 
 		}
 	});
-/*
-*/
 
 }
 
