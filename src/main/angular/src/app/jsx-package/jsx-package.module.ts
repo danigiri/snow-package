@@ -1,16 +1,12 @@
+import {NgModule} from '@angular/core';
 
-//import { commandLineArgs } from 'command-line-args';
-const commandLineArgs = require('command-line-args');
+@NgModule({
+	declarations: [],	// list of components belonging to this module
+	imports: [],		// list of ng modules needed by this module
+	exports: []
+})
 
-const optionDefinitions = [{ name: 'verbose', alias: 'v', type: Boolean }];
-const options = commandLineArgs(optionDefinitions);
-const verbose = options.verbose;
-
-
-
-verbose && console.error('--------------------------------------------------------------------------------------');
-verbose && console.error('Starting snow package...');
-verbose && console.error('--------------------------------------------------------------------------------------');
+export class JSXPackageModule {}
 
 /*
  *	  Copyright 2020 Daniel Giribet

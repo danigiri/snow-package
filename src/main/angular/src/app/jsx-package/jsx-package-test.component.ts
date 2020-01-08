@@ -12,7 +12,7 @@ import { traverse, NodePath } from '@babel/core';
 	template: `{{ast}}`
 })
 
-export class JSXTestComponent {
+export class JSXPackageTestComponent {
 
 ast: File;
 

@@ -1,16 +1,5 @@
 
-//import { commandLineArgs } from 'command-line-args';
-const commandLineArgs = require('command-line-args');
 
-const optionDefinitions = [{ name: 'verbose', alias: 'v', type: Boolean }];
-const options = commandLineArgs(optionDefinitions);
-const verbose = options.verbose;
-
-
-
-verbose && console.error('--------------------------------------------------------------------------------------');
-verbose && console.error('Starting snow package...');
-verbose && console.error('--------------------------------------------------------------------------------------');
 
 /*
  *	  Copyright 2020 Daniel Giribet

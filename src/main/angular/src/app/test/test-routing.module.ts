@@ -5,10 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { JSXTestComponent } from '../jsx/jsx-test.component';
+import { JSXPackageTestComponent } from '../jsx/jsx-package-test.component';
 
 const routes: Routes = [
-						{path: 'jsx-test', component: JSXTestComponent},
+						{path: 'jsx-test', component: JSXPackageTestComponent},
 //						{path: 'jsx-test/:case_', component: JSXTestComponent},
 						//{path: 'presentation-test/:case_', component: PresentationTestComponent}
 ];
