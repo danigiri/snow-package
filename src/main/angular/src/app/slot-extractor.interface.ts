@@ -1,12 +1,9 @@
-import { NgModule } from '@angular/core';
+// SLOT - EXTRACTOR . INTERFACE . TS
 
-@NgModule({
-	declarations: [],	// list of components belonging to this module
-	imports: [],		// list of ng modules needed by this module
-	exports: []
-})
-
-export class JSXPackageModule {}
+export interface SlotExtractor {
+	
+	
+}
 
 /*
  *	  Copyright 2020 Daniel Giribet
