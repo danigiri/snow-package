@@ -6,5 +6,17 @@ import { types as t } from "@babel/core";
 import { SlotExtractor } from '../slot-extractor.interface';
 
 export class JSXPackage implements SlotExtractor {
-	
+
+
+/*constructor() {
+
+}
+*/
+
+//// SlotExtractor ////
+
+extract(): string {
+	return '';
+}
+
 }

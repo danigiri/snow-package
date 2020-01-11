@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { JSXPackageTestComponent } from '../jsx/jsx-package-test.component';
+import { JSXPackageTestComponent } from '../jsx-package/jsx-package-test.component';
 
 const routes: Routes = [
 						{path: 'jsx-test', component: JSXPackageTestComponent},
@@ -21,7 +21,7 @@ const routes: Routes = [
 	],
 	exports: [RouterModule],
 	declarations: [
-					JSXTestComponent,
+					JSXPackageTestComponent,
 //					PresentationTestComponent
 	]
 })

@@ -1,8 +1,9 @@
 // SLOT - EXTRACTOR . INTERFACE . TS
 
 export interface SlotExtractor {
-	
-	
+
+extract(): string;
+
 }
 
 /*

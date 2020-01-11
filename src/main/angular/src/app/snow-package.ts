@@ -1,16 +1,25 @@
 
+import { JSXPackage } from './jsx-package/jsx-package.class';
 //import { commandLineArgs } from 'command-line-args';
 
-const commandLineArgs = require('command-line-args');
+//import * as JSXPackage from './jsx-package/jsx-package.class';
+//import('./jsx-package/jsx-package.class');
+
+
+//const commandLineArgs = require('command-line-args');
+//const commandLineArgs = import('command-line-args');
+import * as commandLineArgs from 'command-line-args';
 
 const optionDefinitions = [{ name: 'verbose', alias: 'v', type: Boolean }];
 const options = commandLineArgs(optionDefinitions);
 const verbose = options.verbose;
 
-
-
 verbose && console.error('--------------------------------------------------------------------------------------');
 verbose && console.error('Starting snow package...');
+
+const p = new JSXPackage();
+p.extract();
+
 verbose && console.error('--------------------------------------------------------------------------------------');
 
 /*
