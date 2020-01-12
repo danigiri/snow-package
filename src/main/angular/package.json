@@ -25,6 +25,7 @@
     "babel-traverse": "^6.26.0",
     "babel-types": "^6.26.0",
     "command-line-args": "^5.1.1",
+    "get-stdin": "^7.0.0",
     "react-jsx": "^1.0.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.9.0",

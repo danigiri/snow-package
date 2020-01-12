@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 
 const routes: Routes = [
-						{path: '', component: AppComponent},
+						{path: '',redirectTo: 'test/jsx-test', pathMatch: 'prefix' }, // component: AppComponent},
 						//{path 'jsx'}
 						{path: 'test', loadChildren: () => import('./test/test.module')
 															.then(mod => mod.TestModule)
