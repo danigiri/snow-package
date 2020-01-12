@@ -1,9 +1,10 @@
 // JSX PACKAGE . CLASS . TS
 
-import { File, Node, isIdentifier } from '@babel/types';
+import { File, Node, isIdentifier, isJSXElement, isJSXIdentifier, isJSX, isJSXOpeningElement, isJSXClosingElement,
+		isJSXOpeningFragment, isJSXClosingFragment } from '@babel/types';
 import { parse, ParserPlugin } from '@babel/parser';
 import { traverse, NodePath } from '@babel/core';
-import { isJSXElement, isJSXIdentifier } from '@babel/types';
+import {  } from '@babel/types';
 
 import { SlotExtractor } from '../slot-extractor.interface';
 
@@ -30,13 +31,24 @@ extract(): string {
 	const _plugins: ParserPlugin[] = ['jsx', '@babel/plugin-transform-react-jsx-source'];
 
 	this.ast = parse(this.src, {plugins: _plugins});
+	console.debug(this.ast);
+
+	var jsxStackingElementCounter = 0;
 
 	traverse(this.ast, {
 		enter(path: NodePath) {	// not sure if this is the right type
 			const node = path.node;
-			if (isJSXIdentifier(node)) { //}path.node.type.startsWith('JSX')) {
-				console.debug(path.type);
-				out += node.name+'\n';
+			const _isJSXOpeningElement = isJSXOpeningElement(node); 
+			const _isJSXOpeningFragment = isJSXOpeningFragment(node); 
+			if ( _isJSXOpeningElement || _isJSXOpeningFragment) {
+				if (jsxStackingElementCounter++==0) {
+					const name = _isJSXOpeningElement? (node.name as Node).name : '___fragment';
+					out += '<slot name="'+name+'" start="'+node.start+'" ';
+				}
+			} else if (isJSXClosingElement(node) || isJSXClosingFragment(node)) {
+				if (--jsxStackingElementCounter==0) {
+					out += 'end="'+node.end+'"/>\n';
+				}
 			}
 
 		}
@@ -44,5 +56,8 @@ extract(): string {
 
 	return out;
 }
+
+
+
 
 }
