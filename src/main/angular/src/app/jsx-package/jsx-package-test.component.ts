@@ -1,6 +1,6 @@
 // JSX - TEST . COMPONENT . TS
 
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { File, Node, isIdentifier } from '@babel/types';
@@ -11,18 +11,33 @@ import { JSXPackage } from './jsx-package.class';
 
 @Component({
 	selector: 'jsx-test',
-	template: `{{outcome}}`
+	template: `
+		<form #form_="ngForm">
+			<textarea id="input" [(ngModel)]="input" name="name"></textarea>
+			<button id="run" (click)="run()">RUN</button>
+		</form>
+		<div *ngIf="outcome" id="output">{{outcome}}</div>
+		<div *ngIf="error" id="error">{{error}}</div>
+	`
 })
 
-export class JSXPackageTestComponent {
+export class JSXPackageTestComponent implements AfterViewInit {
 
 ast: File;
-outcome: string = '';
+input: string = '';
+outcome: string;
+error: string;
 
 
-constructor() {
+constructor() {}
 
-	const code = 	`function formatName(user) {
+
+ngAfterViewInit() {}
+
+
+run() {
+
+/*	const code = 	`function formatName(user) {
   return user.firstName + ' ' + user.lastName;
 }
 
@@ -38,9 +53,9 @@ const element =
       </>;
 
 ReactDOM.render(element, document.getElementById('root'));
-`;
+`;*/
 
-	const jsxp = new JSXPackage(code);
+	const jsxp = new JSXPackage(this.input);
 	this.outcome = jsxp.extract();
 
 }

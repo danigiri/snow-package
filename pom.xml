@@ -19,7 +19,7 @@
 		<jackson-2-version>2.10.1</jackson-2-version>
 		<jetty-version>9.4.24.v20191120</jetty-version>
 		<jtwig-version>5.87.0.RELEASE</jtwig-version>
-		<morfeu-version>0.4.1-SNAPSHOT</morfeu-version>
+		<morfeu-version>0.6.0-SNAPSHOT</morfeu-version>
 		<selenide-version>5.5.1</selenide-version>
 		<selenium-version>3.141.59</selenium-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

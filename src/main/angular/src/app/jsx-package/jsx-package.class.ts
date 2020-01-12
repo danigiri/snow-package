@@ -42,7 +42,7 @@ extract(): string {
 			const _isJSXOpeningFragment = isJSXOpeningFragment(node); 
 			if ( _isJSXOpeningElement || _isJSXOpeningFragment) {
 				if (jsxStackingElementCounter++==0) {
-					const name = _isJSXOpeningElement? (node.name as Node).name : '___fragment';
+					const name = _isJSXOpeningElement? node.name.name : '___fragment';
 					out += '<slot name="'+name+'" start="'+node.start+'" ';
 				}
 			} else if (isJSXClosingElement(node) || isJSXClosingFragment(node)) {
