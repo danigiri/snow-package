@@ -9,6 +9,7 @@ import { JSXPackage } from './jsx-package/jsx-package.class';
 //const commandLineArgs = require('command-line-args');
 //const commandLineArgs = import('command-line-args');
 import * as commandLineArgs from 'command-line-args';
+import * as getStdin from 'get-stdin';
 
 const optionDefinitions = [{ name: 'verbose', alias: 'v', type: Boolean }];
 const options = commandLineArgs(optionDefinitions);
@@ -17,8 +18,10 @@ const verbose = options.verbose;
 verbose && console.error('--------------------------------------------------------------------------------------');
 verbose && console.error('Starting snow package...');
 
-const p = new JSXPackage();
-p.extract();
+getStdin().then(code => {
+	const p = new JSXPackage(code);
+	p.extract();
+});
 
 verbose && console.error('--------------------------------------------------------------------------------------');
 
