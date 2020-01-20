@@ -1,16 +1,8 @@
 package cat.calidos.snowpackage;
 
-import static com.codeborne.selenide.Selenide.open;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Optional;
+//import static com.codeborne.selenide.Selenide.open;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 import cat.calidos.morfeu.runtime.api.FinishedTask;
 import cat.calidos.morfeu.runtime.api.ReadyTask;
@@ -19,7 +11,7 @@ import cat.calidos.morfeu.runtime.api.StartingTask;
 import cat.calidos.morfeu.runtime.api.Task;
 import cat.calidos.morfeu.runtime.injection.DaggerExecTaskComponent;
 import cat.calidos.morfeu.utils.Tezt;
-import cat.calidos.morfeu.webapp.UITezt;
+//import cat.calidos.morfeu.webapp.UITezt;
 
 /**
 * @author daniel giribet
@@ -36,7 +28,7 @@ protected static String TSCODE_PATH = "./src/main/angular/src/app/snow-package.t
 protected static String NODEFOLDER_PROPERTY = "nodefolder";
 protected static String NODEFOLDER = "/usr/local/bin";
 
-private SPUITezt tezt;
+//private SPUITezt tezt;
 private String nodeFolder;
 private String tsNodeCommand;
 private String tsCode;
