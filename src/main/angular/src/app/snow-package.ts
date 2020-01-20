@@ -11,7 +11,10 @@ import { JSXPackage } from './jsx-package/jsx-package.class';
 import * as commandLineArgs from 'command-line-args';
 import * as getStdin from 'get-stdin';
 
-const optionDefinitions = [{ name: 'verbose', alias: 'v', type: Boolean }];
+const optionDefinitions = [	{ name: 'verbose', alias: 'v', type: Boolean },
+							{ name: 'jsx', alias: 'j', type: Boolean },
+							{ name: 'tsx', alias: 't', type: Boolean },
+							];
 const options = commandLineArgs(optionDefinitions);
 const verbose = options.verbose;
 
@@ -19,9 +22,14 @@ verbose && console.error('------------------------------------------------------
 verbose && console.error('Starting snow package...');
 
 getStdin().then(code => {
-	const p = new JSXPackage(code);
-	const out = p.extract();
+
+	let out = "";
+	if (options.jsx) {
+		const p = new JSXPackage(code);
+		out = p.extract();
+	}
 	console.log(out);
+
 });
 
 verbose && console.error('--------------------------------------------------------------------------------------');

@@ -13,8 +13,8 @@ import cat.calidos.morfeu.runtime.injection.DaggerExecTaskComponent;
 import cat.calidos.morfeu.utils.Tezt;
 //import cat.calidos.morfeu.webapp.UITezt;
 
-/**
-* @author daniel giribet
+/**	Run TS code as a sub-process for testing
+* 	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 public class SPTezt extends Tezt {
@@ -27,6 +27,7 @@ protected static String TSCODE_PROPERTY = "tscode";
 protected static String TSCODE_PATH = "./src/main/angular/src/app/snow-package.ts";
 protected static String NODEFOLDER_PROPERTY = "nodefolder";
 protected static String NODEFOLDER = "/usr/local/bin";
+private static final String JSX = "jsx";
 
 //private SPUITezt tezt;
 private String nodeFolder;
@@ -46,11 +47,14 @@ public void setup() {
 
 }
 
-
 public String runCode(String code) throws Exception {
+	return runCodeWithFormat(code, JSX);
+}
+
+private String runCodeWithFormat(String code, String format) throws Exception {
 
 
-	String command = "PATH=$PATH:"+nodeFolder+" "+ tsNodeCommand+" "+tsCode;
+	String command = "PATH=$PATH:"+nodeFolder+" "+ tsNodeCommand+" "+tsCode+" --"+format;
 	ReadyTask task = DaggerExecTaskComponent.builder()
 												.exec( "/bin/bash", "-c", command)
 												.type(Task.ONE_TIME)
@@ -71,6 +75,7 @@ public String runCode(String code) throws Exception {
 	return start.show()+running.show();
 
 }
+
 
 }
 
