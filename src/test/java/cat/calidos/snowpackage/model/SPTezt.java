@@ -1,4 +1,4 @@
-package cat.calidos.snowpackage;
+package cat.calidos.snowpackage.model;
 
 //import static com.codeborne.selenide.Selenide.open;
 
@@ -60,7 +60,7 @@ private String runCodeWithFormat(String code, String format) throws Exception {
 												.type(Task.ONE_TIME)
 												.withStdin(code)
 												.startedMatcher(s -> Task.NEXT)
-												.problemMatcher(s -> false)	// if anything shows on STDERR
+												.problemMatcher(s -> true)	// if anything shows on STDERR
 												.build()
 												.readyTask();
 	StartingTask start = task.start();

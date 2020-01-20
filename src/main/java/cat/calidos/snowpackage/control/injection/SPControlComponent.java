@@ -1,44 +1,21 @@
-package cat.calidos.snowpackage;
+package cat.calidos.snowpackage.control.injection;
 
-import static com.codeborne.selenide.Selenide.$;
+import dagger.Component;
 
-import java.util.Optional;
-
-import com.codeborne.selenide.SelenideElement;
-
-import cat.calidos.morfeu.webapp.ui.UIWidget;
-
+import cat.calidos.morfeu.control.injection.PingControlModule;
+import cat.calidos.morfeu.webapp.injection.ControlComponent;
+import cat.calidos.morfeu.webapp.injection.ControlModule;
 
 /**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-public class SPUITezt {
+@Component(modules = {ControlModule.class, PingControlModule.class})
+public interface SPControlComponent extends ControlComponent {
 
-private UITeztInput input;
-
-public SPUITezt() {
-	input = new UITeztInput();
-}
-
-public void setInput(String _input) {
-
-	input.pressTAB();
-	input.pressKey(_input);
+@Component.Builder
+interface Builder extends ControlComponent.Builder {}
 
 }
-
-
-public Optional<String> run() {
-
-	$("#run").click();
-
-	SelenideElement outputElement = $("#output");
-	return outputElement.exists() ? Optional.of(outputElement.getText()) : Optional.empty();
-
-}
-
-}
-
 
 /*
  *    Copyright 2020 Daniel Giribet

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee https://www.oracle.com/webfolder/technetwork/jsc/xml/ns/javaee/web-app_4_0.xsdd"
+	version="4.0" 
+	metadata-complete="true">
+
+	<context-param>
+		<description>Resources uri prefix (default value only for integration testing), end with '/'</description>
+		<param-name>__RESOURCES_PREFIX</param-name>
+		<param-value>file://PLEASE_DEFINE_ME/</param-value>
+	</context-param>
+
+	<!-- It is important to distinguish between 'raw' content (RESOURCES_PREFIX) from data processed and by enriched 
+		by the servlets themselves. For example, in the default maven jetty configuration: [/morfeu/documents/]test-resources/documents/document1.json 
+		will invoke the servlet and then the servlet will go and fetch the raw data from [RESOURCES_PREFIX]test-resources/documents/document1.json 
+		then it will process it and enrich it in any way necessary. Usually the content will be a superset of the raw data. -->
+
+	<!-- Generic request dispatcher -->
+	<servlet>
+		<display-name>generic-servlet</display-name>
+		<servlet-name>MorfeuServlet</servlet-name>
+		<servlet-class>cat.calidos.snowpackage.control.SPServlet</servlet-class>
+		<async-supported>true</async-supported>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>MorfeuServlet</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+
+</web-app>

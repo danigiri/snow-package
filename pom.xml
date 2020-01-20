@@ -105,7 +105,6 @@
 						<resourceBases>
 							<resourceBase>${project.build.outputDirectory}</resourceBase>	<!-- data files for angular app -->
 							<resourceBase>${basedir}</resourceBase>							<!-- more data files, compatible with int tests -->
-							<resourceBase>${project.build.directory}/dist</resourceBase>
 						</resourceBases>
 						<webInfIncludeJarPattern>^$</webInfIncludeJarPattern>
 					</webApp>

@@ -1,25 +1,41 @@
-package cat.calidos.snowpackage;
+package cat.calidos.snowpackage.model;
 
 import static com.codeborne.selenide.Selenide.$;
+
+import java.util.Optional;
 
 import com.codeborne.selenide.SelenideElement;
 
 import cat.calidos.morfeu.webapp.ui.UIWidget;
 
+
 /**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-public class UITeztInput extends UIWidget<UITeztInput> {
+public class SPUITezt {
 
-public UITeztInput(SelenideElement element) {
-	super(element);
+private UITeztInput input;
+
+public SPUITezt() {
+	input = new UITeztInput();
+}
+
+public void setInput(String _input) {
+
+	input.pressTAB();
+	input.pressKey(_input);
+
 }
 
 
-public UITeztInput() {
-	super($("#input"));
-}
+public Optional<String> run() {
 
+	$("#run").click();
+
+	SelenideElement outputElement = $("#output");
+	return outputElement.exists() ? Optional.of(outputElement.getText()) : Optional.empty();
+
+}
 
 }
 
