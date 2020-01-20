@@ -55,80 +55,29 @@ public void setup() {
 }
 
 
-@Test @DisplayName("Test using UI form component") @Disabled
-public void testCodeThroughUI() {
-
-String code = "function formatName(user) {\n" + 
-		"  return user.firstName + ' ' + user.lastName;\n" + 
-		"}\n" + 
-		"\n" + 
-		"const user = {\n" + 
-		"  firstName: 'Harper',\n" + 
-		"  lastName: 'Perez',\n" + 
-		"};\n" + 
-		"\n" + 
-		"const element = \n" + 
-		"      <>\n" + 
-		"         <h1>Hello, {formatName(user)}!</h1>\n" + 
-		"          <span>how are <b>you</b> doing?</span>\n" + 
-		"      </>;\n" + 
-		"\n" + 
-		"ReactDOM.render(element, document.getElementById('root'));";
-
-	tezt.setInput(code);
-	Optional<String> outputOpt = tezt.run();
-	assertTrue(outputOpt.isPresent());
-	String slot = outputOpt.get();
-	assertAll("",
-		() -> assertNotNull(slot),
-		() -> assertTrue(slot.startsWith("<slot")),
-		() -> assertTrue(slot.endsWith("/>")),
-		() -> assertTrue(slot.contains("name=\"___fragment\"")),
-		() -> assertTrue(slot.contains("start=\"164\" ")),
-		() -> assertTrue(slot.contains("end=\"270\"/>"))
-	);
-	
-}
+public String runCode(String code) throws Exception {
 
 
-@Test @DisplayName("Test code using ts-node")
-public void testCode() throws Exception {
-
-	String code = "function formatName(user) {\n" + 
-			"  return user.firstName + ' ' + user.lastName;\n" + 
-			"}\n" + 
-			"\n" + 
-			"const user = {\n" + 
-			"  firstName: 'Harper',\n" + 
-			"  lastName: 'Perez',\n" + 
-			"};\n" + 
-			"\n" + 
-			"const element = \n" + 
-			"      <>\n" + 
-			"         <h1>Hello, {formatName(user)}!</h1>\n" + 
-			"          <span>how are <b>you</b> doing?</span>\n" + 
-			"      </>;\n" + 
-			"\n" + 
-			"ReactDOM.render(element, document.getElementById('root'));";
-	
 	String command = "PATH=$PATH:"+nodeFolder+" "+ tsNodeCommand+" "+tsCode;
 	ReadyTask task = DaggerExecTaskComponent.builder()
-			.exec( "/bin/bash", "-c", command)
-			.type(Task.ONE_TIME)
-			.withStdin(code)
-			.startedMatcher(s -> Task.NEXT)
-			.problemMatcher(s -> false)	// if anything shows on STDERR
-			.build()
-			.readyTask();
+												.exec( "/bin/bash", "-c", command)
+												.type(Task.ONE_TIME)
+												.withStdin(code)
+												.startedMatcher(s -> Task.NEXT)
+												.problemMatcher(s -> false)	// if anything shows on STDERR
+												.build()
+												.readyTask();
 	StartingTask start = task.start();
-//	System.err.println(start.show());
 	RunningTask running = start.runningTask();
 	running.spinUntil(Task.FINISHED);
-	System.err.println(running.show());
 	
 	FinishedTask finished = running.finishedTask();
-	assertTrue(finished.isOK());
-	assertEquals(0, finished.result());
+	if (!finished.isOK() || finished.result()!=0) {
+		throw new Exception("Could not run code");
+	}
+
+	return start.show()+running.show();
+
 }
 
 }

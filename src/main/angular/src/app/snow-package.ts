@@ -20,7 +20,8 @@ verbose && console.error('Starting snow package...');
 
 getStdin().then(code => {
 	const p = new JSXPackage(code);
-	p.extract();
+	const out = p.extract();
+	console.log(out);
 });
 
 verbose && console.error('--------------------------------------------------------------------------------------');

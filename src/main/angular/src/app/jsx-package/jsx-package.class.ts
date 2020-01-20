@@ -31,7 +31,7 @@ extract(): string {
 	const _plugins: ParserPlugin[] = ['jsx', '@babel/plugin-transform-react-jsx-source'];
 
 	this.ast = parse(this.src, {plugins: _plugins});
-	console.debug(this.ast);
+	//console.debug(this.ast);
 
 	var jsxStackingElementCounter = 0;
 
