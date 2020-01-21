@@ -13,6 +13,7 @@ import cat.calidos.snowpackage.control.injection.DaggerSPControlComponent;
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class SPServlet extends MorfeuServlet {
 
+
 @Override
 public ControlComponent getControl(String path, Map<String, String> params) {
 	return DaggerSPControlComponent.builder()

@@ -4,12 +4,13 @@ import dagger.Component;
 
 import cat.calidos.morfeu.control.injection.PingControlModule;
 import cat.calidos.morfeu.webapp.injection.ControlComponent;
+import cat.calidos.morfeu.webapp.injection.ControlConfigurationModule;
 import cat.calidos.morfeu.webapp.injection.ControlModule;
 
 /**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-@Component(modules = {ControlModule.class, PingControlModule.class})
+@Component(modules = {ControlModule.class, ControlConfigurationModule.class, PingControlModule.class})
 public interface SPControlComponent extends ControlComponent {
 
 @Component.Builder
