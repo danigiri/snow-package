@@ -1,9 +1,10 @@
-package cat.calidos.snowpackage.model;
+package cat.calidos.snowpackage;
 
 //import static com.codeborne.selenide.Selenide.open;
 
 import org.junit.jupiter.api.BeforeEach;
 
+import cat.calidos.morfeu.runtime.ExecReadyTask;
 import cat.calidos.morfeu.runtime.api.FinishedTask;
 import cat.calidos.morfeu.runtime.api.ReadyTask;
 import cat.calidos.morfeu.runtime.api.RunningTask;
@@ -30,9 +31,9 @@ protected static String NODEFOLDER = "/usr/local/bin";
 private static final String JSX = "jsx";
 
 //private SPUITezt tezt;
-private String nodeFolder;
-private String tsNodeCommand;
-private String tsCode;
+protected String nodeFolder;
+protected String tsNodeCommand;
+protected String tsCode;
 
 
 @BeforeEach
@@ -47,9 +48,11 @@ public void setup() {
 
 }
 
+
 public String runCode(String code) throws Exception {
 	return runCodeWithFormat(code, JSX);
 }
+
 
 private String runCodeWithFormat(String code, String format) throws Exception {
 
@@ -58,15 +61,14 @@ private String runCodeWithFormat(String code, String format) throws Exception {
 	ReadyTask task = DaggerExecTaskComponent.builder()
 												.exec( "/bin/bash", "-c", command)
 												.type(Task.ONE_TIME)
-												.withStdin(code)
 												.startedMatcher(s -> Task.NEXT)
 												.problemMatcher(s -> true)	// if anything shows on STDERR
 												.build()
 												.readyTask();
-	StartingTask start = task.start();
+	StartingTask start = task.start(code);
 	RunningTask running = start.runningTask();
 	running.spinUntil(Task.FINISHED);
-	
+
 	FinishedTask finished = running.finishedTask();
 	if (!finished.isOK() || finished.result()!=0) {
 		throw new Exception("Could not run code");

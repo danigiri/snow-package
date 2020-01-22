@@ -11,6 +11,7 @@ import javax.servlet.ServletContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import cat.calidos.morfeu.control.MorfeuServlet;
 import cat.calidos.morfeu.runtime.api.FinishedTask;
 import cat.calidos.morfeu.runtime.api.ReadyTask;
 import cat.calidos.morfeu.runtime.api.RunningTask;
@@ -30,10 +31,9 @@ public class SPSlotParserModule {
 
 protected final static Logger log = LoggerFactory.getLogger(SPSlotParserModule.class);
 
-
 private static final String JSX = "jsx";
 private static final String TSX = "tsx";
-private static final String PATH = "/slots/("+JSX+"|"+TSX+")/?";
+private static final String PATH = "/slots/jsx/?";
 
 protected static String TSNODE_PROPERTY = "tsnode";
 protected static String TSNODE_PATH = "/usr/local/bin/ts-node";
@@ -43,38 +43,37 @@ protected static String NODEFOLDER_PROPERTY = "nodefolder";
 protected static String NODEFOLDER = "/usr/local/bin";
 
 private static final String OUTPUT_ERROR = "";
-private static final int TIMEOUT = 1000;
+private static final int TIMEOUT = 2000;
 
 
 @Provides @IntoMap @Named("POST")
 @StringKey(PATH)
-public static BiFunction<List<String>, Map<String, String>, String> apply() {
+public static BiFunction<List<String>, Map<String, String>, String> apply(@Named("JSX") ReadyTask task) {
 
 
-	
 	return (pathElems, params) -> {
 
 		String lang = pathElems.get(0);
-
-		switch (lang) {
-
-			default:
-
+		String withCode = params.get(MorfeuServlet.POST_VALUE);
+		if (!lang.equalsIgnoreCase(JSX) || withCode==null) {
+			return OUTPUT_ERROR;
 		}
 
-		return OUTPUT_ERROR;
+		return run(task, withCode);
+
 	};
 
 }
 
+
 @Provides @Named("JSX")
 public static ReadyTask runJSX(@Named("Configuration") Properties config) {
-	
+
 	String nodeFolder = config.getProperty(NODEFOLDER_PROPERTY, NODEFOLDER);
 	String tsNodeCommand = config.getProperty(TSNODE_PROPERTY, TSNODE_PATH);
 	String tsCode = config.getProperty(TSCODE_PROPERTY, TSCODE_PATH);
-	
 	String command = "PATH=$PATH:"+nodeFolder+" "+ tsNodeCommand+" "+tsCode+" --jsx";
+
 	return DaggerExecTaskComponent.builder()
 									.exec( "/bin/bash", "-c", command)
 									.type(Task.ONE_TIME)
@@ -85,9 +84,9 @@ public static ReadyTask runJSX(@Named("Configuration") Properties config) {
 }
 
 
-public static String run(ReadyTask task, String code) {
+private static String run(ReadyTask task, String code) {
 
-	StartingTask start = task.start();
+	StartingTask start = task.start(code);
 	RunningTask running = start.runningTask();
 
 	try {

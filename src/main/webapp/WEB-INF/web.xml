@@ -19,13 +19,13 @@
 	<!-- Generic request dispatcher -->
 	<servlet>
 		<display-name>generic-servlet</display-name>
-		<servlet-name>MorfeuServlet</servlet-name>
+		<servlet-name>SnowPackageServlet</servlet-name>
 		<servlet-class>cat.calidos.snowpackage.control.SPServlet</servlet-class>
-		<async-supported>true</async-supported>
+		<async-supported>false</async-supported>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>MorfeuServlet</servlet-name>
+		<servlet-name>SnowPackageServlet</servlet-name>
 		<url-pattern>/dyn/*</url-pattern>
 	</servlet-mapping>
 
