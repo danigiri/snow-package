@@ -65,7 +65,7 @@ public void testApply() {
 			"ReactDOM.render(element, document.getElementById('root'));";
 	System.err.println(code);
 	
-	BiFunction<List<String>, Map<String, String>, String> f = SPSlotParserModule.apply(task);
+	BiFunction<List<String>, Map<String, String>, String> f = SPSlotParserModule.postCode(task);
 	ArrayList<String> pathElems = new ArrayList<String>(1);
 	pathElems.add("jsx");
 	Map<String, String> params = MorfeuUtils.paramStringMap(MorfeuServlet.POST_VALUE, code);

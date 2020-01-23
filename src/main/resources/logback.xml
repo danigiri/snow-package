@@ -11,12 +11,13 @@
 
 	<logger name="cat.calidos.morfeu.model.injection" level="WARN"/>
 	<logger name="cat.calidos.morfeu.control.MorfeuServletListener" level="INFO"/>
+	<logger name="cat.calidos.morfeu.webapp.GenericHttpServlet" level="WARN"/>
+	
 	<logger name="cat.calidos.morfeu.control" level="WARN"/>
 	<logger name="cat.calidos.morfeu.control.injection" level="TRACE"/>	
 	<logger name="cat.calidos.morfeu.webapp" level="WARN"/>
 	<logger name="cat.calidos.morfeu.webapp.injection.ControlModule" level="WARN"/>	<!--  debug servlet framework -->
 
-	<logger name="cat.calidos.morfeu.proxy.MorfeuProxyServlet" level="TRACE"/>
 
 	<root level="WARN">
 		<appender-ref ref="STDOUT" />

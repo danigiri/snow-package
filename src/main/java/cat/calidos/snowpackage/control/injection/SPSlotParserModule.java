@@ -29,11 +29,13 @@ import dagger.multibindings.StringKey;
 @Module
 public class SPSlotParserModule {
 
+private static final String CODE_PARAM = "code";
+
 protected final static Logger log = LoggerFactory.getLogger(SPSlotParserModule.class);
 
 private static final String JSX = "jsx";
 private static final String TSX = "tsx";
-private static final String PATH = "/slots/jsx/?";
+private static final String PATH = "/slots/(jsx|tsx)/?";
 
 protected static String TSNODE_PROPERTY = "tsnode";
 protected static String TSNODE_PATH = "/usr/local/bin/ts-node";
@@ -45,16 +47,23 @@ protected static String NODEFOLDER = "/usr/local/bin";
 private static final String OUTPUT_ERROR = "";
 private static final int TIMEOUT = 2000;
 
+/*
+
+ cat code | hexdump -v -e '/1 "%02x"' | sed 's/\(..\)/%\1/g' > codeencoded
+ edit codeencoded and add 'code=' at the beginning
+  wget -d -S -O - --post-file=./codeencoded http://localhost:8990/dyn/slots/jsx/
+*/
 
 @Provides @IntoMap @Named("POST")
 @StringKey(PATH)
-public static BiFunction<List<String>, Map<String, String>, String> apply(@Named("JSX") ReadyTask task) {
+public static BiFunction<List<String>, Map<String, String>, String> postCode(@Named("JSX") ReadyTask task) {
 
 
 	return (pathElems, params) -> {
 
-		String lang = pathElems.get(0);
-		String withCode = params.get(MorfeuServlet.POST_VALUE);
+		String lang = pathElems.get(1);
+		String withCode = params.get(CODE_PARAM);
+		log.warn("SPSlotParserModule::postCode() [{},{}, {}]", lang, withCode, params);
 		if (!lang.equalsIgnoreCase(JSX) || withCode==null) {
 			return OUTPUT_ERROR;
 		}
