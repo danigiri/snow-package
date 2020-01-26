@@ -27,11 +27,11 @@ import dagger.multibindings.StringKey;
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 @Module
-public class SPSlotParserModule {
+public class SPCellSlotParserModule {
 
-private static final String CODE_PARAM = "code";
+public static final String CODE_PARAM = "code";
 
-protected final static Logger log = LoggerFactory.getLogger(SPSlotParserModule.class);
+protected final static Logger log = LoggerFactory.getLogger(SPCellSlotParserModule.class);
 
 private static final String JSX = "jsx";
 private static final String TSX = "tsx";
@@ -61,7 +61,7 @@ public static BiFunction<List<String>, Map<String, String>, String> postCode(@Na
 
 	return (pathElems, params) -> {
 
-		String lang = pathElems.get(1);
+		String lang = pathElems.get(0);
 		String withCode = params.get(CODE_PARAM);
 		log.warn("SPSlotParserModule::postCode() [{},{}, {}]", lang, withCode, params);
 		if (!lang.equalsIgnoreCase(JSX) || withCode==null) {

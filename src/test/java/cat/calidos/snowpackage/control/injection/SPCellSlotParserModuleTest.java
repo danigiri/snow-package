@@ -19,18 +19,18 @@ import cat.calidos.snowpackage.SPTezt;
 /**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-public class SPSlotParserModuleTest extends SPTezt {
+public class SPCellSlotParserModuleTest extends SPTezt {
 
 
 @Test @DisplayName("Test generate JSX")
 public void testRunJSX() {
 
 	Properties properties = new Properties();
-	properties.putAll(MorfeuUtils.paramStringMap(SPSlotParserModule.NODEFOLDER_PROPERTY, "aa",
-													SPSlotParserModule.TSNODE_PROPERTY, "/bb",
-													SPSlotParserModule.TSCODE_PROPERTY, "cc.ts"));
+	properties.putAll(MorfeuUtils.paramStringMap(SPCellSlotParserModule.NODEFOLDER_PROPERTY, "aa",
+													SPCellSlotParserModule.TSNODE_PROPERTY, "/bb",
+													SPCellSlotParserModule.TSCODE_PROPERTY, "cc.ts"));
 
-	ReadyTask task = SPSlotParserModule.runJSX(properties);
+	ReadyTask task = SPCellSlotParserModule.runJSX(properties);
 	assertAll("basic checks",
 		() -> assertNotNull(task),
 		() -> assertTrue(task.toString().contains("aa /bb cc.ts --jsx"), "Wrong task "+task.toString()));
@@ -42,10 +42,10 @@ public void testRunJSX() {
 public void testApply() {
 
 	Properties properties = new Properties();
-	properties.putAll(MorfeuUtils.paramStringMap(SPSlotParserModule.NODEFOLDER_PROPERTY, nodeFolder,
-													SPSlotParserModule.TSNODE_PROPERTY, tsNodeCommand,
-													SPSlotParserModule.TSCODE_PROPERTY, tsCode));
-	ReadyTask task = SPSlotParserModule.runJSX(properties);
+	properties.putAll(MorfeuUtils.paramStringMap(SPCellSlotParserModule.NODEFOLDER_PROPERTY, nodeFolder,
+													SPCellSlotParserModule.TSNODE_PROPERTY, tsNodeCommand,
+													SPCellSlotParserModule.TSCODE_PROPERTY, tsCode));
+	ReadyTask task = SPCellSlotParserModule.runJSX(properties);
 
 	String code = "function formatName(user) {\n" + 
 			"  return user.firstName + ' ' + user.lastName;\n" + 
@@ -63,18 +63,17 @@ public void testApply() {
 			"      </>;\n" + 
 			"\n" + 
 			"ReactDOM.render(element, document.getElementById('root'));";
-	System.err.println(code);
-	
-	BiFunction<List<String>, Map<String, String>, String> f = SPSlotParserModule.postCode(task);
+	//System.err.println(code);
+
+	BiFunction<List<String>, Map<String, String>, String> f = SPCellSlotParserModule.postCode(task);
 	ArrayList<String> pathElems = new ArrayList<String>(1);
 	pathElems.add("jsx");
-	Map<String, String> params = MorfeuUtils.paramStringMap(MorfeuServlet.POST_VALUE, code);
+	Map<String, String> params = MorfeuUtils.paramStringMap(SPCellSlotParserModule.CODE_PARAM, code);
 
 	String slots = f.apply(pathElems, params);
 	assertAll("",
 		() -> assertNotNull(slots),
 		() -> assertTrue(slots.startsWith("<slot name=\"___fragment\" start=\"164\" end=\"270\"/>"), "Wrong slots"));
-	System.err.println(slots);
 
 }
 
