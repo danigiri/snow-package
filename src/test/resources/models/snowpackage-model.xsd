@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			xmlns:mf="http://dani.calidos.com/morfeu/metadata">
+
+	<xs:annotation>
+		<xs:appinfo>
+			<mf:desc>Description of snow package test model</mf:desc>
+			<mf:presentation>ROOT</mf:presentation>	<!-- metadata for the root model, not needed -->
+			<mf:thumb></mf:thumb>
+			<mf:cell-presentation></mf:cell-presentation>
+			<mf:extra-metadata>
+			</mf:extra-metadata>
+		</xs:appinfo>
+	</xs:annotation>
+
+<xs:include schemaLocation="http://localhost:8080/morfeu/test-resources/models/test-types.xsd"/>
+
+<xs:element name="codeslots">
+	<xs:annotation>
+		<xs:appinfo>
+				<mf:metadata>
+				</mf:metadata>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+				</xs:choice>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+</xs:schema>
