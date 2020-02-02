@@ -24,7 +24,7 @@ constructor(private src: string) {
 
 extract(): string {
 
-	let out = '';
+	let out = '[';
 
 	// we ignore this as the ParserPlugin type is closed and does not list plugins
 	// @ts-ignore
@@ -42,17 +42,20 @@ extract(): string {
 			const _isJSXOpeningFragment = isJSXOpeningFragment(node); 
 			if ( _isJSXOpeningElement || _isJSXOpeningFragment) {
 				if (jsxStackingElementCounter++==0) {
-					const name = _isJSXOpeningElement? node.name.name : '___fragment';
-					out += '<slot name="'+name+'" start="'+node.start+'" ';
+					const name = _isJSXOpeningElement ? node.name.name : '___fragment';
+					out += '{"name":"'+name+'" "start":"'+node.start+'" ';
 				}
 			} else if (isJSXClosingElement(node) || isJSXClosingFragment(node)) {
 				if (--jsxStackingElementCounter==0) {
-					out += 'end="'+node.end+'"/>\n';
+					out += '"end":"'+node.end+'"},\n';
 				}
 			}
 
 		}
 	});
+
+	// remove last ',\n' and close the array
+	out = out.slice(0, -2)+']';
 
 	return out;
 }

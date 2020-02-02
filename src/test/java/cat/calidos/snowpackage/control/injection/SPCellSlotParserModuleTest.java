@@ -70,10 +70,12 @@ public void testApply() {
 	pathElems.add("jsx");
 	Map<String, String> params = MorfeuUtils.paramStringMap(SPCellSlotParserModule.CODE_PARAM, code);
 
+	String expected = "[{\"name\":\"___fragment\" \"start\":\"164\" \"end\":\"270\"}";
 	String slots = f.apply(pathElems, params);
-	assertAll("",
+	assertAll("test slot",
 		() -> assertNotNull(slots),
-		() -> assertTrue(slots.startsWith("<slot name=\"___fragment\" start=\"164\" end=\"270\"/>"), "Wrong slots"));
+		() -> assertTrue(slots.startsWith(expected), "Wrong slot, got '"+slots+"' instead")
+	);
 
 }
 
