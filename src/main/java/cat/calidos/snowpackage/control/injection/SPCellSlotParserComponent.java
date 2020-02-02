@@ -1,41 +1,35 @@
-package cat.calidos.snowpackage.transform.injection;
+package cat.calidos.snowpackage.control.injection;
 
+import dagger.BindsInstance;
+import dagger.Component;
+
+import java.util.Properties;
+
+import javax.annotation.Nullable;
 import javax.inject.Named;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import cat.calidos.morfeu.utils.injection.ConfigurationModule;
 
-import cat.calidos.morfeu.transform.Converter;
-import cat.calidos.morfeu.transform.StackContext;
-import dagger.Module;
-import dagger.Provides;
-
-/** injects the code into inputcell slot json nodes 
+/**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-@Module
-public class SPCellSlotConverterModule {
+@Component(modules = {SPCellSlotParserModule.class, ConfigurationModule.class})
+public interface SPCellSlotParserComponent {
 
+@Named("Code") String slots();
 
-@Provides
-String xml(Converter<JsonNode, String> converter) {
-	return converter.process();
-}
+@Component.Builder
+interface Builder {
 
+	@BindsInstance Builder withCode(String code);
+	@BindsInstance Builder withProperties(@Nullable @Named("InputProperties") Properties properties);
 
-@Provides
-Converter<JsonNode, String> converter(@Named("PopulatedContext") StackContext<JsonNode> context) {
-	return new Converter<JsonNode, String>(context);
-}
-
-
-@Provides @Named("PopulatedContext")
-StackContext<JsonNode> populatedContext(StackContext<JsonNode> context, JsonNode json) {
-
-	return context;
+	SPCellSlotParserComponent build();
 
 }
 
 }
+
 
 /*
  *    Copyright 2020 Daniel Giribet

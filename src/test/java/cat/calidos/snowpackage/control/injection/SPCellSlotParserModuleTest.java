@@ -41,11 +41,7 @@ public void testRunJSX() {
 @Test @DisplayName("Test get slots")
 public void testApply() {
 
-	Properties properties = new Properties();
-	properties.putAll(MorfeuUtils.paramStringMap(SPCellSlotParserModule.NODEFOLDER_PROPERTY, nodeFolder,
-													SPCellSlotParserModule.TSNODE_PROPERTY, tsNodeCommand,
-													SPCellSlotParserModule.TSCODE_PROPERTY, tsCode));
-	ReadyTask task = SPCellSlotParserModule.runJSX(properties);
+	ReadyTask task = jsxTask();
 
 	String code = "function formatName(user) {\n" + 
 			"  return user.firstName + ' ' + user.lastName;\n" + 
@@ -70,12 +66,23 @@ public void testApply() {
 	pathElems.add("jsx");
 	Map<String, String> params = MorfeuUtils.paramStringMap(SPCellSlotParserModule.CODE_PARAM, code);
 
-	String expected = "[{\"name\":\"___fragment\" \"start\":\"164\" \"end\":\"270\"}";
+	String expected = "[{\"type\":\"___fragment\", \"start\":\"164\", \"end\":\"270\"}";
 	String slots = f.apply(pathElems, params);
 	assertAll("test slot",
 		() -> assertNotNull(slots),
 		() -> assertTrue(slots.startsWith(expected), "Wrong slot, got '"+slots+"' instead")
 	);
+
+}
+
+
+public ReadyTask jsxTask() {
+
+	Properties properties = new Properties();
+	properties.putAll(MorfeuUtils.paramStringMap(SPCellSlotParserModule.NODEFOLDER_PROPERTY, nodeFolder,
+													SPCellSlotParserModule.TSNODE_PROPERTY, tsNodeCommand,
+													SPCellSlotParserModule.TSCODE_PROPERTY, tsCode));
+	return SPCellSlotParserModule.runJSX(properties);
 
 }
 

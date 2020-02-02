@@ -39,8 +39,8 @@ public void testBasicCode() throws Exception {
 		() -> assertNotNull(slots),
 		() -> assertTrue(slots.startsWith("["), "Does not start as an array"),
 		() -> assertTrue(slots.endsWith("]"), "Does not terminate correctly"),
-		() -> assertTrue(slots.contains("\"name\":\"___fragment\""), "Does not contain a fragment"),
-		() -> assertTrue(slots.contains("\"start\":\"164\" "), "Fragment not starting correctly"),
+		() -> assertTrue(slots.contains("\"type\":\"___fragment\""), "Does not contain a fragment"),
+		() -> assertTrue(slots.contains("\"start\":\"164\""), "Fragment not starting correctly"),
 		() -> assertTrue(slots.contains("\"end\":\"270\"}"), "Fragment not end correctly")
 	);
 
@@ -79,10 +79,10 @@ public void testMultipleStructures() throws Exception {
 		() -> assertNotNull(slots),
 		() -> assertTrue(slots.startsWith("["), "Does not start with ["),
 		() -> assertTrue(slots.endsWith("]"), "Does not terminate correctly"),
-		() -> assertTrue(slots.contains("\"name\":\"___fragment\""), "Does not contain a fragment"),
-		() -> assertTrue(slots.contains("\"start\":\"164\" "), "Fragment not starting correctly"),
+		() -> assertTrue(slots.contains("\"type\":\"___fragment\""), "Does not contain a fragment"),
+		() -> assertTrue(slots.contains("\"start\":\"164\""), "Fragment not starting correctly"),
 		() -> assertTrue(slots.contains("\"end\":\"270\"}"), "Fragment not end correctly"),
-		() -> assertTrue(slots.contains("\"start\":\"296\" "), "Fragment 2 not starting correctly"),
+		() -> assertTrue(slots.contains("\"start\":\"296\""), "Fragment 2 not starting correctly"),
 		() -> assertTrue(slots.contains("\"end\":\"415\"}"), "Fragment not end correctly")
 	);
 
@@ -99,8 +99,8 @@ public void testIncorrectCode() throws Exception {
 	assertTrue(slots.isEmpty(), "Non empty output");
 }
 
-}
 
+}
 
 /*
  *    Copyright 2020 Daniel Giribet

@@ -45,7 +45,7 @@ protected static String NODEFOLDER_PROPERTY = "nodefolder";
 protected static String NODEFOLDER = "/usr/local/bin";
 
 private static final String OUTPUT_ERROR = "";
-private static final int TIMEOUT = 2000;
+private static final int TIMEOUT = 5000;
 
 /*
 
@@ -56,7 +56,7 @@ private static final int TIMEOUT = 2000;
 
 @Provides @IntoMap @Named("POST")
 @StringKey(PATH)
-public static BiFunction<List<String>, Map<String, String>, String> postCode(@Named("JSX") ReadyTask task) {
+public static BiFunction<List<String>, Map<String, String>, String> postCode(@Named("JSXTask") ReadyTask task) {
 
 
 	return (pathElems, params) -> {
@@ -68,14 +68,14 @@ public static BiFunction<List<String>, Map<String, String>, String> postCode(@Na
 			return OUTPUT_ERROR;
 		}
 
-		return run(task, withCode);
+		return slots(task, withCode);
 
 	};
 
 }
 
 
-@Provides @Named("JSX")
+@Provides @Named("JSXTask")
 public static ReadyTask runJSX(@Named("Configuration") Properties config) {
 
 	String nodeFolder = config.getProperty(NODEFOLDER_PROPERTY, NODEFOLDER);
@@ -93,7 +93,8 @@ public static ReadyTask runJSX(@Named("Configuration") Properties config) {
 }
 
 
-private static String run(ReadyTask task, String code) {
+@Provides @Named("Code")
+public static String slots(@Named("JSXTask") ReadyTask task, String code) {
 
 	StartingTask start = task.start(code);
 	RunningTask running = start.runningTask();
@@ -112,7 +113,6 @@ private static String run(ReadyTask task, String code) {
 
 
 }
-
 
 /*
  *    Copyright 2020 Daniel Giribet

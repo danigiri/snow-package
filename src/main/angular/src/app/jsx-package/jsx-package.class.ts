@@ -42,8 +42,8 @@ extract(): string {
 			const _isJSXOpeningFragment = isJSXOpeningFragment(node); 
 			if ( _isJSXOpeningElement || _isJSXOpeningFragment) {
 				if (jsxStackingElementCounter++==0) {
-					const name = _isJSXOpeningElement ? node.name.name : '___fragment';
-					out += '{"name":"'+name+'" "start":"'+node.start+'" ';
+					const name = _isJSXOpeningElement ? "___code" : '___fragment';
+					out += '{"type":"'+name+'", "start":"'+node.start+'", ';
 				}
 			} else if (isJSXClosingElement(node) || isJSXClosingFragment(node)) {
 				if (--jsxStackingElementCounter==0) {

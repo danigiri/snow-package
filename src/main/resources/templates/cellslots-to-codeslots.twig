@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<codeslots	xsi:noNamespaceSchemaLocation="../models/snowpackage-model.xsd" 
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+{%- set cellslots = v.cellSlots -%}
+{%- set code = v.code -%}
+{% for c in cellslots -%}
+	{%- set start = c.get("start").asText() -%}
+	{%- set startInt = c.get("start").asInt() -%}
+	{%- set end = c.get("end").asText() -%}
+	{%- set endInt = c.get("end").asInt() %}
+	<code type="{{c.get("type").asText()}}" start="{{start}}" end="{{end}}">
+{{ code.substring(startInt, endInt) }}
+	</code>
+{%- endfor -%}
