@@ -53,6 +53,7 @@
 					<xs:element name="row" type="codeSlot" minOccurs="0" maxOccurs="unbounded"/>
 				</xs:choice>
 			</xs:sequence>
+			<xs:attribute name="code" type="textField" use="optional" />
 		</xs:complexType>
 	</xs:element>
 

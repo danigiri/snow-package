@@ -2,16 +2,11 @@ package cat.calidos.snowpackage.model.jsxpackage;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
-import java.util.function.BiFunction;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import cat.calidos.morfeu.control.MorfeuServlet;
 import cat.calidos.morfeu.runtime.api.ReadyTask;
 import cat.calidos.morfeu.utils.MorfeuUtils;
 import cat.calidos.snowpackage.SPTezt;

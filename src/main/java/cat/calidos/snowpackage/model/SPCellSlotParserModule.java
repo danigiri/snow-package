@@ -1,27 +1,27 @@
 package cat.calidos.snowpackage.model;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.function.BiFunction;
+
+import dagger.Provides;
+import dagger.Module;
 
 import javax.inject.Named;
-import javax.servlet.ServletContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cat.calidos.morfeu.control.MorfeuServlet;
+import com.fasterxml.jackson.databind.JsonNode;
+
 import cat.calidos.morfeu.runtime.api.FinishedTask;
 import cat.calidos.morfeu.runtime.api.ReadyTask;
 import cat.calidos.morfeu.runtime.api.RunningTask;
 import cat.calidos.morfeu.runtime.api.StartingTask;
 import cat.calidos.morfeu.runtime.api.Task;
 import cat.calidos.morfeu.runtime.injection.DaggerExecTaskComponent;
-import dagger.Provides;
-import dagger.Module;
-import dagger.multibindings.IntoMap;
-import dagger.multibindings.StringKey;
+import cat.calidos.morfeu.utils.MorfeuUtils;
+import cat.calidos.morfeu.utils.injection.DaggerJSONParserComponent;
+import cat.calidos.morfeu.view.injection.DaggerViewComponent;
 
 /**
 *	@author daniel giribet
@@ -91,6 +91,33 @@ public static String slots(@Named("JSXTask") ReadyTask task, String code) {
 
 }
 
+
+@Provides @Named("CodeSlots") 
+public static String codeSlots(@Named("Code") String slots, String code) {
+
+	String codeSlots = "";
+	try {
+		JsonNode slotsJSON = DaggerJSONParserComponent.builder().from(slots).build().json().get();
+		Map<String, Object> v = MorfeuUtils.paramMap("cellSlots", slotsJSON, "code", code);
+		String template = "templates/cellslots-to-codeslots.twig";
+		codeSlots = DaggerViewComponent.builder().withTemplatePath(template).withValue(v).build().render();
+	} catch (Exception e) {
+		throw new RuntimeException("Slots parsed had incorrect structure", e);
+	}
+
+	return codeSlots;
+
+}
+
+
+@Provides @Named("Content") 
+public static String content(@Named("CodeSlots") String codeSlots, String code) {
+	return DaggerViewComponent.builder()
+								.withTemplatePath("templates/codeslots-to-xml.twig")
+								.withValue(MorfeuUtils.paramStringMap("codeslots", codeSlots))
+								.build()
+								.render();
+}
 
 /*
 @Provides @IntoMap @Named("POST")

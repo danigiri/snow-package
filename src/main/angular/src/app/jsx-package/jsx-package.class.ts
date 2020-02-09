@@ -45,7 +45,9 @@ extract(): string {
 					const name = _isJSXOpeningElement ? "___code" : '___fragment';
 					out += '{"type":"'+name+'", "start":"'+node.start+'", ';
 				}
-			} else if (isJSXClosingElement(node) || isJSXClosingFragment(node)) {
+			}
+			// if we are opening and closing at the same time, like <foo/> behaviour is different than expected
+			if (isJSXClosingElement(node) || isJSXClosingFragment(node)) {	
 				if (--jsxStackingElementCounter==0) {
 					out += '"end":"'+node.end+'"},\n';
 				}

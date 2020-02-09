@@ -16,7 +16,12 @@ import cat.calidos.morfeu.utils.injection.ConfigurationModule;
 @Component(modules = {SPCellSlotParserModule.class, ConfigurationModule.class})
 public interface SPCellSlotParserComponent {
 
+static String JSX = "jsx";
+
 @Named("Code") String slots();
+@Named("CodeSlots") String codeSlots();
+@Named("Content") String content();
+
 
 @Component.Builder
 interface Builder {

@@ -10,7 +10,8 @@ import cat.calidos.morfeu.webapp.injection.ControlModule;
 /**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-@Component(modules = {ControlModule.class, ControlConfigurationModule.class, PingControlModule.class})
+@Component(modules = {ControlModule.class, ControlConfigurationModule.class, SPFileToContentModule.class,
+						PingControlModule.class})
 public interface SPControlComponent extends ControlComponent {
 
 @Component.Builder
