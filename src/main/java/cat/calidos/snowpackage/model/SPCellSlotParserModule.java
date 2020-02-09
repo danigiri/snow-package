@@ -1,4 +1,4 @@
-package cat.calidos.snowpackage.control.injection;
+package cat.calidos.snowpackage.model;
 
 import java.util.List;
 import java.util.Map;
@@ -37,12 +37,12 @@ private static final String JSX = "jsx";
 private static final String TSX = "tsx";
 private static final String PATH = "/slots/(jsx|tsx)/?";
 
-protected static String TSNODE_PROPERTY = "tsnode";
-protected static String TSNODE_PATH = "/usr/local/bin/ts-node";
-protected static String TSCODE_PROPERTY = "tscode";
-protected static String TSCODE_PATH = "./src/main/angular/src/app/snow-package.ts";
-protected static String NODEFOLDER_PROPERTY = "nodefolder";
-protected static String NODEFOLDER = "/usr/local/bin";
+public static String TSNODE_PROPERTY = "tsnode";
+public static String TSNODE_PATH = "/usr/local/bin/ts-node";
+public static String TSCODE_PROPERTY = "tscode";
+public static String TSCODE_PATH = "./src/main/angular/src/app/snow-package.ts";
+public static String NODEFOLDER_PROPERTY = "nodefolder";
+public static String NODEFOLDER = "/usr/local/bin";
 
 private static final String OUTPUT_ERROR = "";
 private static final int TIMEOUT = 5000;
@@ -53,26 +53,6 @@ private static final int TIMEOUT = 5000;
  edit codeencoded and add 'code=' at the beginning
   wget -d -S -O - --post-file=./codeencoded http://localhost:8990/dyn/slots/jsx/
 */
-
-@Provides @IntoMap @Named("POST")
-@StringKey(PATH)
-public static BiFunction<List<String>, Map<String, String>, String> postCode(@Named("JSXTask") ReadyTask task) {
-
-
-	return (pathElems, params) -> {
-
-		String lang = pathElems.get(0);
-		String withCode = params.get(CODE_PARAM);
-		log.warn("SPSlotParserModule::postCode() [{},{}, {}]", lang, withCode, params);
-		if (!lang.equalsIgnoreCase(JSX) || withCode==null) {
-			return OUTPUT_ERROR;
-		}
-
-		return slots(task, withCode);
-
-	};
-
-}
 
 
 @Provides @Named("JSXTask")
@@ -110,6 +90,29 @@ public static String slots(@Named("JSXTask") ReadyTask task, String code) {
 	}
 
 }
+
+
+/*
+@Provides @IntoMap @Named("POST")
+@StringKey(PATH)
+public static BiFunction<List<String>, Map<String, String>, String> postCode(@Named("JSXTask") ReadyTask task) {
+
+
+	return (pathElems, params) -> {
+
+		String lang = pathElems.get(0);
+		String withCode = params.get(CODE_PARAM);
+		log.warn("SPSlotParserModule::postCode() [{},{}, {}]", lang, withCode, params);
+		if (!lang.equalsIgnoreCase(JSX) || withCode==null) {
+			return OUTPUT_ERROR;
+		}
+
+		return slots(task, withCode);
+
+	};
+
+}
+*/
 
 
 }

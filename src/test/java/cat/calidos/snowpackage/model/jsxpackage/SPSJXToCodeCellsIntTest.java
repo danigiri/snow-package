@@ -13,7 +13,7 @@ import cat.calidos.morfeu.utils.MorfeuUtils;
 import cat.calidos.morfeu.utils.injection.DaggerJSONParserComponent;
 import cat.calidos.morfeu.view.injection.DaggerViewComponent;
 import cat.calidos.snowpackage.SPTezt;
-import cat.calidos.snowpackage.control.injection.DaggerSPCellSlotParserComponent;
+import cat.calidos.snowpackage.model.DaggerSPCellSlotParserComponent;
 
 /**
 *	@author daniel giribet
@@ -58,7 +58,6 @@ public void applyTemplateTest() throws Exception {
 
 
 }
-
 
 /*
  *    Copyright 2020 Daniel Giribet

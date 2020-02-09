@@ -1,4 +1,4 @@
-package cat.calidos.snowpackage.control.injection;
+package cat.calidos.snowpackage.model;
 
 import dagger.BindsInstance;
 import dagger.Component;

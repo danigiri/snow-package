@@ -1,4 +1,4 @@
-package cat.calidos.snowpackage.control.injection;
+package cat.calidos.snowpackage.model.jsxpackage;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,6 +15,7 @@ import cat.calidos.morfeu.control.MorfeuServlet;
 import cat.calidos.morfeu.runtime.api.ReadyTask;
 import cat.calidos.morfeu.utils.MorfeuUtils;
 import cat.calidos.snowpackage.SPTezt;
+import cat.calidos.snowpackage.model.SPCellSlotParserModule;
 
 /**
 *	@author daniel giribet
@@ -61,13 +62,8 @@ public void testApply() {
 			"ReactDOM.render(element, document.getElementById('root'));";
 	//System.err.println(code);
 
-	BiFunction<List<String>, Map<String, String>, String> f = SPCellSlotParserModule.postCode(task);
-	ArrayList<String> pathElems = new ArrayList<String>(1);
-	pathElems.add("jsx");
-	Map<String, String> params = MorfeuUtils.paramStringMap(SPCellSlotParserModule.CODE_PARAM, code);
-
 	String expected = "[{\"type\":\"___fragment\", \"start\":\"164\", \"end\":\"270\"}";
-	String slots = f.apply(pathElems, params);
+	String slots = SPCellSlotParserModule.slots(task, code);
 	assertAll("test slot",
 		() -> assertNotNull(slots),
 		() -> assertTrue(slots.startsWith(expected), "Wrong slot, got '"+slots+"' instead")
