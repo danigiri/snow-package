@@ -13,18 +13,44 @@
 		</xs:appinfo>
 	</xs:annotation>
 
+<!-- TODO: make this configurable if needed -->
 <xs:include schemaLocation="http://localhost:8080/morfeu/test-resources/models/test-types.xsd"/>
+<xs:include schemaLocation="http://localhost:8080/morfeu/test-resources/models/test-cells.xsd"/>
+
+<xs:complexType name="codeSlot">
+	<xs:annotation>
+		<xs:appinfo>
+			<mf:metadata>
+				<mf:desc>Column, can accept content</mf:desc>
+				<mf:presentation>WELL</mf:presentation>
+				<mf:thumb>assets/images/col-thumb.svg</mf:thumb>
+			</mf:metadata>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:sequence>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<!-- no need to define serialize metadata as we will use the default (append 's') -->
+			<xs:element name="row" type="rowCell" minOccurs="0" maxOccurs="unbounded" />
+		</xs:choice>
+	</xs:sequence>
+	<xs:attribute name="start" type="numberField" />
+	<xs:attribute name="end" type="numberField" />
+</xs:complexType>
+
 
 <xs:element name="codeslots">
 	<xs:annotation>
 		<xs:appinfo>
 				<mf:metadata>
+					<mf:desc>Root cell-model desc</mf:desc>
+					<mf:presentation>WELL</mf:presentation>
 				</mf:metadata>
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
 				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element name="row" type="codeSlot" minOccurs="0" maxOccurs="unbounded"/>
 				</xs:choice>
 			</xs:sequence>
 		</xs:complexType>
