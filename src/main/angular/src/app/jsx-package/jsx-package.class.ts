@@ -1,7 +1,7 @@
 // JSX PACKAGE . CLASS . TS
 
 import { File, Node, isIdentifier, isJSXElement, isJSXIdentifier, isJSX, isJSXOpeningElement, isJSXClosingElement,
-		isJSXOpeningFragment, isJSXClosingFragment } from '@babel/types';
+		isJSXOpeningFragment, isJSXClosingFragment, jsxOpeningElement } from '@babel/types';
 import { parse, ParserPlugin } from '@babel/parser';
 import { traverse, NodePath } from '@babel/core';
 import {  } from '@babel/types';
@@ -40,14 +40,15 @@ extract(): string {
 			const node = path.node;
 			const _isJSXOpeningElement = isJSXOpeningElement(node); 
 			const _isJSXOpeningFragment = isJSXOpeningFragment(node); 
+			let isClosing = isJSXClosingElement(node) || isJSXClosingFragment(node);
 			if ( _isJSXOpeningElement || _isJSXOpeningFragment) {
 				if (jsxStackingElementCounter++==0) {
 					const name = _isJSXOpeningElement ? "___code" : '___fragment';
 					out += '{"type":"'+name+'", "start":"'+node.start+'", ';
 				}
+				isClosing = node.selfClosing === true;	// this is true if we have <foo />
 			}
-			// if we are opening and closing at the same time, like <foo/> behaviour is different than expected
-			if (isJSXClosingElement(node) || isJSXClosingFragment(node)) {	
+			if (isClosing) {
 				if (--jsxStackingElementCounter==0) {
 					out += '"end":"'+node.end+'"},\n';
 				}
