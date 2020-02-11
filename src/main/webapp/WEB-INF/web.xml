@@ -29,4 +29,15 @@
 		<url-pattern>/dyn/*</url-pattern>
 	</servlet-mapping>
 
+	<!--filter>
+		<filter-name>SnowPackageRequestFilter</filter-name>
+		<filter-class>cat.calidos.snowpackage.control.SPRequestFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>SnowPackageRequestFilter</filter-name>
+		<url-pattern>/*</url-pattern> 
+	</filter-mapping-->
+
+
+
 </web-app>
