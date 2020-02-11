@@ -48,8 +48,10 @@ public static BiFunction<List<String>, Map<String, String>, String> get(@Named("
 
 	return (pathElems, params) -> {
 
-		String path = pathElems.get(0);
+		String path = pathElems.get(1);
 		String fullPath = prefix+path;
+
+		log.trace("Getting code slots for [{}]/{}", prefix, path);
 		String doc;
 		try {
 
