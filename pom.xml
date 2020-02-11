@@ -109,6 +109,7 @@
 						<resourceBases>
 							<resourceBase>${project.build.outputDirectory}</resourceBase>
 							<resourceBase>${project.build.outputDirectory}/test-resources</resourceBase>
+							<resourceBase>${project.basedir}/src/main/angular/src/assets</resourceBase>
 						</resourceBases>
 						<webInfIncludeJarPattern>^$</webInfIncludeJarPattern>
 					</webApp>
