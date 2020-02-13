@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import cat.calidos.snowpackage.SPTezt;
-import cat.calidos.snowpackage.model.DaggerSPCellSlotParserComponent;
+import cat.calidos.snowpackage.model.injection.DaggerSPCellSlotParserComponent;
 
 /**
 *	@author daniel giribet

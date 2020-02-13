@@ -1,4 +1,4 @@
-package cat.calidos.snowpackage.model;
+package cat.calidos.snowpackage.model.injection;
 
 import dagger.BindsInstance;
 import dagger.Component;
@@ -10,7 +10,7 @@ import javax.inject.Named;
 
 import cat.calidos.morfeu.utils.injection.ConfigurationModule;
 
-/**
+/** Take a piece of code, parse it for code slots
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 @Component(modules = {SPCellSlotParserModule.class, ConfigurationModule.class})
@@ -18,7 +18,7 @@ public interface SPCellSlotParserComponent {
 
 static String JSX = "jsx";
 
-@Named("Code") String slots();
+@Named("Slots") String slots();
 @Named("CodeSlots") String codeSlots();
 @Named("Content") String content();
 

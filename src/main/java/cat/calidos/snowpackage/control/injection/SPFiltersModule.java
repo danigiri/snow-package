@@ -16,7 +16,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cat.calidos.snowpackage.model.SPCellSlotParserComponent;
+import cat.calidos.snowpackage.model.injection.SPCellSlotParserComponent;
 
 
 /**

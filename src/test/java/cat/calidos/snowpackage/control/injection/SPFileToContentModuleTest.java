@@ -25,18 +25,22 @@ public class SPFileToContentModuleTest extends SPTezt {
 public void testGenerateCodeSlots() throws Exception {
 
 	ArrayList<String> pathElems = new ArrayList<String>(0);
-	pathElems.add("classes/test-resources/documents/example-1.jsx");
-	
+	String path = "classes/test-resources/documents/example-1.jsx";
+	pathElems.add("/content/"+path);
+	pathElems.add(path);
+
 	Map<String, String> configMap = MorfeuUtils.paramStringMap(MorfeuServlet.RESOURCES_PREFIX, "file:./target/");
 	Properties config = new Properties();
 	config.putAll(configMap);
 
 	String content = SPFileToContentModule.get(config).apply(pathElems, MorfeuUtils.emptyParamStringMap());
-	System.err.println(content);
 	assertAll("basic checks",
-			() -> assertNotNull(content)
+			() -> assertNotNull(content),
+			() -> assertTrue(content.contains("path=\""+path+"\""))
 	);
+
 }
+
 
 }
 

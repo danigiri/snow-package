@@ -24,7 +24,7 @@ import cat.calidos.morfeu.utils.MorfeuUtils;
 import cat.calidos.morfeu.utils.injection.DaggerDataFetcherComponent;
 import cat.calidos.morfeu.utils.injection.DaggerURIComponent;
 import cat.calidos.morfeu.view.injection.DaggerViewComponent;
-import cat.calidos.snowpackage.model.DaggerSPCellSlotParserComponent;
+import cat.calidos.snowpackage.model.injection.DaggerSPCellSlotParserComponent;
 
 /** We take a file path from the request, read it and turn it into a document
 *	@author daniel giribet
@@ -58,7 +58,12 @@ public static BiFunction<List<String>, Map<String, String>, String> get(@Named("
 			URI fileURI = DaggerURIComponent.builder().from(fullPath).build().uri().get();
 			InputStream content = DaggerDataFetcherComponent.builder().forURI(fileURI).build().fetchData().get();
 			String code = IOUtils.toString(content, Config.DEFAULT_CHARSET);
-			doc = DaggerSPCellSlotParserComponent.builder().withCode(code).withProperties(config).build().content();
+			doc = DaggerSPCellSlotParserComponent.builder()
+													.fromPath(path)
+													.withCode(code)
+													.withProperties(config)
+													.build()
+													.content();
 
 		} catch (Exception e) {
 			log.error("Could not get code slots for [{}]{} ({})", prefix, path, e.getMessage());

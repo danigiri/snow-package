@@ -1,4 +1,4 @@
-package cat.calidos.snowpackage.model;
+package cat.calidos.snowpackage.model.injection;
 
 import java.util.Map;
 import java.util.Properties;
@@ -73,7 +73,7 @@ public static ReadyTask runJSX(@Named("Configuration") Properties config) {
 }
 
 
-@Provides @Named("Code")
+@Provides @Named("Slots")
 public static String slots(@Named("JSXTask") ReadyTask task, String code) {
 
 	StartingTask start = task.start(code);
@@ -93,7 +93,7 @@ public static String slots(@Named("JSXTask") ReadyTask task, String code) {
 
 
 @Provides @Named("CodeSlots") 
-public static String codeSlots(@Named("Code") String slots, String code) {
+public static String codeSlots(@Named("Slots") String slots, String code) {
 
 	String codeSlots = "";
 	try {

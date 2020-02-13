@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import cat.calidos.morfeu.runtime.api.ReadyTask;
 import cat.calidos.morfeu.utils.MorfeuUtils;
 import cat.calidos.snowpackage.SPTezt;
-import cat.calidos.snowpackage.model.SPCellSlotParserModule;
+import cat.calidos.snowpackage.model.injection.SPCellSlotParserModule;
 
 /**
 *	@author daniel giribet
