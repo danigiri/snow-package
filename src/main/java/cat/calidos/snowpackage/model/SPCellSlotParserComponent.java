@@ -22,11 +22,11 @@ static String JSX = "jsx";
 @Named("CodeSlots") String codeSlots();
 @Named("Content") String content();
 
-
 @Component.Builder
 interface Builder {
 
 	@BindsInstance Builder withCode(String code);
+	@BindsInstance Builder fromPath(@Named("Path") String path);
 	@BindsInstance Builder withProperties(@Nullable @Named("InputProperties") Properties properties);
 
 	SPCellSlotParserComponent build();

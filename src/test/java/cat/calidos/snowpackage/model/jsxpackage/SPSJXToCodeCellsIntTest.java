@@ -36,11 +36,12 @@ private static 	String code = "function formatName(user) {\n" +
 @Test @DisplayName("Generate code slots")
 public void testGenerateCodeSlots() throws Exception {
 
-	String codeSlots = DaggerSPCellSlotParserComponent.builder().withCode(code).build().codeSlots();
+	String codeSlots = DaggerSPCellSlotParserComponent.builder().fromPath("/X").withCode(code).build().codeSlots();
 	assertAll("checking slots",
 		() -> assertNotNull(codeSlots, "Should get a codeslots output"),
 		() -> assertTrue(codeSlots.contains("<h1>Hello, {formatName(user)}!</h1>")),
-		() -> assertTrue(codeSlots.contains("<h2>All is fine</h2>"))
+		() -> assertTrue(codeSlots.contains("<h2>All is fine</h2>")),
+		() -> assertFalse(codeSlots.contains("/X"))
 	);
 
 }
@@ -49,12 +50,13 @@ public void testGenerateCodeSlots() throws Exception {
 @Test @DisplayName("Generate complete content")
 public void testGenerateContent() throws Exception {
 
-	String codeSlots = DaggerSPCellSlotParserComponent.builder().withCode(code).build().content();
+	String codeSlots = DaggerSPCellSlotParserComponent.builder().fromPath("/X").withCode(code).build().content();
 	assertAll("checking content",
 		() -> assertNotNull(codeSlots, "Should get a complete content output"),
 		() -> assertTrue(codeSlots.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")),
 		() -> assertTrue(codeSlots.contains("<h1>Hello, {formatName(user)}!</h1>")),
-		() -> assertTrue(codeSlots.contains("<h2>All is fine</h2>"))
+		() -> assertTrue(codeSlots.contains("<h2>All is fine</h2>")),
+		() -> assertTrue(codeSlots.contains("path=\"/X\""))
 	);
 
 }

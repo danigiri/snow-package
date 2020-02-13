@@ -23,7 +23,8 @@
 			<mf:metadata>
 				<mf:desc>Column, can accept content</mf:desc>
 				<mf:presentation>WELL</mf:presentation>
-				<mf:thumb>assets/images/col-thumb.svg</mf:thumb>
+					<mf:thumb>proxy/images/slot-thumb.svg</mf:thumb>
+					<mf:cell-presentation>proxy/images/slot-cell.svg</mf:cell-presentation>
 			</mf:metadata>
 		</xs:appinfo>
 	</xs:annotation>
@@ -45,6 +46,8 @@
 				<mf:metadata>
 					<mf:desc>Root cell-model desc</mf:desc>
 					<mf:presentation>WELL</mf:presentation>
+				<mf:thumb>proxy/images/code-thumb.svg</mf:thumb>
+				<mf:cell-presentation>proxy/images/code-cell.svg</mf:cell-presentation>
 				</mf:metadata>
 			</xs:appinfo>
 		</xs:annotation>
@@ -55,6 +58,7 @@
 				</xs:choice>
 			</xs:sequence>
 			<xs:attribute name="code" type="textField" use="optional" />
+			<xs:attribute name="path" type="textField" use="required" />
 		</xs:complexType>
 	</xs:element>
 

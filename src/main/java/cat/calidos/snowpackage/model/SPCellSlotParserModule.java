@@ -111,10 +111,10 @@ public static String codeSlots(@Named("Code") String slots, String code) {
 
 
 @Provides @Named("Content") 
-public static String content(@Named("CodeSlots") String codeSlots, String code) {
+public static String content(@Named("CodeSlots") String codeSlots, String code, @Named("Path") String path) {
 	return DaggerViewComponent.builder()
 								.withTemplatePath("templates/codeslots-to-xml.twig")
-								.withValue(MorfeuUtils.paramStringMap("codeslots", codeSlots))
+								.withValue(MorfeuUtils.paramStringMap("codeslots", codeSlots, "path", path))
 								.build()
 								.render();
 }
