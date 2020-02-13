@@ -107,9 +107,10 @@
 						<!-- we add this extra classpath so jetty loads templates and all jar deps like jackson and stuff -->
 						<extraClasspath>${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/lib</extraClasspath>
 						<resourceBases>
+							<resourceBase>${project.basedir}/src/main/angular/src/assets</resourceBase>
+							<resourceBase>${project.basedir}/src/test/resources</resourceBase>
 							<resourceBase>${project.build.outputDirectory}</resourceBase>
 							<resourceBase>${project.build.outputDirectory}/test-resources</resourceBase>
-							<resourceBase>${project.basedir}/src/main/angular/src/assets</resourceBase>
 						</resourceBases>
 						<webInfIncludeJarPattern>^$</webInfIncludeJarPattern>
 					</webApp>
