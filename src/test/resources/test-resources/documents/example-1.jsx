@@ -1,5 +1,5 @@
 // comment
-const slot1 = 
+const slot1 =
 <row>
 	<col size="4">
 		<data text="blahblah" number="42" />

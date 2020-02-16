@@ -25,6 +25,7 @@
 				<mf:presentation>WELL</mf:presentation>
 					<mf:thumb>proxy/images/slot-thumb.svg</mf:thumb>
 					<mf:cell-presentation>proxy/images/slot-cell.svg</mf:cell-presentation>
+					<mf:identifier name="@id" />
 			</mf:metadata>
 		</xs:appinfo>
 	</xs:annotation>
@@ -34,6 +35,7 @@
 			<xs:element name="row" type="rowCell" minOccurs="0" maxOccurs="unbounded" />
 		</xs:choice>
 	</xs:sequence>
+	<xs:attribute name="id" type="numberField" use="required" />
 	<xs:attribute name="type" type="textField" />	<!-- should have a specific type -->
 	<xs:attribute name="start" type="numberField" />
 	<xs:attribute name="end" type="numberField" />

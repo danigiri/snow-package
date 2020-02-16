@@ -20,10 +20,8 @@ import org.slf4j.LoggerFactory;
 
 import cat.calidos.morfeu.control.MorfeuServlet;
 import cat.calidos.morfeu.utils.Config;
-import cat.calidos.morfeu.utils.MorfeuUtils;
 import cat.calidos.morfeu.utils.injection.DaggerDataFetcherComponent;
 import cat.calidos.morfeu.utils.injection.DaggerURIComponent;
-import cat.calidos.morfeu.view.injection.DaggerViewComponent;
 import cat.calidos.snowpackage.model.injection.DaggerSPCellSlotParserComponent;
 
 /** We take a file path from the request, read it and turn it into a document
