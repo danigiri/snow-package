@@ -9,6 +9,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import cat.calidos.morfeu.model.injection.DocumentBuilderModule;
 import cat.calidos.morfeu.model.injection.StringToParsedModule;
+import cat.calidos.morfeu.problems.ConfigurationException;
+import cat.calidos.morfeu.problems.ParsingException;
 import cat.calidos.morfeu.utils.injection.ListeningExecutorServiceModule;
 
 /** From a content file we 
@@ -18,7 +20,7 @@ import cat.calidos.morfeu.utils.injection.ListeningExecutorServiceModule;
 								DocumentBuilderModule.class, ListeningExecutorServiceModule.class})
 public interface SPCellSlotInjectorComponent {
 
-ListenableFuture<String> code();
+ListenableFuture<String> code() throws ConfigurationException, ParsingException;
 
 @ProductionComponent.Builder
 interface Builder {

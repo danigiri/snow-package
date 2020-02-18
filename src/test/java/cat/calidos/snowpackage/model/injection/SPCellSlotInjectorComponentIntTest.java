@@ -30,10 +30,10 @@ public void testGenerateCodeSlots() throws Exception {
 	assertAll("check jsx output",
 		() -> assertTrue(jsx.startsWith("// comment"), "Did not start with suitable comment"),
 		() -> assertTrue(jsx.contains("const slot1 ="), "Does not declare slot1 variable"),
-		() -> assertTrue(jsx.contains("<data number=\"32\" />"), "Incorrect data node"),
-		() -> assertFalse(jsx.contains("<data2 number=\"42\" text=\"blahblah\" />"), "Incorrect data2 nodes"),
-		() -> assertTrue(jsx.contains("<data2 number=\"32\" text=\"blahblah\" />"), "Incorrect data2 nodes"),
-		() -> assertTrue(jsx.endsWith("ReactDOM.render(slot1, document.getElementById('root'));\n"), "Incorrect ending")
+		() -> assertTrue(jsx.contains("<data number=\"32\"/>"), "Incorrect data node"),
+		() -> assertFalse(jsx.contains("<data2 number=\"42\" text=\"blahblah\"/>"), "Incorrect data2 nodes"),
+		() -> assertTrue(jsx.contains("<data2 number=\"32\" text=\"changed\"/>"), "Incorrect data2 nodes"),
+		() -> assertTrue(jsx.endsWith("ReactDOM.render(slot1, document.getElementById('root'));"), "Incorrect ending")
 	);
 
 }
