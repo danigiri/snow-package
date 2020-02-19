@@ -4,7 +4,9 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 import java.util.function.BiFunction;
 
 import dagger.Module;
@@ -19,18 +21,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cat.calidos.morfeu.control.MorfeuServlet;
+import cat.calidos.morfeu.filter.Filter;
+import cat.calidos.morfeu.filter.injection.DaggerFilterComponent;
+import cat.calidos.morfeu.problems.FetchingException;
 import cat.calidos.morfeu.utils.Config;
 import cat.calidos.morfeu.utils.injection.DaggerDataFetcherComponent;
+import cat.calidos.morfeu.utils.injection.DaggerSaverComponent;
 import cat.calidos.morfeu.utils.injection.DaggerURIComponent;
+import cat.calidos.morfeu.webapp.GenericHttpServlet;
 import cat.calidos.snowpackage.model.injection.DaggerSPCellSlotParserComponent;
 
 /** We take a file path from the request, read it and turn it into a document
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 @Module
-public class SPFileToContentModule {
+public class SPFileContentControlModule {
 
-protected final static Logger log = LoggerFactory.getLogger(SPFileToContentModule.class);
+protected final static Logger log = LoggerFactory.getLogger(SPFileContentControlModule.class);
 
 private static final String PATH = "/content/(.+\\.jsx)";
 private static final String PROBLEM = "";
@@ -69,6 +76,52 @@ public static BiFunction<List<String>, Map<String, String>, String> get(@Named("
 		}
 
 		return doc;
+	};
+
+}
+
+
+
+@Provides @IntoMap @Named("POST")
+@StringKey(PATH)
+public static BiFunction<List<String>, Map<String, String>, String> post(@Named("Configuration") Properties config) {
+
+	prefix = (String)config.get(MorfeuServlet.RESOURCES_PREFIX);
+
+	return (pathElems, params) -> {
+
+		String out = "";
+
+		long before = System.currentTimeMillis();
+
+		String path = pathElems.get(1);		// normalised already
+		String fullPath = prefix+path;
+		String content = params.get("content");
+		if (content==null) {
+			content = params.get(GenericHttpServlet.POST_VALUE);
+		}
+		Optional<String> filters = Optional.ofNullable(params.get("filters"));
+
+		if (filters.isPresent()) {
+			Filter<String, String> f;
+			try {
+				f = DaggerFilterComponent.builder().filters(filters.get()).build().stringToString().get();
+				content = f.apply(content);
+			} catch (Exception e) {
+				log.error("Problem when applying filters to "+path+":"+e.getMessage());
+			}
+		}
+
+		try {
+			URI fileURI = DaggerURIComponent.builder().from(fullPath).build().uri().get();
+			DaggerSaverComponent.builder().toURI(fileURI).build().saver().get().save();
+		} catch (Exception e) {
+			log.error("Problem when saving content to "+path+":"+e.getMessage());
+		}
+		long now = System.currentTimeMillis();
+
+		return out;
+
 	};
 
 }
