@@ -1,5 +1,6 @@
 package cat.calidos.snowpackage.control.injection;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cat.calidos.morfeu.control.MorfeuServlet;
+import cat.calidos.morfeu.control.injection.DaggerOperationResultComponent;
 import cat.calidos.morfeu.filter.Filter;
 import cat.calidos.morfeu.filter.injection.DaggerFilterComponent;
 import cat.calidos.morfeu.problems.FetchingException;
@@ -29,6 +31,7 @@ import cat.calidos.morfeu.utils.injection.DaggerDataFetcherComponent;
 import cat.calidos.morfeu.utils.injection.DaggerSaverComponent;
 import cat.calidos.morfeu.utils.injection.DaggerURIComponent;
 import cat.calidos.morfeu.webapp.GenericHttpServlet;
+import cat.calidos.snowpackage.model.injection.DaggerSPCellSlotInjectorComponent;
 import cat.calidos.snowpackage.model.injection.DaggerSPCellSlotParserComponent;
 
 /** We take a file path from the request, read it and turn it into a document
@@ -60,9 +63,7 @@ public static BiFunction<List<String>, Map<String, String>, String> get(@Named("
 		String doc;
 		try {
 
-			URI fileURI = DaggerURIComponent.builder().from(fullPath).build().uri().get();
-			InputStream content = DaggerDataFetcherComponent.builder().forURI(fileURI).build().fetchData().get();
-			String code = IOUtils.toString(content, Config.DEFAULT_CHARSET);
+			String code = fetchCode(fullPath);
 			doc = DaggerSPCellSlotParserComponent.builder()
 													.fromPath(path)
 													.withCode(code)
@@ -90,9 +91,8 @@ public static BiFunction<List<String>, Map<String, String>, String> post(@Named(
 
 	return (pathElems, params) -> {
 
-		String out = "";
-
 		long before = System.currentTimeMillis();
+		String problem = null;
 
 		String path = pathElems.get(1);		// normalised already
 		String fullPath = prefix+path;
@@ -100,29 +100,71 @@ public static BiFunction<List<String>, Map<String, String>, String> post(@Named(
 		if (content==null) {
 			content = params.get(GenericHttpServlet.POST_VALUE);
 		}
-		Optional<String> filters = Optional.ofNullable(params.get("filters"));
-
-		if (filters.isPresent()) {
-			Filter<String, String> f;
-			try {
-				f = DaggerFilterComponent.builder().filters(filters.get()).build().stringToString().get();
-				content = f.apply(content);
-			} catch (Exception e) {
-				log.error("Problem when applying filters to "+path+":"+e.getMessage());
-			}
+		if (content==null) {
+			log.warn("Content for '"+path+"' is missing, will save empty content");
 		}
 
 		try {
-			URI fileURI = DaggerURIComponent.builder().from(fullPath).build().uri().get();
-			DaggerSaverComponent.builder().toURI(fileURI).build().saver().get().save();
+			content = applyFilters(content, params.get("filters"));
 		} catch (Exception e) {
-			log.error("Problem when saving content to "+path+":"+e.getMessage());
+			problem += "Problem when applying filters "+e.getMessage();
+			log.error(problem);
 		}
-		long now = System.currentTimeMillis();
+		
+		if (problem == null) {
+			try {
+				String code = fetchCode(fullPath);
+				String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
+				URI fileURI = DaggerURIComponent.builder().from(fullPath).build().uri().get();
+				DaggerSaverComponent.builder().toURI(fileURI).content(jsx).build().saver().get().save();
+			} catch (Exception e) {
+				problem = "Problem when saving content to "+fullPath+":"+e.getMessage();
+				log.error(problem);
+			}
+		}
 
-		return out;
+		String result = problem==null ? "OK" : "KO";
+		long now = System.currentTimeMillis();
+		long duration = before-now;
+
+		return DaggerOperationResultComponent.builder()
+												.result(result)
+												.operation("FileSaver")
+												.target(path)
+												.operationTime(duration)
+												.problem(problem)
+												.build()
+												.result();
 
 	};
+
+}
+
+
+
+private static String fetchCode(String path)
+									throws InterruptedException, ExecutionException, FetchingException, IOException {
+
+	URI fileURI = DaggerURIComponent.builder().from(path).build().uri().get();
+	InputStream content = DaggerDataFetcherComponent.builder().forURI(fileURI).build().fetchData().get();
+	String code = IOUtils.toString(content, Config.DEFAULT_CHARSET);
+
+	return code;
+
+}
+
+
+private static String applyFilters(String content, String filters) throws Exception {
+
+	String out = content;
+	
+	Optional<String> f = Optional.ofNullable(filters);
+	if (f.isPresent()) {
+		Filter<String, String> fun = DaggerFilterComponent.builder().filters(f.get()).build().stringToString().get();
+		out = fun.apply(content);
+	}
+
+	return out;
 
 }
 
