@@ -22,7 +22,7 @@ public void testInjectJSXCodeSlots() throws Exception {
 
 	File codeFile = new File("./target/classes/test-resources/documents/example-1.jsx");
 	String code = FileUtils.readFileToString(codeFile, Config.DEFAULT_CHARSET);
-	File contentFile = new File("./target/classes/test-resources/documents/example-1.xml");
+	File contentFile = new File("./target/classes/test-resources/documents/example-1-edit.xml");
 	String content = FileUtils.readFileToString(contentFile, Config.DEFAULT_CHARSET);
 	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
 	System.out.println(jsx);

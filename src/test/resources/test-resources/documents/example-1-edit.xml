@@ -5,17 +5,17 @@
 	<codeslot type="___code" id="1" start="25" end="348">
 		<row>
 			<col size="4">
-				<data text="blahblah" number="42" />
+				<data text="blahbla1" number="32" />
 			</col>
 			<col size="8">
 				<row>
 					<col size="6">
-						<data number="42" />
-						<data2 number="42" text="blahblah" />
+						<data number="32" />
+						<data2 number="32" text="blahbla2" />
 					</col>
 					<col size="6">
-						<data2 number="42" text="blahblah" />
-						<data2 number="42" text="blahblah" />
+						<data2 number="32" text="blahbla3" />
+						<data2 number="32" text="blahbla4" />
 					</col>
 				</row>
 			</col>
