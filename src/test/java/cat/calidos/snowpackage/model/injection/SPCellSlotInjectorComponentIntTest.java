@@ -17,8 +17,8 @@ import cat.calidos.morfeu.utils.Tezt;
 public class SPCellSlotInjectorComponentIntTest extends Tezt {
 
 
-@Test @DisplayName("Test inject codeslots")
-public void testGenerateCodeSlots() throws Exception {
+@Test @DisplayName("Test inject JSX codeslots")
+public void testInjectJSXCodeSlots() throws Exception {
 
 	File codeFile = new File("./target/classes/test-resources/documents/example-1.jsx");
 	String code = FileUtils.readFileToString(codeFile, Config.DEFAULT_CHARSET);
@@ -31,9 +31,10 @@ public void testGenerateCodeSlots() throws Exception {
 		() -> assertTrue(jsx.startsWith("// comment"), "Did not start with suitable comment"),
 		() -> assertTrue(jsx.contains("const slot1 ="), "Does not declare slot1 variable"),
 		() -> assertTrue(jsx.contains("<data number=\"32\"/>"), "Incorrect data node"),
-		() -> assertFalse(jsx.contains("<data2 number=\"42\" text=\"blahblah\"/>"), "Incorrect data2 nodes"),
-		() -> assertTrue(jsx.contains("<data2 number=\"32\" text=\"changed\"/>"), "Incorrect data2 nodes"),
-		() -> assertTrue(jsx.endsWith("ReactDOM.render(slot1, document.getElementById('root'));"), "Incorrect ending")
+		() -> assertFalse(jsx.contains("number=\"42\""), "Incorrect data2 nodes"),
+		() -> assertFalse(jsx.contains("text=\"blahblah\""), "Incorrect data2 nodes"),
+		() -> assertTrue(jsx.contains("<data2 number=\"32\" text=\"blahbla4\"/>"), "Incorrect data2 nodes"),
+		() -> assertTrue(jsx.endsWith("ReactDOM.render(slot1, document.getElementById('root'));\n"), "Incorrect ending")
 	);
 
 }
