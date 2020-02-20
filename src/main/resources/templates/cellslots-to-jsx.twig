@@ -15,4 +15,4 @@
 	{%- set codeindex = c.end -%}
 	{%- set i = i+1 -%}
 {%- endfor -%}
-{{ substr(code, (v.cellslots[i-1]).end-1, code.length()-1) }}
+{{ substr(code, (v.cellslots[i-1]).end, code.length()) }}
