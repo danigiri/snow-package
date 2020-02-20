@@ -1,7 +1,7 @@
 // JSX PACKAGE . CLASS . TS
 
 import { File, Node, isIdentifier, isJSXElement, isJSXIdentifier, isJSX, isJSXOpeningElement, isJSXClosingElement,
-		isJSXOpeningFragment, isJSXClosingFragment, jsxOpeningElement } from '@babel/types';
+		isJSXOpeningFragment, isJSXClosingFragment } from '@babel/types';
 import { parse, ParserPlugin } from '@babel/parser';
 import { traverse, NodePath } from '@babel/core';
 import {  } from '@babel/types';
