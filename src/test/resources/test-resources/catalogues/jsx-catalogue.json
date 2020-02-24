@@ -2,7 +2,8 @@
 	"name": "JSX test"
 	,"desc": "First JSX test catalogue"
 	,"documents": [
-		{ "name":"JSX 1", "kind": "jsx", "uri":"documents/example-1.json" }
+		{ "name":"JSX 1", "kind": "jsx", "uri":"documents/example-1.json" },
+		{ "name":"JSX 2", "kind": "jsx", "uri":"documents/example-2.json" }
 		]
 	,"snippets": [
 		]

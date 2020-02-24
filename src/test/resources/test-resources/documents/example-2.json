@@ -1,0 +1,7 @@
+{
+	"name": "Second JSX example"
+	,"desc": "Example of JSX code"
+	,"kind": "yaml"
+	,"modelURI": "models/snowpackage-model.xsd"
+	,"contentURI": "dyn/content/test-resources/documents/example-2.jsx"
+}

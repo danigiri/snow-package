@@ -12,10 +12,13 @@ import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 import cat.calidos.morfeu.control.MorfeuServlet;
 import cat.calidos.morfeu.utils.Config;
 import cat.calidos.morfeu.utils.MorfeuUtils;
+import cat.calidos.morfeu.utils.injection.DaggerXMLParserComponent;
 import cat.calidos.morfeu.webapp.GenericHttpServlet;
 import cat.calidos.snowpackage.SPTezt;
 
@@ -31,11 +34,7 @@ private List<String> pathElems;
 @BeforeEach
 public void setup() {
 
-	jsxPath = "classes/test-resources/documents/example-1.jsx";
-	pathElems = new ArrayList<String>(0);
-	pathElems.add("/content/"+jsxPath);
-	pathElems.add(jsxPath);
-
+	setupPathElements("classes/test-resources/documents/example-1.jsx");
 
 }
 
@@ -54,9 +53,35 @@ public void testGenerateJSXContent() throws Exception {
 }
 
 
+@Test @DisplayName("Generate JSX content multiple slots")
+public void testGenerateJSXContentMultipleSlots() throws Exception {
+
+	setupPathElements("classes/test-resources/documents/example-2.jsx");
+
+	Properties config = new Properties();
+	config.put(MorfeuServlet.RESOURCES_PREFIX, "file:./target/");
+
+	String content = SPFileContentControlModule.get(config).apply(pathElems, MorfeuUtils.emptyParamStringMap());
+	System.err.println(content);
+	assertNotNull(content);
+
+	Document doc = DaggerXMLParserComponent.builder().withContent(content).build().document().get();
+	NodeList children = doc.getChildNodes().item(0).getChildNodes();
+	assertAll("checking cell slots",
+		() -> assertNotNull(children),
+		() -> assertEquals(5, children.getLength()),
+		() -> assertEquals("codeslot", children.item(1).getNodeName()),
+		() -> assertEquals("codeslot", children.item(3).getNodeName())
+	);
+
+
+}
+
+
+
 @Test @DisplayName("Save JSX content")
 public void testSaveJSX() throws Exception {
-	
+
 	File contentFile = new File("./target/classes/test-resources/documents/example-1-edit.xml");
 	String content = FileUtils.readFileToString(contentFile, Config.DEFAULT_CHARSET);
 
@@ -95,6 +120,15 @@ public void testSaveJSX() throws Exception {
 		() -> assertTrue(jsx.endsWith("ReactDOM.render(slot1, document.getElementById('root'));\n"), "Incorrect ending")
 	);
 
+}
+
+
+private void setupPathElements(String path) {
+
+	jsxPath = path;
+	pathElems = new ArrayList<String>(0);
+	pathElems.add("/content/"+jsxPath);
+	pathElems.add(jsxPath);
 }
 
 
