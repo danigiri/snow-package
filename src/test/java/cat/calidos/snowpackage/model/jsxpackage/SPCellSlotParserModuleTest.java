@@ -2,12 +2,16 @@ package cat.calidos.snowpackage.model.jsxpackage;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import cat.calidos.morfeu.runtime.api.ReadyTask;
+import cat.calidos.morfeu.utils.Config;
 import cat.calidos.morfeu.utils.MorfeuUtils;
 import cat.calidos.snowpackage.SPTezt;
 import cat.calidos.snowpackage.model.injection.SPCellSlotParserModule;
@@ -66,6 +70,25 @@ public void testApply() {
 
 }
 
+
+
+@Test @DisplayName("Test start and end of code cells")
+public void testStartEnd() throws Exception {
+
+	ReadyTask task = jsxTask();
+
+	File jsxFile = new File("./target/classes/test-resources/documents/example-3.jsx");
+	String code = FileUtils.readFileToString(jsxFile, Config.DEFAULT_CHARSET);
+	String slots = SPCellSlotParserModule.slots(task, code);
+	//System.err.println(slots);
+	//[{"type":"___code", "start":"9", "end":"46"},
+	//{"type":"___code", "start":"61", "end":"98"}]
+	assertAll("test slot",
+			() -> assertNotNull(slots),
+			() -> assertTrue(slots.contains("{\"type\":\"___code\", \"start\":\"9\", \"end\":\"46\"}")),
+			() -> assertTrue(slots.contains("{\"type\":\"___code\", \"start\":\"61\", \"end\":\"98\"}"))
+		);
+}
 
 public ReadyTask jsxTask() {
 

@@ -39,6 +39,21 @@ public void testInjectJSXCodeSlots() throws Exception {
 
 }
 
+@Test @DisplayName("Test inject JSX codeslots with precision")
+public void testInjectJSXCodeSlotsPrecision() throws Exception {
+
+	File codeFile = new File("./target/classes/test-resources/documents/example-3.jsx");
+	String code = FileUtils.readFileToString(codeFile, Config.DEFAULT_CHARSET);
+	//System.err.println(code);
+	String codeSlots = DaggerSPCellSlotParserComponent.builder().fromPath("").withCode(code).build().codeSlots();
+	System.err.println(codeSlots);
+	File contentFile = new File("./target/classes/test-resources/documents/example-3.xml"); //unmodified
+	String content = FileUtils.readFileToString(contentFile, Config.DEFAULT_CHARSET);
+	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
+	System.out.println(jsx);
+
+}
+
 
 }
 

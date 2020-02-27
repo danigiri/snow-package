@@ -4,8 +4,6 @@
 	{%- set start = c.get("start").asText() -%}
 	{%- set startInt = c.get("start").asInt() -%}
 	{%- set end = c.get("end").asText() -%}
-	{%- set endInt = c.get("end").asInt() %}
-	<codeslot type="{{c.get("type").asText()}}" id="{{loop.index}}" start="{{start}}" end="{{end}}">
-{{ code.substring(startInt, endInt) }}
-	</codeslot>
+	{%- set endInt = c.get("end").asInt() %} {#- removing whitespace as this distorts the output -#}
+<codeslot type="{{c.get("type").asText()}}" id="{{loop.index}}" start="{{start}}" end="{{end}}">{{ code.substring(startInt, endInt) }}</codeslot>
 {%- endfor -%}
