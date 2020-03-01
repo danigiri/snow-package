@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 import javax.inject.Named;
 
@@ -28,7 +29,7 @@ public class SPCellSlotInjectorModule {
 
 
 @Produces
-String code(List<CellSlot> codeSlots,  @Named("Code") String code) {
+public static String code(List<CellSlot> codeSlots,  @Named("Code") String code) {
 	return DaggerViewComponent.builder()
 								.withTemplatePath("templates/cellslots-to-jsx.twig")
 								.withValue(MorfeuUtils.paramMap("cellslots", codeSlots, "code", code))
@@ -38,7 +39,7 @@ String code(List<CellSlot> codeSlots,  @Named("Code") String code) {
 
 
 @Produces
-List<CellSlot> codeSlots(org.w3c.dom.Document doc) throws ConfigurationException, ParsingException {
+public static List<CellSlot> codeSlots(org.w3c.dom.Document doc) throws ConfigurationException, ParsingException {
 
 	List<CellSlot> codeSlots = new ArrayList<CellSlot>();
 
@@ -47,8 +48,8 @@ List<CellSlot> codeSlots(org.w3c.dom.Document doc) throws ConfigurationException
 	while (!pendingCodeSlotNodes.isEmpty()) {
 		Node node = pendingCodeSlotNodes.remove(0);
 		if (node.getNodeName().equals("codeslot")) {
-			StringBuffer content = nodeContent(node);
-			codeSlots.add(new CellSlot(node, content.toString()));
+			String content = nodeContent(node);
+			codeSlots.add(new CellSlot(node, content));
 		} else {
 			pendingCodeSlotNodes = addChildrenToList(node, pendingCodeSlotNodes);
 		}
@@ -59,26 +60,40 @@ List<CellSlot> codeSlots(org.w3c.dom.Document doc) throws ConfigurationException
 }
 
 
-private StringBuffer nodeContent(Node node) throws ConfigurationException, ParsingException {
+private static String nodeContent(Node node) throws ConfigurationException, ParsingException {
 
 	// TODO: here we could check the indentation and shift to the left
 
-	StringBuffer content = new StringBuffer();
+	StringBuffer contentBuffer = new StringBuffer();
 	NodeList children = node.getChildNodes();
 	for (int i=0; i< children.getLength(); i++) {
 		try {
-		content.append(DaggerXMLNodeToStringComponent.builder().fromNode(children.item(i)).build().xml().get());
+		contentBuffer.append(DaggerXMLNodeToStringComponent.builder().fromNode(children.item(i)).build().xml().get());
 		} catch (InterruptedException|ExecutionException e) {
 			throw new ParsingException("Some kind of problem on node generation", e);
 		}
 	}
 
+	// now we remove the leading whitespace, assuming that any whitespace leading to the first element
+	// was not added by the end user
+	//          <foo>
+	//                  <bar>yo</bar>
+	//          </foo>
+	// should turn into
+	// <foo>
+	//          <bar>yo</bar>
+	// </foo>
+	String content = contentBuffer.toString();
+	int w = countWhitespace(content);
+	
+	content = content.lines().map(l -> replaceWhitespace(l, w)).collect(Collectors.joining("\n"));
+	
 	return content;
 
 }
 
 
-private List<Node> addChildrenToList(Node node, List<Node> list) {
+private static List<Node> addChildrenToList(Node node, List<Node> list) {
 
 	NodeList rootCodeSlotNodes = node.getChildNodes();
 	for (int i = 0; i<rootCodeSlotNodes.getLength(); i++) {
@@ -86,6 +101,36 @@ private List<Node> addChildrenToList(Node node, List<Node> list) {
 	}
 
 	return list;
+
+}
+
+
+private static int countWhitespace(String content) {
+
+	int len = content.length();
+	if (len==0) {
+		return 0;
+	}
+
+	int i = 0;
+	char c = content.charAt(0);
+	while (++i<len && (c=='\n' || c==' ' || c=='\t')) {
+			c = content.charAt(i);
+	}
+
+	return i-1;
+
+}
+
+
+private static String replaceWhitespace(String s, int count) {
+
+	int i = 0;
+	while (i<count && i<s.length() && (s.charAt(i)==' ' || s.charAt(i)=='\t')) {
+		i++;
+	}
+
+	return s.substring(i);
 
 }
 

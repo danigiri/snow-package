@@ -3,7 +3,6 @@ package cat.calidos.snowpackage.model.jsxpackage;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;

@@ -1,10 +1,15 @@
 {%- set fragments = v.fragments -%}
 {%- set code = v.code -%}
-{%- set codeindex = 0 -%}
 {%- set i = 0 -%}
+{%- set start = 0 -%}
+{%- set size = v.cellslots.size() -%}
+{%- if size>0 -%}
+	{%- set end = v.cellslots[0].start -%}
+{%- else -%}
+	{%- set end = 0 -%}
+{%- endif -%}
 {%- for c in v.cellslots -%}
-	{%- set start = c.start -%}
-{{- substr(code, codeindex, start) -}}
+{{- substr(code, start, end) -}}
 	{%- if c.type.equals('__fragment') -%}
 <>
 {{- c.content -}}
@@ -12,7 +17,10 @@
 	{%- else -%}
 {{- c.content -}}
 	{%- endif -%}
-	{%- set codeindex = c.end -%}
+	{%- set start = c.end -%}
 	{%- set i = i+1 -%}
+	{%- if i<size -%}
+		{%- set end = v.cellslots[i].start -%}
+	{%- endif -%}
 {%- endfor -%}
-{{ substr(code, (v.cellslots[i-1]).end, code.length()) -}}
+{{ substr(code, (v.cellslots[size-1]).end, code.length()) -}}

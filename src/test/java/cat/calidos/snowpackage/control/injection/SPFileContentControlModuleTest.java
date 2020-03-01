@@ -29,18 +29,24 @@ public class SPFileContentControlModuleTest extends SPTezt {
 
 private String jsxPath;
 private List<String> pathElems;
+private String tmp;
 
 
 @BeforeEach
 public void setup() {
 
-	setupPathElements("classes/test-resources/documents/example-1.jsx");
+	try {
+		tmp = setupTempDirectory().getAbsolutePath()+"/";
+		System.err.println("SPFileContentControlModuleTest::Using '"+tmp+"' as temporary test folder");
+	} catch (Exception e) {}
 
 }
 
 
 @Test @DisplayName("Generate JSX content")
 public void testGenerateJSXContent() throws Exception {
+
+	setupPathElements("classes/test-resources/documents/example-1.jsx");
 
 	Properties config = new Properties();
 	config.put(MorfeuServlet.RESOURCES_PREFIX, "file:./target/");
@@ -69,9 +75,9 @@ public void testGenerateJSXContentMultipleSlots() throws Exception {
 	NodeList children = doc.getChildNodes().item(0).getChildNodes();
 	assertAll("checking cell slots",
 		() -> assertNotNull(children),
-		() -> assertEquals(5, children.getLength()),
+		() -> assertEquals(4, children.getLength()),
 		() -> assertEquals("codeslot", children.item(1).getNodeName()),
-		() -> assertEquals("codeslot", children.item(3).getNodeName())
+		() -> assertEquals("codeslot", children.item(2).getNodeName())
 	);
 
 
@@ -82,11 +88,10 @@ public void testGenerateJSXContentMultipleSlots() throws Exception {
 @Test @DisplayName("Save JSX content")
 public void testSaveJSX() throws Exception {
 
+	setupPathElements("classes/test-resources/documents/example-1.jsx");
+
 	File contentFile = new File("./target/classes/test-resources/documents/example-1-edit.xml");
 	String content = FileUtils.readFileToString(contentFile, Config.DEFAULT_CHARSET);
-
-	String tmp = setupTempDirectory().getAbsolutePath()+"/";
-	System.err.println("SPFileContentControlModuleTest::Using '"+tmp+"' as temporary test folder");
 
 	// we copy the original JSX source to the temp folder so new content can be injected and modified
 	File originalJSXFile = new File("./target/"+jsxPath);
@@ -96,8 +101,8 @@ public void testSaveJSX() throws Exception {
 	Properties config = new Properties();
 	config.put(MorfeuServlet.RESOURCES_PREFIX, "file:"+tmp);
 
-	Map<String, String> oarams = MorfeuUtils.paramStringMap(GenericHttpServlet.POST_VALUE, content);
-	String result = SPFileContentControlModule.post(config).apply(pathElems, oarams);
+	Map<String, String> params = MorfeuUtils.paramStringMap(GenericHttpServlet.POST_VALUE, content);
+	String result = SPFileContentControlModule.post(config).apply(pathElems, params);
 	//System.err.println(result);
 
 	// check operation result first
@@ -107,7 +112,7 @@ public void testSaveJSX() throws Exception {
 		() -> assertFalse(result.contains("problem:")),
 		() -> assertTrue(result.contains("OK"))		
 	);
-	
+
 	// now the injected code
 	String jsx = FileUtils.readFileToString(destinationJSXFile, Config.DEFAULT_CHARSET);
 	assertAll("check jsx output",
@@ -118,6 +123,40 @@ public void testSaveJSX() throws Exception {
 		() -> assertFalse(jsx.contains("text=\"blahblah\""), "Incorrect data2 nodes"),
 		() -> assertTrue(jsx.contains("<data2 number=\"32\" text=\"blahbla4\"/>"), "Incorrect data2 nodes"),
 		() -> assertTrue(jsx.endsWith("ReactDOM.render(slot1, document.getElementById('root'));\n"), "Incorrect ending")
+	);
+
+}
+
+
+@Test @DisplayName("Save JSX content precision")
+public void testSaveJSXPrecision() throws Exception {
+
+	setupPathElements("classes/test-resources/documents/example-3.jsx");
+
+	File contentFile = new File("./target/classes/test-resources/documents/example-3-edit.xml");
+	String content = FileUtils.readFileToString(contentFile, Config.DEFAULT_CHARSET);
+
+	// we copy the original JSX source to the temp folder so new content can be injected and modified
+	File originalJSXFile = new File("./target/"+jsxPath);
+	File destinationJSXFile = new File(tmp+jsxPath);
+	FileUtils.copyFile(originalJSXFile, destinationJSXFile);
+
+	Properties config = new Properties();
+	config.put(MorfeuServlet.RESOURCES_PREFIX, "file:"+tmp);
+
+	Map<String, String> params = MorfeuUtils.paramStringMap(GenericHttpServlet.POST_VALUE, content);
+	String result = SPFileContentControlModule.post(config).apply(pathElems, params);
+	// check operation result first
+	assertAll("check result",
+		() -> assertNotNull(result),
+		() -> assertFalse(result.contains("KO"))
+	);
+
+	String jsx = FileUtils.readFileToString(destinationJSXFile, Config.DEFAULT_CHARSET);
+	//System.err.println(jsx);
+	assertAll("check jsx output",
+			() -> assertTrue(jsx.startsWith("const a ="), "Did not start correctly"),
+			() -> assertTrue(jsx.contains("<stuff>a</stuff>"), "Does not inject code")
 	);
 
 }
