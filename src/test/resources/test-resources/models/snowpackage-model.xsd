@@ -31,7 +31,7 @@
 					<mf:desc>Arbitrary key:value content (for key value pairs in yaml)</mf:desc>
 					<mf:thumb>assets/images/keyvalue-thumb.svg</mf:thumb>
 					<mf:cell-presentation>assets/images/keyvalue-cell.svg</mf:cell-presentation>
-				</mf:metadata>			
+				</mf:metadata>
 			</mf:extra-metadata>
 		</xs:appinfo>
 	</xs:annotation>
@@ -44,11 +44,12 @@
 	<xs:annotation>
 		<xs:appinfo>
 			<mf:metadata>
-				<mf:desc>Column, can accept content</mf:desc>
+				<mf:desc>Slot of code</mf:desc>
 				<mf:presentation>WELL</mf:presentation>
 					<mf:thumb>/proxy/images/slot-thumb.svg</mf:thumb>
 					<mf:cell-presentation>/proxy/images/slot-cell.svg</mf:cell-presentation>
 					<mf:identifier name="@id" />
+					<mf:readonly>true</mf:readonly>
 			</mf:metadata>
 		</xs:appinfo>
 	</xs:annotation>
@@ -71,8 +72,9 @@
 				<mf:metadata>
 					<mf:desc>Root cell-model desc</mf:desc>
 					<mf:presentation>WELL</mf:presentation>
-				<mf:thumb>/proxy/images/code-thumb.svg</mf:thumb>
-				<mf:cell-presentation>/proxy/images/code-cell.svg</mf:cell-presentation>
+					<mf:thumb>/proxy/images/code-thumb.svg</mf:thumb>
+					<mf:cell-presentation>/proxy/images/code-cell.svg</mf:cell-presentation>
+					<mf:readonly>true</mf:readonly>
 				</mf:metadata>
 			</xs:appinfo>
 		</xs:annotation>
