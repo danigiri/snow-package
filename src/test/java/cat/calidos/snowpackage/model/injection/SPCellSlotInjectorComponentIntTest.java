@@ -30,10 +30,10 @@ public void testInjectJSXCodeSlots() throws Exception {
 	assertAll("check jsx output",
 		() -> assertTrue(jsx.startsWith("// comment"), "Did not start with suitable comment"),
 		() -> assertTrue(jsx.contains("const slot1 ="), "Does not declare slot1 variable"),
-		() -> assertTrue(jsx.contains("<data number=\"32\"/>"), "Incorrect data node"),
+		() -> assertTrue(jsx.contains("<Data number=\"32\"/>"), "Incorrect data node"),
 		() -> assertFalse(jsx.contains("number=\"42\""), "Incorrect data2 nodes"),
 		() -> assertFalse(jsx.contains("text=\"blahblah\""), "Incorrect data2 nodes"),
-		() -> assertTrue(jsx.contains("<data2 number=\"32\" text=\"blahbla4\"/>"), "Incorrect data2 nodes"),
+		() -> assertTrue(jsx.contains("<Data2 number=\"32\" text=\"blahbla4\"/>"), "Incorrect data2 nodes"),
 		() -> assertTrue(jsx.endsWith("ReactDOM.render(slot1, document.getElementById('root'));\n"), "Incorrect ending")
 	);
 
@@ -46,11 +46,11 @@ public void testInjectJSXCodeSlotsPrecision() throws Exception {
 	String code = FileUtils.readFileToString(codeFile, Config.DEFAULT_CHARSET);
 	//System.err.println(code);
 	String codeSlots = DaggerSPCellSlotParserComponent.builder().fromPath("").withCode(code).build().codeSlots();
-	System.err.println(codeSlots);
+	//System.err.println(codeSlots);
 	File contentFile = new File("./target/classes/test-resources/documents/example-3.xml"); //unmodified
 	String content = FileUtils.readFileToString(contentFile, Config.DEFAULT_CHARSET);
 	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
-	System.out.println(jsx);
+	//System.out.println(jsx);
 
 }
 

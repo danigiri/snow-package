@@ -38,7 +38,7 @@
 
 <!-- TODO: make this configurable if needed -->
 <xs:include schemaLocation="http://localhost:8980/test-resources/models/test-types.xsd"/>
-<xs:include schemaLocation="http://localhost:8980/test-resources/models/test-cells.xsd"/>
+<xs:include schemaLocation="snowpackage-cells.xsd"/>
 
 <xs:complexType name="codeSlot">
 	<xs:annotation>
@@ -56,7 +56,7 @@
 	<xs:sequence>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<!-- no need to define serialize metadata as we will use the default (append 's') -->
-			<xs:element name="row" type="rowCell" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="Row" type="rowCell" minOccurs="0" maxOccurs="unbounded" />
 		</xs:choice>
 	</xs:sequence>
 	<xs:attribute name="id" type="numberField" use="required" />

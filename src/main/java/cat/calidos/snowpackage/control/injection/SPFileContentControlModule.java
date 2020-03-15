@@ -110,7 +110,7 @@ public static BiFunction<List<String>, Map<String, String>, String> post(@Named(
 			problem += "Problem when applying filters "+e.getMessage();
 			log.error(problem);
 		}
-		
+
 		if (problem == null) {
 			try {
 				String code = fetchCode(fullPath);

@@ -3,8 +3,6 @@ package cat.calidos.snowpackage.control.injection;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -49,13 +47,13 @@ public void testGenerateCodeIdentity() throws Exception {
 	Document doc = DaggerXMLParserComponent.builder().withContent(content).build().document().get();
 	List<CellSlot> slots = SPCellSlotInjectorModule.codeSlots(doc);
 
-	String exp = 	"012345678<row>\n" + 
-					"	<col size=\"12\">\n" + 
-					"	</col>\n" + 
-					"</row>;7890\n" + 
-					"012345678<row>\n" + 
-					"	<col size=\"12\"><data number=\"1\"/></col>\n" + 
-					"</row>;7890\n" + 
+	String exp = 	"012345678<Row>\n" + 
+					"	<Col size=\"12\">\n" + 
+					"	</Col>\n" + 
+					"</Row>;7890\n" + 
+					"012345678<Row>\n" + 
+					"	<Col size=\"12\"><Data number=\"1\"/></Col>\n" + 
+					"</Row>;7890\n" + 
 					"0123456789012345678901234567890123456789012345678901\n";
 	String code = SPCellSlotInjectorModule.code(slots, jsx);
 	assertEquals(exp, code);

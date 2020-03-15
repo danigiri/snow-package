@@ -1,9 +1,9 @@
-const a =<row>
-	<col size="12">
-	</col>
-</row>;//47
-const b =<row>
-	<col size="12">
-	</col>
-</row>;//99
+const a =<Row>
+	<Col size="12">
+	</Col>
+</Row>;//47
+const b =<Row>
+	<Col size="12">
+	</Col>
+</Row>;//99
 ReactDOM.render(b, document.getElementById('root'));

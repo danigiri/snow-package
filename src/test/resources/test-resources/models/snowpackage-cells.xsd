@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			xmlns:mf="http://dani.calidos.com/morfeu/metadata"
+			>
+
+	<xs:include schemaLocation="http://localhost:8980/test-resources/models/test-types.xsd" />
+
+	<xs:annotation>
+		<xs:documentation>XML Schema types used to test the system</xs:documentation>
+	</xs:annotation>
+
+	<xs:complexType name="testCell">
+		<xs:annotation>
+			<xs:appinfo>
+				<mf:metadata>
+					<mf:desc>testCell desc</mf:desc>
+					<mf:default-value name="@number">11</mf:default-value>
+					<mf:transform case="obj-to-yaml" type="directive">LISTS-NO-PLURAL</mf:transform>
+					<mf:transform case="yaml-to-xml" type="directive">LISTS-NO-PLURAL</mf:transform>
+				</mf:metadata>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:attribute name="text" type="textField" />
+		<xs:attribute name="number" use="required" type="numberField" />
+	</xs:complexType>
+
+	<xs:complexType name="testIdCell">
+		<xs:annotation>
+			<xs:appinfo>
+				<mf:metadata>
+					<mf:desc>testIdCell desc (one field identifier)</mf:desc>
+					<mf:thumb>assets/images/data3-thumb.svg</mf:thumb>
+					<mf:cell-presentation type="HTML">/dyn/preview/html/${text}?color=${color}</mf:cell-presentation>
+					<mf:default-value name="@text">Default value</mf:default-value>
+					<mf:default-value name="@color">000011</mf:default-value>
+					<mf:transform case="obj-to-yaml" type="directive">LISTS-NO-PLURAL</mf:transform>
+					<mf:transform case="yaml-to-xml" type="directive">LISTS-NO-PLURAL</mf:transform>
+					<mf:identifier name="@text" />
+				</mf:metadata>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:attribute name="text" use="required" type="textField" />
+		<xs:attribute name="color" type="colorField" />
+	</xs:complexType>
+
+	<xs:complexType name="testPostCell">
+		<xs:annotation>
+			<xs:appinfo>
+				<mf:metadata>
+					<mf:desc>testPostCell desc (POST preview))</mf:desc>
+					<mf:thumb>assets/images/data3-thumb.svg</mf:thumb>
+					<mf:cell-presentation type="HTML" method="POST">/dyn/preview/html/</mf:cell-presentation>
+					<mf:default-value name="@text">Default value</mf:default-value>
+					<mf:default-value name="@color">000011</mf:default-value>
+					<mf:transform case="obj-to-yaml" type="directive">LISTS-NO-PLURAL</mf:transform>
+					<mf:transform case="yaml-to-xml" type="directive">LISTS-NO-PLURAL</mf:transform>
+					<mf:identifier name="@text" />
+				</mf:metadata>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:attribute name="text" use="required" type="textField" />
+		<xs:attribute name="color" type="colorField" />
+	</xs:complexType>
+	
+
+	<xs:complexType name="testEmptyCell">
+		<xs:annotation>
+			<xs:appinfo>
+				<mf:metadata>
+					<mf:desc>testEmptyCell desc (all fields optional)</mf:desc>
+					<mf:thumb>assets/images/data4-thumb.svg</mf:thumb>
+					<mf:cell-presentation>assets/images/data4-cell.svg</mf:cell-presentation>
+					<mf:transform case="obj-to-yaml" type="directive">LISTS-NO-PLURAL</mf:transform>
+					<mf:transform case="yaml-to-xml" type="directive">LISTS-NO-PLURAL</mf:transform>
+				</mf:metadata>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:attribute name="text" type="textField" />
+		<xs:attribute name="number" type="numberField" />
+	</xs:complexType>
+
+	<xs:complexType name="keyValueCell">
+		<xs:annotation>
+			<xs:appinfo>
+				<mf:metadata>
+					<mf:desc>Arbitrary key:value content (for key value pairs in yaml)</mf:desc>
+					<mf:thumb>assets/images/keyvalue-thumb.svg</mf:thumb>
+					<mf:cell-presentation>assets/images/keyvalue-cell.svg</mf:cell-presentation>
+					<mf:transform case="obj-to-yaml" type="directive">KEY-VALUE</mf:transform>
+					<mf:transform case="yaml-to-xml" type="directive">KEY-VALUE</mf:transform>
+					<mf:identifier name="@key" />
+				</mf:metadata>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:attribute name="key" use="required" type="textField" />
+		<xs:attribute name="value" type="textField" />
+	</xs:complexType>
+
+	<!--  drill down well testing, it has a set of rows but they are not presented -->
+	<xs:complexType name="holderWell">
+		<xs:annotation>
+			<xs:appinfo>
+				<mf:metadata>
+					<mf:desc>Holder well that hides its contents</mf:desc>
+					<mf:presentation>CELL-WELL</mf:presentation>
+					<mf:thumb>assets/images/holder-thumb.svg</mf:thumb>
+					<mf:cell-presentation>assets/images/holder-cell.svg</mf:cell-presentation>
+				</mf:metadata>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Row" type="rowCell" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="text" type="textField" />
+	</xs:complexType>
+
+	<xs:complexType name="readonlyCell">
+		<xs:annotation>
+			<xs:appinfo>
+				<mf:metadata>
+					<mf:desc>readonly desc</mf:desc>
+					<mf:thumb>assets/images/readonly-thumb.svg</mf:thumb>
+					<mf:cell-presentation>assets/images/readonly-cell.svg</mf:cell-presentation>
+					<mf:default-value name="@number">333</mf:default-value>
+					<mf:transform case="obj-to-yaml" type="directive">LISTS-NO-PLURAL</mf:transform>
+					<mf:transform case="yaml-to-xml" type="directive">LISTS-NO-PLURAL</mf:transform>
+					<mf:readonly>true</mf:readonly>
+				</mf:metadata>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:attribute name="number" use="required" type="numberField" />
+	</xs:complexType>
+
+	<xs:complexType name="colCell">
+		<xs:annotation>
+			<xs:appinfo>
+			<mf:metadata>
+				<mf:desc>Column, can accept content</mf:desc>
+				<mf:presentation>COL-WELL</mf:presentation>
+				<mf:thumb>assets/images/col-thumb.svg</mf:thumb>
+			</mf:metadata>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+		<!--      	<xs:choice maxOccurs="unbounded"> to disregard order -->
+			<xs:element name="Stuff" type="textContent" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Data" type="testCell" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Data2" type="testCell" minOccurs="0" maxOccurs="2"/>
+			<xs:element name="Data3" type="testIdCell" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Data4" type="testEmptyCell" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="Data5" type="testPostCell" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Keyvalue" type="keyValueCell" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="HolderWell" type="holderWell" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Readonly" type="readonlyCell" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Row" type="rowCell" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="size" use="required" type="colField" />
+	</xs:complexType>
+
+	<xs:complexType name="rowCell">
+		<xs:annotation>
+			<xs:appinfo>
+				<mf:metadata>
+					<mf:desc>rowCell desc</mf:desc>
+					<mf:presentation>ROW-WELL</mf:presentation>
+					<mf:thumb>assets/images/row-thumb.svg</mf:thumb>
+					<mf:cell-presentation>assets/images/row-cell.svg</mf:cell-presentation>
+				</mf:metadata>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Col" type="colCell" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="number" type="numberField" />
+	</xs:complexType>
+
+</xs:schema>
