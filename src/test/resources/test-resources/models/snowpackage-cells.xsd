@@ -92,7 +92,7 @@
 				</mf:metadata>
 			</xs:appinfo>
 		</xs:annotation>
-		<xs:attribute name="key" use="required" type="textField" />
+		<xs:attribute name="key_" use="required" type="textField" />
 		<xs:attribute name="value" type="textField" />
 	</xs:complexType>
 
