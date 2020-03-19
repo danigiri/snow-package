@@ -3,6 +3,7 @@ package cat.calidos.snowpackage.model.jsxpackage;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -60,7 +61,7 @@ public void testApply() {
 			"ReactDOM.render(element, document.getElementById('root'));";
 	//System.err.println(code);
 
-	String expected = "[{\"type\":\"___fragment\", \"start\":\"164\", \"end\":\"270\"}";
+	String expected = "[{\"type\":\"___fragment\", \"start\":\"166\", \"end\":\"267\"}";
 	String slots = SPCellSlotParserModule.slots(task, code);
 	assertAll("test slot",
 		() -> assertNotNull(slots),
@@ -76,8 +77,7 @@ public void testStartEnd() throws Exception {
 
 	ReadyTask task = jsxTask();
 
-	File jsxFile = new File("./target/classes/test-resources/documents/example-3.jsx");
-	String code = FileUtils.readFileToString(jsxFile, Config.DEFAULT_CHARSET);
+	String code = readCode("./target/classes/test-resources/documents/example-3.jsx");
 	String slots = SPCellSlotParserModule.slots(task, code);
 	//System.err.println(slots);
 	//[{"type":"___code", "start":"9", "end":"46"},
@@ -89,6 +89,38 @@ public void testStartEnd() throws Exception {
 		);
 }
 
+
+@Test @DisplayName("Minimal test 1")
+public void testStartEndMinimal1() throws Exception {
+
+	ReadyTask task = jsxTask();
+
+	String code = readCode("./target/classes/test-resources/documents/minimal-1.jsx");
+	String slots = SPCellSlotParserModule.slots(task, code);
+	assertEquals("[{\"type\":\"___code\", \"start\":\"6\", \"end\":\"10\"}]\n", slots);
+
+	//	let a=<p/>;
+	//	01234567890
+	//	      *   * 
+}
+
+
+@Test @DisplayName("Minimal test 21")
+public void testStartEndMinimal2() throws Exception {
+
+	ReadyTask task = jsxTask();
+
+	String code = readCode("./target/classes/test-resources/documents/minimal-2.jsx");
+	String slots = SPCellSlotParserModule.slots(task, code);
+	assertEquals("[{\"type\":\"___fragment\", \"start\":\"8\", \"end\":\"12\"}]\n", slots);	// we skip <> and </>
+
+	//	let a=<><</>p/>;
+	//	0123456789012345
+	//	      *   * 
+
+}
+
+
 public ReadyTask jsxTask() {
 
 	Properties properties = new Properties();
@@ -97,6 +129,11 @@ public ReadyTask jsxTask() {
 													SPCellSlotParserModule.TSCODE_PROPERTY, tsCode));
 	return SPCellSlotParserModule.runJSX(properties);
 
+}
+
+
+private String readCode(String path) throws IOException {
+	return FileUtils.readFileToString(new File(path), Config.DEFAULT_CHARSET);
 }
 
 

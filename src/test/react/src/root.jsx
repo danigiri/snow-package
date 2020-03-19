@@ -22,22 +22,14 @@ export function Root() {
 			<Stuff>aaa</Stuff>
 			<Data text="foo" number="1"/>
 			<Keyvalue key_="key" />
-			<Holderwell>
-				<Row>
-					<Col size="12">
-						<Stuff>nested stuff</Stuff>
-						<Data3 text="nested stuff" color="a0f"/>
-					</Col>
-				</Row>
-			</Holderwell>
 		</Col>
 		<Col size="8">
 			<Stuff>aaa</Stuff>
-			<Data3 text="foo2" color="a0f"/>
-			<Data5 text="foox" color="aa0"/>
-			<Readonly number="foo" />
+			<Data3 text="foo2" color="aa00ff"/>
+			<Data5 text="foox" color="2a20ff"/>
+			<Readonly number="1234" />
 		</Col>
 	</Row>
 </>;
-return _root;
+	return _root;
 }

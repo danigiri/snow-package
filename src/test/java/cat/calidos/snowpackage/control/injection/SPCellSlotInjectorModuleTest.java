@@ -3,6 +3,7 @@ package cat.calidos.snowpackage.control.injection;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -41,9 +42,7 @@ public void setup() {
 @Test @DisplayName("Test inject identical code")
 public void testGenerateCodeIdentity() throws Exception {
 
-	File contentFile = new File("./target/classes/test-resources/documents/example-3.xml");
-	String content = FileUtils.readFileToString(contentFile, Config.DEFAULT_CHARSET);
-
+	String content = read("./target/classes/test-resources/documents/example-3.xml");
 	Document doc = DaggerXMLParserComponent.builder().withContent(content).build().document().get();
 	List<CellSlot> slots = SPCellSlotInjectorModule.codeSlots(doc);
 
@@ -66,15 +65,20 @@ public void testGenerateCodeIdentity() throws Exception {
 @Test @DisplayName("Test inject modified code")
 public void testGenerateCodeModified() throws Exception {
 
-	File contentFile = new File("./target/classes/test-resources/documents/example-3-edit.xml");
-	String content = FileUtils.readFileToString(contentFile, Config.DEFAULT_CHARSET);
+	String content = read("./target/classes/test-resources/documents/example-3-edit.xml");
 
 	Document doc = DaggerXMLParserComponent.builder().withContent(content).build().document().get();
 	List<CellSlot> slots = SPCellSlotInjectorModule.codeSlots(doc);
 	String code = SPCellSlotInjectorModule.code(slots, jsx);
-	System.out.println(jsx);
-	System.err.println(code);
+	//System.out.println(jsx);
+	//System.err.println(code);
 }
+
+
+private String read(String path) throws IOException {
+	return FileUtils.readFileToString(new File(path), Config.DEFAULT_CHARSET);
+}
+
 
 
 /*

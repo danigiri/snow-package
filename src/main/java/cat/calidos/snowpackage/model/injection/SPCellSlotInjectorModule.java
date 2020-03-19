@@ -85,9 +85,9 @@ private static String nodeContent(Node node) throws ConfigurationException, Pars
 	// </foo>
 	String content = contentBuffer.toString();
 	int w = countWhitespace(content);
-	
+
 	content = content.lines().map(l -> replaceWhitespace(l, w)).collect(Collectors.joining("\n"));
-	
+
 	return content;
 
 }

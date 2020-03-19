@@ -3,20 +3,14 @@
 {%- set i = 0 -%}
 {%- set start = 0 -%}
 {%- set size = v.cellslots.size() -%}
-{%- if size>0 -%}
+ {%- if size>0 -%}
 	{%- set end = v.cellslots[0].start -%}
 {%- else -%}
 	{%- set end = 0 -%}
 {%- endif -%}
 {%- for c in v.cellslots -%}
 {{- substr(code, start, end) -}}
-	{%- if c.type.equals('__fragment') -%}
-<>
 {{- c.content -}}
-</>
-	{%- else -%}
-{{- c.content -}}
-	{%- endif -%}
 	{%- set start = c.end -%}
 	{%- set i = i+1 -%}
 	{%- if i<size -%}

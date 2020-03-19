@@ -39,6 +39,10 @@
 			<resource>
 				<directory>src/test/resources</directory>
 			</resource>
+			<resource>	<!-- copy the react app so we can test it -->
+				<directory>src/test/react</directory>
+				<targetPath>${project.build.outputDirectory}/test-resources/site/</targetPath>
+			</resource>
 		</resources>
 	
 		<plugins>

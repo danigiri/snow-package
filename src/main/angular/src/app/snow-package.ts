@@ -25,7 +25,7 @@ getStdin().then(code => {
 
 	let out = "";
 	if (options.jsx) {
-		const p = new JSXPackage(code);
+		const p = new JSXPackage(code, verbose);
 		out = p.extract();
 	}
 	console.log(out);

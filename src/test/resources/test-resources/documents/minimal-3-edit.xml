@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<codeslots xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="../models/snowpackage-model.xsd"
+	path="classes/test-resources/documents/example-1.jsx">
+	<codeslot type="___fragment" id="1" start="8" end="31"><div>
+		<p/>
+		<p/>
+	</div></codeslot>
+</codeslots>
