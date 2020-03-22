@@ -1,5 +1,7 @@
 package cat.calidos.snowpackage.model.injection;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -22,6 +24,7 @@ import cat.calidos.morfeu.runtime.injection.DaggerExecTaskComponent;
 import cat.calidos.morfeu.utils.MorfeuUtils;
 import cat.calidos.morfeu.utils.injection.DaggerJSONParserComponent;
 import cat.calidos.morfeu.view.injection.DaggerViewComponent;
+import cat.calidos.snowpackage.model.SPCellSlot;
 
 /**
 *	@author daniel giribet
@@ -98,7 +101,12 @@ public static String codeSlots(@Named("Slots") String slots, String code) {
 	String codeSlots = "";
 	try {
 		JsonNode slotsJSON = DaggerJSONParserComponent.builder().from(slots).build().json().get();
-		Map<String, Object> v = MorfeuUtils.paramMap("cellSlots", slotsJSON, "code", code);
+		List<SPCellSlot> createdSlots = new ArrayList<SPCellSlot>(slotsJSON.size());
+		slotsJSON.iterator()
+					.forEachRemaining(j -> createdSlots.add(
+						DaggerSPCellSlotComponent.builder().with(code).json(j).build().slot()
+					));
+		Map<String, Object> v = MorfeuUtils.paramMap("cellSlots", createdSlots, "code", code);
 		String template = "templates/cellslots-to-codeslots.twig";
 		codeSlots = DaggerViewComponent.builder().withTemplatePath(template).withValue(v).build().render();
 	} catch (Exception e) {

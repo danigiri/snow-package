@@ -1,13 +1,36 @@
 package cat.calidos.snowpackage.model.injection;
 
+import javax.annotation.Nullable;
+
+import org.w3c.dom.Node;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
+import dagger.BindsInstance;
+import dagger.Component;
+
+import cat.calidos.snowpackage.model.SPCellSlot;
 
 /**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+@Component(modules=SPCellSlotModule.class)
 public interface SPCellSlotComponent {
+
+SPCellSlot slot();
+
+@Component.Builder
+interface Builder {
+
+	@BindsInstance Builder with(String code);
+	@BindsInstance Builder node(@Nullable Node xmlNode);
+	@BindsInstance Builder json(@Nullable JsonNode jsonNode);
+
+	SPCellSlotComponent build();
 
 }
 
+}
 
 /*
  *    Copyright 2020 Daniel Giribet

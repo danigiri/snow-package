@@ -14,7 +14,7 @@ import org.w3c.dom.Document;
 
 import cat.calidos.morfeu.utils.Config;
 import cat.calidos.morfeu.utils.injection.DaggerXMLParserComponent;
-import cat.calidos.snowpackage.model.CellSlot;
+import cat.calidos.snowpackage.model.SPCellSlot;
 import cat.calidos.snowpackage.model.injection.SPCellSlotInjectorModule;
 
 /**
@@ -44,7 +44,7 @@ public void testGenerateCodeIdentity() throws Exception {
 
 	String content = read("./target/classes/test-resources/documents/example-3.xml");
 	Document doc = DaggerXMLParserComponent.builder().withContent(content).build().document().get();
-	List<CellSlot> slots = SPCellSlotInjectorModule.codeSlots(doc);
+	List<SPCellSlot> slots = SPCellSlotInjectorModule.codeSlots(doc, jsx);
 
 	String exp = 	"012345678<Row>\n" + 
 					"	<Col size=\"12\">\n" + 
@@ -68,7 +68,7 @@ public void testGenerateCodeModified() throws Exception {
 	String content = read("./target/classes/test-resources/documents/example-3-edit.xml");
 
 	Document doc = DaggerXMLParserComponent.builder().withContent(content).build().document().get();
-	List<CellSlot> slots = SPCellSlotInjectorModule.codeSlots(doc);
+	List<SPCellSlot> slots = SPCellSlotInjectorModule.codeSlots(doc, jsx);
 	String code = SPCellSlotInjectorModule.code(slots, jsx);
 	//System.out.println(jsx);
 	//System.err.println(code);

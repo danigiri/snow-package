@@ -38,6 +38,7 @@ extract(): string {
 	var _verbose = this.verbose;
 
 	traverse(this.ast, {
+
 		enter(path: NodePath) {	// not sure if this is the right type
 			const node = path.node;
 			const _isJSXOpeningElement = isJSXOpeningElement(node); 
@@ -51,7 +52,7 @@ extract(): string {
 				if (jsxStackingElementCounter++==0) {
 					_verbose && console.error(' ****** Opening: ', node.loc.start, node.loc.end);
 					const name = _isJSXOpeningElement ? "___code" : '___fragment';
-					const line = node.loc.start.line-1;
+					const line = node.loc.start.line;
 					const col = _isJSXOpeningFragment ? node.loc.start.column+2 : node.loc.start.column; // skip '<>'
 					out += '{"type":"'+name+'", "start_line":"'+line+'", "start_column":"'+col+'", ';
 				}
@@ -59,7 +60,7 @@ extract(): string {
 			if (closing) {
 				if (--jsxStackingElementCounter==0) {
 					_verbose && console.error(' ****** Closing: ', node.loc.start, node.loc.end);
-					const line = node.loc.end.line-1;
+					const line = node.loc.end.line;
 					const col = _isJSXOpeningFragment || _isJSXClosingFragment 
 									? node.loc.end.column-3 : node.loc.end.column; // skip '</>' on fragments
 					out += '"end_line":"'+line+'", "end_column":"'+col+'"},\n';
@@ -67,6 +68,7 @@ extract(): string {
 			}
 
 		}
+
 	});
 
 	// remove last ',\n' and close the array

@@ -18,11 +18,12 @@ import cat.calidos.morfeu.utils.Tezt;
 public class SPCellSlotInjectorComponentIntTest extends Tezt {
 
 
-//@Test @DisplayName("Test inject JSX codeslots")
+@Test @DisplayName("Test inject JSX codeslots")
 public void testInjectJSXCodeSlots() throws Exception {
 
 	File codeFile = new File("./target/classes/test-resources/documents/example-1.jsx");
 	String code = FileUtils.readFileToString(codeFile, Config.DEFAULT_CHARSET);
+	String codeSlots = DaggerSPCellSlotParserComponent.builder().fromPath("").withCode(code).build().codeSlots();
 	File contentFile = new File("./target/classes/test-resources/documents/example-1-edit.xml");
 	String content = FileUtils.readFileToString(contentFile, Config.DEFAULT_CHARSET);
 	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
@@ -86,10 +87,9 @@ public void testGenerateCodeMinimal3() throws Exception {
 	String content = read("./target/classes/test-resources/documents/minimal-3-edit.xml");
 	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
 	//System.out.println(jsx);
-	assertEquals("let a=<><div><p/><p/></div></>;", jsx);
+	assertEquals("let a=<><div>\n\t\t<p/>\n\t\t<p/>\n\t</div></>;", jsx);
 
 }
-
 
 
 private String read(String path) throws IOException {

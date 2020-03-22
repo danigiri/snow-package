@@ -5,7 +5,7 @@ import org.w3c.dom.Node;
 /**
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-public class CellSlot {
+public class SPCellSlot {
 
 private String type;
 private int start;
@@ -13,22 +13,17 @@ private int end;
 private String content;
 
 
-public CellSlot(Node node, String content) {
+public SPCellSlot(String type, int start, int end, String content) {
 
+	this.type = type;
+	this.start = start;
+	this.end = end;
 	this.content = content;
-	this.type = node.getAttributes().getNamedItem("type").getNodeValue();
-	int startLine = Integer.parseInt(node.getAttributes().getNamedItem("start_line").getNodeValue());
-	int startCol = Integer.parseInt(node.getAttributes().getNamedItem("start_column").getNodeValue());
-	int endLine = Integer.parseInt(node.getAttributes().getNamedItem("start_line").getNodeValue());
-	int endCol = Integer.parseInt(node.getAttributes().getNamedItem("start_column").getNodeValue());
-	this.start = startLine;
-	this.end = Integer.parseInt(node.getAttributes().getNamedItem("end").getNodeValue());
 
 }
 
 
 public String getType() {
-
 	return type;
 }
 
