@@ -1,5 +1,6 @@
 {
 	"config": "snowpackage",
 	"production": false,
-	"catalogues": "/proxy/catalogues.json"
+	"catalogues": "/proxy/catalogues.json",
+	"reloadOnSave": true
 }
