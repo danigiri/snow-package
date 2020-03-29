@@ -30,7 +30,7 @@
 				<mf:metadata>
 					<mf:desc>testIdCell desc (one field identifier)</mf:desc>
 					<mf:thumb>assets/images/data3-thumb.svg</mf:thumb>
-					<mf:cell-presentation type="HTML">/dyn/preview/html/${text}?color=${color}</mf:cell-presentation>
+					<mf:cell-presentation type="IFRAME">http://localhost:3001/#/preview/Data3?$_ATTRIBUTES</mf:cell-presentation>
 					<mf:default-value name="@text">Default value</mf:default-value>
 					<mf:default-value name="@color">000011</mf:default-value>
 					<mf:transform case="obj-to-yaml" type="directive">LISTS-NO-PLURAL</mf:transform>
@@ -47,9 +47,9 @@
 		<xs:annotation>
 			<xs:appinfo>
 				<mf:metadata>
-					<mf:desc>testPostCell desc (POST preview))</mf:desc>
-					<mf:thumb>assets/images/data3-thumb.svg</mf:thumb>
-					<mf:cell-presentation type="HTML" method="POST">/dyn/preview/html/</mf:cell-presentation>
+					<mf:desc>data 5</mf:desc>
+					<mf:thumb>assets/images/data5-thumb.svg</mf:thumb>
+					<mf:cell-presentation type="IFRAME">http://localhost:3001/#/preview/Data5?$_ATTRIBUTES</mf:cell-presentation>
 					<mf:default-value name="@text">Default value</mf:default-value>
 					<mf:default-value name="@color">000011</mf:default-value>
 					<mf:transform case="obj-to-yaml" type="directive">LISTS-NO-PLURAL</mf:transform>
@@ -69,7 +69,7 @@
 				<mf:metadata>
 					<mf:desc>testEmptyCell desc (all fields optional)</mf:desc>
 					<mf:thumb>assets/images/data4-thumb.svg</mf:thumb>
-					<mf:cell-presentation>assets/images/data4-cell.svg</mf:cell-presentation>
+					<mf:cell-presentation type="IFRAME">http://localhost:3001/#/preview/Data4?$_ATTRIBUTES</mf:cell-presentation>
 					<mf:transform case="obj-to-yaml" type="directive">LISTS-NO-PLURAL</mf:transform>
 					<mf:transform case="yaml-to-xml" type="directive">LISTS-NO-PLURAL</mf:transform>
 				</mf:metadata>
@@ -85,7 +85,6 @@
 				<mf:metadata>
 					<mf:desc>Arbitrary key:value content (for key value pairs in yaml)</mf:desc>
 					<mf:thumb>assets/images/keyvalue-thumb.svg</mf:thumb>
-					<mf:cell-presentation>assets/images/keyvalue-cell.svg</mf:cell-presentation>
 					<mf:transform case="obj-to-yaml" type="directive">KEY-VALUE</mf:transform>
 					<mf:transform case="yaml-to-xml" type="directive">KEY-VALUE</mf:transform>
 					<mf:identifier name="@key" />
@@ -122,7 +121,7 @@
 				<mf:metadata>
 					<mf:desc>readonly desc</mf:desc>
 					<mf:thumb>assets/images/readonly-thumb.svg</mf:thumb>
-					<mf:cell-presentation>assets/images/readonly-cell.svg</mf:cell-presentation>
+					<mf:cell-presentation type="IFRAME">http://localhost:3001/#/preview/Readonly?$_ATTRIBUTES</mf:cell-presentation>
 					<mf:default-value name="@number">333</mf:default-value>
 					<mf:transform case="obj-to-yaml" type="directive">LISTS-NO-PLURAL</mf:transform>
 					<mf:transform case="yaml-to-xml" type="directive">LISTS-NO-PLURAL</mf:transform>
@@ -139,7 +138,7 @@
 				<mf:metadata>
 					<mf:desc>multiple attributes grouped by semantic criteria</mf:desc>
 					<mf:thumb>assets/images/categ-thumb.svg</mf:thumb>
-					<mf:cell-presentation>assets/images/categ-cell.svg</mf:cell-presentation>
+					<mf:cell-presentation type="IFRAME">http://localhost:3001/#/preview/Categ?$_ATTRIBUTES</mf:cell-presentation>
 					<mf:transform case="obj-to-yaml" type="directive">LISTS-NO-PLURAL</mf:transform>
 					<mf:transform case="yaml-to-xml" type="directive">LISTS-NO-PLURAL</mf:transform>
 					<mf:category categ="X"/>
