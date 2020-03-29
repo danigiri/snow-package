@@ -12,6 +12,7 @@ import { Data5 } from './components/data5';
 import { Keyvalue } from './components/keyvalue';
 import { Holderwell } from './components/holderwell';
 import { Readonly } from './components/readonly';
+import { Categ } from './components/categ';
 /* eslint-enable no-unused-vars */
 
 export function Root() {
@@ -19,12 +20,12 @@ export function Root() {
 <>
 	<Row>
 		<Col size="4">
-			<Stuff>aaa</Stuff>
+			<Stuff>aaa1</Stuff>
 			<Data text="foo" number="1"/>
 			<Keyvalue key_="key" />
 		</Col>
 		<Col size="8">
-			<Stuff>aaa</Stuff>
+			<Stuff>aaa2</Stuff>
 			<Data3 text="foo2" color="aa00ff"/>
 			<Data5 text="foox" color="2a20ff"/>
 			<Readonly number="1234" />
