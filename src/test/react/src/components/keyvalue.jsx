@@ -2,8 +2,9 @@ import React from 'react';
 
 export function Keyvalue(props) {
 
-	let value_ = props.value ?? <span className="badge badge-warning">No value</span>;
+	const key_ = props.key_ ?? <small>key goes here</small>;
+	const value_ = props.value ?? <span className="badge badge-warning">No value</span>;
 
-	return 	<p>{props.key_}: {value_}</p>;
+	return 	<p>{key_}: {value_}</p>;
 
 }

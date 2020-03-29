@@ -38,8 +38,8 @@ extract(): string {
 	var _verbose = this.verbose;
 
 	traverse(this.ast, {
-
 		enter(path: NodePath) {	// not sure if this is the right type
+
 			const node = path.node;
 			const _isJSXOpeningElement = isJSXOpeningElement(node); 
 			const _isJSXOpeningFragment = isJSXOpeningFragment(node);
@@ -68,7 +68,6 @@ extract(): string {
 			}
 
 		}
-
 	});
 
 	// remove last ',\n' and close the array

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Data3 } from './data3';
 
 export function Data5(props) {

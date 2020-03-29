@@ -10,6 +10,12 @@
 		<param-name>__RESOURCES_PREFIX</param-name>
 		<param-value>file://PLEASE_DEFINE_ME/</param-value>
 	</context-param>
+		<context-param>
+		<description>Proxy uri prefix</description>
+		<param-name>__PROXY_PREFIX</param-name>
+		<param-value>http://localhost:3001/</param-value>
+	</context-param>
+	
 
 	<!-- It is important to distinguish between 'raw' content (RESOURCES_PREFIX) from data processed and by enriched 
 		by the servlets themselves. For example, in the default maven jetty configuration: [/morfeu/documents/]test-resources/documents/document1.json 
@@ -24,10 +30,52 @@
 		<async-supported>false</async-supported>
 	</servlet>
 
-	<servlet-mapping>
+	<servlet-mapping>	<!-- this is more concrete therefore will match instead of the proxy for content -->
 		<servlet-name>SnowPackageServlet</servlet-name>
 		<url-pattern>/dyn/*</url-pattern>
 	</servlet-mapping>
+
+<!-- static content should be seved by jetty and not angular -->
+	<!-- servlet
+		<display-name>static-servlet</display-name>
+		<servlet-name>DefaultServletForStaticContent</servlet-name>
+		<servlet-class>org.eclipse.jetty.servlet.DefaultServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DefaultServletForStaticContent</servlet-name>
+		<url-pattern>/documents/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DefaultServletForStaticContent</servlet-name>
+		<url-pattern>/models/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DefaultServletForStaticContent</servlet-name>
+		<url-pattern>/config.json</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DefaultServletForStaticContent</servlet-name>
+		<url-pattern>/catalogues.json</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>proxy</servlet-name>
+		<servlet-class>cat.calidos.morfeu.proxy.MorfeuProxyServlet</servlet-class>
+		<init-param>
+			<param-name>targetUri</param-name>
+			<param-value>${__PROXY_PREFIX}</param-value>
+		</init-param>
+		<init-param>
+			<param-name>log</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</servlet-->
+<!-- anything that does not matches /dyn/ will be proxied to angular -->
+	<!-- servlet-mapping>	
+		<servlet-name>proxy</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping-->
+
 
 	<!--filter>
 		<filter-name>SnowPackageRequestFilter</filter-name>
