@@ -133,6 +133,30 @@
 		<xs:attribute name="number" use="required" type="numberField" />
 	</xs:complexType>
 
+	<xs:complexType name="categoriesCell">
+		<xs:annotation>
+			<xs:appinfo>
+				<mf:metadata>
+					<mf:desc>multiple attributes grouped by semantic criteria</mf:desc>
+					<mf:thumb>assets/images/categ-thumb.svg</mf:thumb>
+					<mf:cell-presentation>assets/images/categ-cell.svg</mf:cell-presentation>
+					<mf:transform case="obj-to-yaml" type="directive">LISTS-NO-PLURAL</mf:transform>
+					<mf:transform case="yaml-to-xml" type="directive">LISTS-NO-PLURAL</mf:transform>
+					<mf:category categ="X"/>
+					<mf:category attr="@value0x" categ="X"/>
+					<mf:category attr="@value1x" categ="X"/>
+					<mf:category attr="@value0y" categ="Y"/>
+					<mf:category attr="@value1y" categ="Y"/>
+				</mf:metadata>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:attribute name="value0x" type="textField" />
+		<xs:attribute name="value1x" type="textField" />
+		<xs:attribute name="value0y" type="textField" />
+		<xs:attribute name="value1y" type="textField" />
+	</xs:complexType>
+
+
 	<xs:complexType name="colCell">
 		<xs:annotation>
 			<xs:appinfo>
@@ -154,6 +178,7 @@
 			<xs:element name="Keyvalue" type="keyValueCell" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="HolderWell" type="holderWell" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="Readonly" type="readonlyCell" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Categ" type="categoriesCell" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="Row" type="rowCell" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attribute name="size" use="required" type="colField" />
