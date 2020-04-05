@@ -21,7 +21,7 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:attribute name="text" type="textField" />
-		<xs:attribute name="number" use="required" type="numberField" />
+		<xs:attribute name="number" use="required" type="textField" />
 	</xs:complexType>
 
 	<xs:complexType name="testIdCell">
@@ -40,7 +40,7 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:attribute name="text" use="required" type="textField" />
-		<xs:attribute name="color" type="colorField" />
+		<xs:attribute name="color" type="textField" />
 	</xs:complexType>
 
 	<xs:complexType name="testPostCell">
@@ -59,7 +59,7 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:attribute name="text" use="required" type="textField" />
-		<xs:attribute name="color" type="colorField" />
+		<xs:attribute name="color" type="textField" />
 	</xs:complexType>
 	
 
@@ -76,7 +76,7 @@
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:attribute name="text" type="textField" />
-		<xs:attribute name="number" type="numberField" />
+		<xs:attribute name="number" type="textField" />
 	</xs:complexType>
 
 	<xs:complexType name="keyValueCell">
@@ -129,7 +129,7 @@
 				</mf:metadata>
 			</xs:appinfo>
 		</xs:annotation>
-		<xs:attribute name="number" use="required" type="numberField" />
+		<xs:attribute name="number" use="required" type="textField" />
 	</xs:complexType>
 
 	<xs:complexType name="categoriesCell">
