@@ -4,11 +4,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import cat.calidos.morfeu.problems.ConfigurationException;
+import cat.calidos.morfeu.problems.ParsingException;
 import cat.calidos.morfeu.utils.Config;
 import cat.calidos.morfeu.utils.Tezt;
 
@@ -17,15 +20,14 @@ import cat.calidos.morfeu.utils.Tezt;
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class SPCellSlotInjectorComponentIntTest extends Tezt {
 
+private static final String SAVE_FILTER = DaggerSPCellSlotInjectorComponent.DEFAULT_SAVE_FILTER;
 
 @Test @DisplayName("Test inject JSX codeslots")
 public void testInjectJSXCodeSlots() throws Exception {
 
-	File codeFile = new File("./target/classes/test-resources/documents/example-1.jsx");
-	String code = FileUtils.readFileToString(codeFile, Config.DEFAULT_CHARSET);
-	File contentFile = new File("./target/classes/test-resources/documents/example-1-edit.xml");
-	String content = FileUtils.readFileToString(contentFile, Config.DEFAULT_CHARSET);
-	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
+	String code = "./target/classes/test-resources/documents/example-1.jsx";
+	String edit = "./target/classes/test-resources/documents/example-1-edit.xml";
+	String jsx = generateJSX(code, edit);
 	//System.out.println(jsx);
 
 	assertAll("check jsx output",
@@ -43,10 +45,11 @@ public void testInjectJSXCodeSlots() throws Exception {
 @Test @DisplayName("Test inject JSX codeslots with precision")
 public void testInjectJSXCodeSlotsPrecision() throws Exception {
 
-	String code = read("./target/classes/test-resources/documents/example-3.jsx");
-	String content = read("./target/classes/test-resources/documents/example-3.xml"); //unmodified
-	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
+	String code = "./target/classes/test-resources/documents/example-3.jsx";
+	String edit = "./target/classes/test-resources/documents/example-3.xml";	 //unmodified
+	String jsx = generateJSX(code, edit);
 	assertNotNull(jsx);
+
 	//System.out.println(jsx);
 
 }
@@ -55,11 +58,13 @@ public void testInjectJSXCodeSlotsPrecision() throws Exception {
 @Test @DisplayName("Test inject minimal JSX code 1")
 public void testGenerateCodeMinimal1() throws Exception {
 
-	String code = read("./target/classes/test-resources/documents/minimal-1.jsx");
-	String content = read("./target/classes/test-resources/documents/minimal-1-edit.xml");
-	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
-	//System.out.println(jsx);
+	String code = "./target/classes/test-resources/documents/minimal-1.jsx";
+	String edit = "./target/classes/test-resources/documents/minimal-1-edit.xml";
+	String jsx = generateJSX(code, edit);
+	assertNotNull(jsx);
 	assertEquals("let a=<p/><p/>;", jsx);
+
+	//System.out.println(jsx);
 
 }
 
@@ -67,11 +72,13 @@ public void testGenerateCodeMinimal1() throws Exception {
 @Test @DisplayName("Test inject minimal JSX code 2")
 public void testGenerateCodeMinimal2() throws Exception {
 
-	String code = read("./target/classes/test-resources/documents/minimal-2.jsx");
-	String content = read("./target/classes/test-resources/documents/minimal-2-edit.xml");
-	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
-	//System.out.println(jsx);
+	String code = "./target/classes/test-resources/documents/minimal-2.jsx";
+	String edit = "./target/classes/test-resources/documents/minimal-2-edit.xml";
+	String jsx = generateJSX(code, edit);
+	assertNotNull(jsx);
 	assertEquals("let a=<><p/><p/></>;", jsx);
+
+	//System.out.println(jsx);
 
 }
 
@@ -79,11 +86,13 @@ public void testGenerateCodeMinimal2() throws Exception {
 @Test @DisplayName("Test inject minimal JSX code 3")
 public void testGenerateCodeMinimal3() throws Exception {
 
-	String code = read("./target/classes/test-resources/documents/minimal-3.jsx");
-	String content = read("./target/classes/test-resources/documents/minimal-3-edit.xml");
-	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
-	//System.out.println(jsx);
+	String code = "./target/classes/test-resources/documents/minimal-3.jsx";
+	String edit = "./target/classes/test-resources/documents/minimal-3-edit.xml";
+	String jsx = generateJSX(code, edit);
+	assertNotNull(jsx);
 	assertEquals("let a=<><div>\n\t\t<p/>\n\t\t<p/>\n\t</div></>;", jsx);
+
+	//System.out.println(jsx);
 
 }
 
@@ -92,21 +101,32 @@ public void testGenerateCodeMinimal3() throws Exception {
 @Test @DisplayName("Test inject JSX code with {} expressions")
 public void testGenerateCodeFiltered() throws Exception {
 
-	String code = read("./target/classes/test-resources/documents/filtered.jsx");
-	String content = read("./target/classes/test-resources/documents/filtered-edit.xml");
-	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
-	//System.out.println(jsx);
+	String code = "./target/classes/test-resources/documents/filtered.jsx";
+	String edit = "./target/classes/test-resources/documents/filtered-edit.xml";
+	String jsx = generateJSX(code, edit);
 	assertAll("check jsx output",
 		() -> assertNotNull(jsx),
 		() -> assertTrue(jsx.contains("number=\"41\"")),
 		() -> assertFalse(jsx.contains("number={40+2}")),
 		() -> assertTrue(jsx.contains("<Stuff>{'aaabbb'}</Stuff>")),
 		() -> assertFalse(jsx.contains("<Stuff>{'aaa'}</Stuff>")),
-		() -> assertFalse(jsx.contains("<Data number=\"{43}\" />"))
+		() -> assertTrue(jsx.contains("<Data number={43}/>"))
 	);
+
+	//System.out.println(jsx);
 
 }
 
+
+private String generateJSX(String codePath, String editedPath) throws Exception {
+	return DaggerSPCellSlotInjectorComponent.builder()
+												.withContent(read(editedPath))
+												.andCode(read(codePath))
+												.filters(SAVE_FILTER)
+												.build()
+												.code()
+												.get();
+}
 
 
 private String read(String path) throws IOException {

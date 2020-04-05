@@ -14,8 +14,10 @@ import javax.inject.Named;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import cat.calidos.morfeu.filter.injection.DaggerFilterComponent;
 import cat.calidos.morfeu.problems.ConfigurationException;
 import cat.calidos.morfeu.problems.ParsingException;
+import cat.calidos.morfeu.problems.TransformException;
 import cat.calidos.morfeu.utils.MorfeuUtils;
 import cat.calidos.morfeu.utils.injection.DaggerXMLNodeToStringComponent;
 import cat.calidos.morfeu.view.injection.DaggerViewComponent;
@@ -29,12 +31,25 @@ public class SPCellSlotInjectorModule {
 
 
 @Produces
-public static String code(List<SPCellSlot> codeSlots,  @Named("Code") String code) {
-	return DaggerViewComponent.builder()
-								.withTemplatePath("templates/cellslots-to-jsx.twig")
-								.withValue(MorfeuUtils.paramMap("cellslots", codeSlots, "code", code))
-								.build()
-								.render();
+public static String code(List<SPCellSlot> codeSlots,
+							@Named("Code") String code,
+							@Named("filters") String filters) throws ConfigurationException, ParsingException{
+
+	String jsx = DaggerViewComponent.builder()
+										.withTemplatePath("templates/cellslots-to-jsx.twig")
+										.withValue(MorfeuUtils.paramMap("cellslots", codeSlots, "code", code))
+										.build()
+										.render();
+	if (!filters.isEmpty()) {
+		try {
+			jsx = DaggerFilterComponent.builder().filters(filters).build().stringToString().get().apply(jsx);
+		} catch (Exception e) {
+			throw new ParsingException("Problem trying to apply save filters to code", e);
+		}
+	}
+
+	return jsx;
+
 }
 
 
@@ -43,7 +58,6 @@ public static List<SPCellSlot> codeSlots(org.w3c.dom.Document doc,  @Named("Code
 											throws ConfigurationException, ParsingException {
 
 	List<SPCellSlot> codeSlots = new ArrayList<SPCellSlot>();
-
 	List<Node> pendingCodeSlotNodes = new LinkedList<Node>();
 	pendingCodeSlotNodes = addChildrenToList(doc, pendingCodeSlotNodes);
 	while (!pendingCodeSlotNodes.isEmpty()) {
@@ -58,8 +72,6 @@ public static List<SPCellSlot> codeSlots(org.w3c.dom.Document doc,  @Named("Code
 	return codeSlots;
 
 }
-
-
 
 
 private static List<Node> addChildrenToList(Node node, List<Node> list) {

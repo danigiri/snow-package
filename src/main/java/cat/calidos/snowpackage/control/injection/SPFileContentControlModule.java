@@ -33,7 +33,6 @@ import cat.calidos.morfeu.utils.injection.DaggerURIComponent;
 import cat.calidos.morfeu.webapp.GenericHttpServlet;
 import cat.calidos.snowpackage.model.injection.DaggerSPCellSlotInjectorComponent;
 import cat.calidos.snowpackage.model.injection.DaggerSPCellSlotParserComponent;
-import cat.calidos.snowpackage.model.injection.SPCellSlotParserComponent;
 
 /** We take a file path from the request, read it and turn it into a document
 *	@author daniel giribet
@@ -47,7 +46,8 @@ protected final static Logger log = LoggerFactory.getLogger(SPFileContentControl
 private static final String PATH = "/content/(.+\\.jsx)";
 private static final String PROBLEM = "";
 private static final String FILTERS_PARAM = "filters";	// applied just before returning the content
-private static final String DEFAULT_LOAD_FILTER = SPCellSlotParserComponent.DEFAULT_LOAD_FILTER;
+private static final String DEFAULT_LOAD_FILTER = DaggerSPCellSlotParserComponent.DEFAULT_LOAD_FILTER;
+private static final String DEFAULT_SAVE_FILTER = DaggerSPCellSlotInjectorComponent.DEFAULT_SAVE_FILTER;
 
 private static String prefix;
 
@@ -118,10 +118,18 @@ public static BiFunction<List<String>, Map<String, String>, String> post(@Named(
 			log.error(problem);
 		}
 
+		String filters = params.containsKey(FILTERS_PARAM) ? params.get(FILTERS_PARAM) : DEFAULT_SAVE_FILTER;
+
 		if (problem == null) {
 			try {
 				String code = fetchCode(fullPath);
-				String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
+				String jsx = DaggerSPCellSlotInjectorComponent.builder()
+																.withContent(content)
+																.andCode(code)
+																.filters(filters)
+																.build()
+																.code()
+																.get();
 				URI fileURI = DaggerURIComponent.builder().from(fullPath).build().uri().get();
 				DaggerSaverComponent.builder().toURI(fileURI).content(jsx).build().saver().get().save();
 			} catch (Exception e) {

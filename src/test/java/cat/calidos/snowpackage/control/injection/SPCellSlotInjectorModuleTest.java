@@ -22,8 +22,8 @@ import cat.calidos.snowpackage.model.injection.SPCellSlotInjectorModule;
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class SPCellSlotInjectorModuleTest {
 
-String jsx;
-
+private String jsx;
+private static String filters = "";
 
 @BeforeEach
 public void setup() {
@@ -54,7 +54,7 @@ public void testGenerateCodeIdentity() throws Exception {
 					"	<Col size=\"12\"><Data number=\"1\"/></Col>\n" + 
 					"</Row>;7890\n" + 
 					"0123456789012345678901234567890123456789012345678901\n";
-	String code = SPCellSlotInjectorModule.code(slots, jsx);
+	String code = SPCellSlotInjectorModule.code(slots, jsx, filters);
 	assertEquals(exp, code);
 	//System.out.println(jsx);
 	//System.err.println(code);
@@ -69,7 +69,7 @@ public void testGenerateCodeModified() throws Exception {
 
 	Document doc = DaggerXMLParserComponent.builder().withContent(content).build().document().get();
 	List<SPCellSlot> slots = SPCellSlotInjectorModule.codeSlots(doc, jsx);
-	String code = SPCellSlotInjectorModule.code(slots, jsx);
+	String code = SPCellSlotInjectorModule.code(slots, jsx, filters);
 	assertNotNull(code);
 	//System.out.println(jsx);
 	//System.err.println(code);

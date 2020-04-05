@@ -20,6 +20,9 @@ import cat.calidos.morfeu.utils.injection.ListeningExecutorServiceModule;
 								XMLDocumentBuilderModule.class, ListeningExecutorServiceModule.class})
 public interface SPCellSlotInjectorComponent {
 
+public static String DEFAULT_SAVE_FILTER = "replace{\"replacements\":"+
+											"{\"from\":\"=\\\"\\\\{([^}]*?)}\\\"\",\"to\":\"={$1}\"}}";
+
 ListenableFuture<String> code() throws ConfigurationException, ParsingException;
 
 @ProductionComponent.Builder
@@ -27,6 +30,8 @@ interface Builder {
 
 @BindsInstance Builder withContent(@Named("Content") String content);
 @BindsInstance Builder andCode(@Named("Code") String code);
+@BindsInstance Builder filters(@Named("filters") String filters);
+
 
 SPCellSlotInjectorComponent build();
 
