@@ -33,6 +33,7 @@ import cat.calidos.morfeu.utils.injection.DaggerURIComponent;
 import cat.calidos.morfeu.webapp.GenericHttpServlet;
 import cat.calidos.snowpackage.model.injection.DaggerSPCellSlotInjectorComponent;
 import cat.calidos.snowpackage.model.injection.DaggerSPCellSlotParserComponent;
+import cat.calidos.snowpackage.model.injection.SPCellSlotParserComponent;
 
 /** We take a file path from the request, read it and turn it into a document
 *	@author daniel giribet
@@ -40,10 +41,13 @@ import cat.calidos.snowpackage.model.injection.DaggerSPCellSlotParserComponent;
 @Module
 public class SPFileContentControlModule {
 
+
 protected final static Logger log = LoggerFactory.getLogger(SPFileContentControlModule.class);
 
 private static final String PATH = "/content/(.+\\.jsx)";
 private static final String PROBLEM = "";
+private static final String FILTERS_PARAM = "filters";	// applied just before returning the content
+private static final String DEFAULT_LOAD_FILTER = SPCellSlotParserComponent.DEFAULT_LOAD_FILTER;
 
 private static String prefix;
 
@@ -58,6 +62,7 @@ public static BiFunction<List<String>, Map<String, String>, String> get(@Named("
 
 		String path = pathElems.get(1);
 		String fullPath = prefix+path;
+		String filters = params.containsKey(FILTERS_PARAM) ? params.get(FILTERS_PARAM) : DEFAULT_LOAD_FILTER;
 
 		log.trace("Getting code slots for [{}]/{}", prefix, path);
 		String doc;
@@ -67,10 +72,12 @@ public static BiFunction<List<String>, Map<String, String>, String> get(@Named("
 			doc = DaggerSPCellSlotParserComponent.builder()
 													.fromPath(path)
 													.withCode(code)
+													.filters(filters)
 													.withProperties(config)
 													.build()
 													.content();
-
+			log.trace("Generated document length: {}", doc.length());
+			//System.err.println(doc);
 		} catch (Exception e) {
 			log.error("Could not get code slots for [{}]{} ({})", prefix, path, e.getMessage());
 			doc = PROBLEM;
@@ -105,7 +112,7 @@ public static BiFunction<List<String>, Map<String, String>, String> post(@Named(
 		}
 
 		try {
-			content = applyFilters(content, params.get("filters"));
+			content = applyFilters(content, params.get(FILTERS_PARAM));
 		} catch (Exception e) {
 			problem += "Problem when applying filters "+e.getMessage();
 			log.error(problem);
@@ -157,7 +164,7 @@ private static String fetchCode(String path)
 private static String applyFilters(String content, String filters) throws Exception {
 
 	String out = content;
-	
+
 	Optional<String> f = Optional.ofNullable(filters);
 	if (f.isPresent()) {
 		Filter<String, String> fun = DaggerFilterComponent.builder().filters(f.get()).build().stringToString().get();

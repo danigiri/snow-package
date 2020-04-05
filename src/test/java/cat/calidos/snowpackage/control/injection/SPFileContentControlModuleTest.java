@@ -68,7 +68,7 @@ public void testGenerateJSXContentMultipleSlots() throws Exception {
 	config.put(MorfeuServlet.RESOURCES_PREFIX, "file:./target/");
 
 	String content = SPFileContentControlModule.get(config).apply(pathElems, MorfeuUtils.emptyParamStringMap());
-	System.err.println(content);
+	//System.err.println(content);
 	assertNotNull(content);
 
 	Document doc = DaggerXMLParserComponent.builder().withContent(content).build().document().get();
@@ -158,6 +158,22 @@ public void testSaveJSXPrecision() throws Exception {
 			() -> assertTrue(jsx.startsWith("const a ="), "Did not start correctly"),
 			() -> assertTrue(jsx.contains("<Stuff>a</Stuff>"), "Does not inject code")
 	);
+
+}
+
+
+@Test @DisplayName("Generate JSX content with {} expressions")
+public void testGenerateJSXContentFiltered() throws Exception {
+
+	setupPathElements("classes/test-resources/documents/filtered.jsx");
+
+	Properties config = new Properties();
+	config.put(MorfeuServlet.RESOURCES_PREFIX, "file:./target/");
+
+	String content = SPFileContentControlModule.get(config).apply(pathElems, MorfeuUtils.emptyParamStringMap());
+	//System.err.println(content);
+	assertNotNull(content);
+	compareWithXMLFile(content, "./target/classes/test-resources/documents/filtered.xml");
 
 }
 

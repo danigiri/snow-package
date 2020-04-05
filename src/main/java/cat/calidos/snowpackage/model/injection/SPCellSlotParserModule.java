@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import cat.calidos.morfeu.filter.injection.DaggerFilterComponent;
 import cat.calidos.morfeu.runtime.api.FinishedTask;
 import cat.calidos.morfeu.runtime.api.ReadyTask;
 import cat.calidos.morfeu.runtime.api.RunningTask;
@@ -96,9 +97,9 @@ public static String slots(@Named("JSXTask") ReadyTask task, String code) {
 
 
 @Provides @Named("CodeSlots") 
-public static String codeSlots(@Named("Slots") String slots, String code) {
+public static String codeSlots(@Named("Slots") String slots, String code, @Named("filters") String filters) {
 
-	String codeSlots = "";
+	String out = "";
 	try {
 		JsonNode slotsJSON = DaggerJSONParserComponent.builder().from(slots).build().json().get();
 		List<SPCellSlot> createdSlots = new ArrayList<SPCellSlot>(slotsJSON.size());
@@ -108,46 +109,33 @@ public static String codeSlots(@Named("Slots") String slots, String code) {
 					));
 		Map<String, Object> v = MorfeuUtils.paramMap("cellSlots", createdSlots, "code", code);
 		String template = "templates/cellslots-to-codeslots.twig";
-		codeSlots = DaggerViewComponent.builder().withTemplatePath(template).withValue(v).build().render();
+		out = DaggerViewComponent.builder().withTemplatePath(template).withValue(v).build().render();
 	} catch (Exception e) {
 		throw new RuntimeException("Slots parsed had incorrect structure", e);
 	}
 
-	return codeSlots;
+	if (!filters.isEmpty()) {
+		try {
+			out = DaggerFilterComponent.builder().filters(filters).build().stringToString().get().apply(out);
+		} catch (Exception e) {
+			log.error("Could not apply filters to code slots {}", e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	return out;
 
 }
 
 
 @Provides @Named("Content") 
-public static String content(@Named("CodeSlots") String codeSlots, String code, @Named("Path") String path) {
+public static String content(@Named("CodeSlots") String codeSlots, String code,	@Named("Path") String path) {
 	return DaggerViewComponent.builder()
-								.withTemplatePath("templates/codeslots-to-xml.twig")
-								.withValue(MorfeuUtils.paramStringMap("codeslots", codeSlots, "path", path))
-								.build()
-								.render();
+									.withTemplatePath("templates/codeslots-to-xml.twig")
+									.withValue(MorfeuUtils.paramStringMap("codeslots", codeSlots, "path", path))
+									.build()
+									.render();
 }
-
-/*
-@Provides @IntoMap @Named("POST")
-@StringKey(PATH)
-public static BiFunction<List<String>, Map<String, String>, String> postCode(@Named("JSXTask") ReadyTask task) {
-
-
-	return (pathElems, params) -> {
-
-		String lang = pathElems.get(0);
-		String withCode = params.get(CODE_PARAM);
-		log.warn("SPSlotParserModule::postCode() [{},{}, {}]", lang, withCode, params);
-		if (!lang.equalsIgnoreCase(JSX) || withCode==null) {
-			return OUTPUT_ERROR;
-		}
-
-		return slots(task, withCode);
-
-	};
-
-}
-*/
 
 
 }

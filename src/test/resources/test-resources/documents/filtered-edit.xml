@@ -1,0 +1,24 @@
+<codeslots 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:noNamespaceSchemaLocation="../models/snowpackage-model.xsd"
+		path="classes/test-resources/documents/filtered.jsx"
+>
+<codeslot type="___code" id="1" start="51" end="410"><Row>
+	<Col size="4">
+		<Data text="{'blahblah'+''}" number="41" />
+	</Col>
+	<Col size="8">
+		<Row>
+			<Col size="6">
+				<Stuff>{'aaabbb'}</Stuff>
+				<Data number="{43}" />
+				<Data2 number="42" text="{'blahblah'}" />
+			</Col>
+			<Col size="6">
+				<Data2 number="42" text="blahblah" />
+				<Data2 number="{42}" text="blahblah" />
+			</Col>
+		</Row>
+	</Col>
+</Row></codeslot>
+</codeslots>

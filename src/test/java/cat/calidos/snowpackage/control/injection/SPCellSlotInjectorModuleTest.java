@@ -70,6 +70,7 @@ public void testGenerateCodeModified() throws Exception {
 	Document doc = DaggerXMLParserComponent.builder().withContent(content).build().document().get();
 	List<SPCellSlot> slots = SPCellSlotInjectorModule.codeSlots(doc, jsx);
 	String code = SPCellSlotInjectorModule.code(slots, jsx);
+	assertNotNull(code);
 	//System.out.println(jsx);
 	//System.err.println(code);
 }

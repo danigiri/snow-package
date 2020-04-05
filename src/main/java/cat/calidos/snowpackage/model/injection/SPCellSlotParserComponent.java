@@ -16,7 +16,10 @@ import cat.calidos.morfeu.utils.injection.ConfigurationModule;
 @Component(modules = {SPCellSlotParserModule.class, ConfigurationModule.class})
 public interface SPCellSlotParserComponent {
 
-static String JSX = "jsx";
+public static String JSX = "jsx";
+public static String DEFAULT_LOAD_FILTER = "replace{\"replacements\":"+
+		"{\"from\":\"=\\\\s*\\\\{([^}]*?)}\",\"to\":\"=\\\"{$1}\\\"\"}}";
+
 
 @Named("Slots") String slots();
 @Named("CodeSlots") String codeSlots();
@@ -27,6 +30,7 @@ interface Builder {
 
 	@BindsInstance Builder withCode(String code);
 	@BindsInstance Builder fromPath(@Named("Path") String path);
+	@BindsInstance Builder filters(@Named("filters") String filters);
 	@BindsInstance Builder withProperties(@Nullable @Named("InputProperties") Properties properties);
 
 	SPCellSlotParserComponent build();

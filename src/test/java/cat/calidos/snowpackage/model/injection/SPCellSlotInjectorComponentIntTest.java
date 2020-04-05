@@ -23,7 +23,6 @@ public void testInjectJSXCodeSlots() throws Exception {
 
 	File codeFile = new File("./target/classes/test-resources/documents/example-1.jsx");
 	String code = FileUtils.readFileToString(codeFile, Config.DEFAULT_CHARSET);
-	String codeSlots = DaggerSPCellSlotParserComponent.builder().fromPath("").withCode(code).build().codeSlots();
 	File contentFile = new File("./target/classes/test-resources/documents/example-1-edit.xml");
 	String content = FileUtils.readFileToString(contentFile, Config.DEFAULT_CHARSET);
 	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
@@ -45,9 +44,9 @@ public void testInjectJSXCodeSlots() throws Exception {
 public void testInjectJSXCodeSlotsPrecision() throws Exception {
 
 	String code = read("./target/classes/test-resources/documents/example-3.jsx");
-	String codeSlots = DaggerSPCellSlotParserComponent.builder().fromPath("").withCode(code).build().codeSlots();
 	String content = read("./target/classes/test-resources/documents/example-3.xml"); //unmodified
 	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
+	assertNotNull(jsx);
 	//System.out.println(jsx);
 
 }
@@ -57,7 +56,6 @@ public void testInjectJSXCodeSlotsPrecision() throws Exception {
 public void testGenerateCodeMinimal1() throws Exception {
 
 	String code = read("./target/classes/test-resources/documents/minimal-1.jsx");
-	String codeSlots = DaggerSPCellSlotParserComponent.builder().fromPath("").withCode(code).build().codeSlots();
 	String content = read("./target/classes/test-resources/documents/minimal-1-edit.xml");
 	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
 	//System.out.println(jsx);
@@ -70,7 +68,6 @@ public void testGenerateCodeMinimal1() throws Exception {
 public void testGenerateCodeMinimal2() throws Exception {
 
 	String code = read("./target/classes/test-resources/documents/minimal-2.jsx");
-	String codeSlots = DaggerSPCellSlotParserComponent.builder().fromPath("").withCode(code).build().codeSlots();
 	String content = read("./target/classes/test-resources/documents/minimal-2-edit.xml");
 	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
 	//System.out.println(jsx);
@@ -79,17 +76,37 @@ public void testGenerateCodeMinimal2() throws Exception {
 }
 
 
-@Test @DisplayName("Test inject minimal JSX code 2")
+@Test @DisplayName("Test inject minimal JSX code 3")
 public void testGenerateCodeMinimal3() throws Exception {
 
 	String code = read("./target/classes/test-resources/documents/minimal-3.jsx");
-	String codeSlots = DaggerSPCellSlotParserComponent.builder().fromPath("").withCode(code).build().codeSlots();
 	String content = read("./target/classes/test-resources/documents/minimal-3-edit.xml");
 	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
 	//System.out.println(jsx);
 	assertEquals("let a=<><div>\n\t\t<p/>\n\t\t<p/>\n\t</div></>;", jsx);
 
 }
+
+
+
+@Test @DisplayName("Test inject JSX code with {} expressions")
+public void testGenerateCodeFiltered() throws Exception {
+
+	String code = read("./target/classes/test-resources/documents/filtered.jsx");
+	String content = read("./target/classes/test-resources/documents/filtered-edit.xml");
+	String jsx = DaggerSPCellSlotInjectorComponent.builder().withContent(content).andCode(code).build().code().get();
+	//System.out.println(jsx);
+	assertAll("check jsx output",
+		() -> assertNotNull(jsx),
+		() -> assertTrue(jsx.contains("number=\"41\"")),
+		() -> assertFalse(jsx.contains("number={40+2}")),
+		() -> assertTrue(jsx.contains("<Stuff>{'aaabbb'}</Stuff>")),
+		() -> assertFalse(jsx.contains("<Stuff>{'aaa'}</Stuff>")),
+		() -> assertFalse(jsx.contains("<Data number=\"{43}\" />"))
+	);
+
+}
+
 
 
 private String read(String path) throws IOException {

@@ -1,5 +1,6 @@
-<codeslots xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="../models/snowpackage-model.xsd"  path="test-resources
-/documents/example-3.jsx" >
+<codeslots 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:noNamespaceSchemaLocation="../models/snowpackage-model.xsd"
+			path="test-resources/documents/example-3.jsx" >
 				<codeslot end="46"  id="1"  start="9"  type="___code" >
 						<Row>
 								<Col size="12" >
