@@ -7,17 +7,17 @@ import javax.inject.Named;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
-import cat.calidos.morfeu.model.injection.DocumentBuilderModule;
+import cat.calidos.morfeu.model.injection.XMLDocumentBuilderModule;
 import cat.calidos.morfeu.model.injection.StringToParsedModule;
 import cat.calidos.morfeu.problems.ConfigurationException;
 import cat.calidos.morfeu.problems.ParsingException;
 import cat.calidos.morfeu.utils.injection.ListeningExecutorServiceModule;
 
-/** From a content file we 
+/** From a content file we
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 @ProductionComponent(modules = {SPCellSlotInjectorModule.class, StringToParsedModule.class, 
-								DocumentBuilderModule.class, ListeningExecutorServiceModule.class})
+								XMLDocumentBuilderModule.class, ListeningExecutorServiceModule.class})
 public interface SPCellSlotInjectorComponent {
 
 ListenableFuture<String> code() throws ConfigurationException, ParsingException;
