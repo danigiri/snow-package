@@ -57,7 +57,7 @@
 		<servlet-name>DefaultServletForStaticContent</servlet-name>
 		<url-pattern>/catalogues.json</url-pattern>
 	</servlet-mapping>
-
+-->
 	<servlet>
 		<servlet-name>proxy</servlet-name>
 		<servlet-class>cat.calidos.morfeu.proxy.MorfeuProxyServlet</servlet-class>
@@ -69,12 +69,16 @@
 			<param-name>log</param-name>
 			<param-value>true</param-value>
 		</init-param>
-	</servlet-->
-<!-- anything that does not matches /dyn/ will be proxied to angular -->
-	<!-- servlet-mapping>	
+	</servlet>
+<!-- anything that matches /site will be proxied to backend site webserver -->
+	<servlet-mapping>	
 		<servlet-name>proxy</servlet-name>
-		<url-pattern>/*</url-pattern>
-	</servlet-mapping-->
+		<url-pattern>/site/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>	
+		<servlet-name>proxy</servlet-name>
+		<url-pattern>/proxy/site/*</url-pattern>
+	</servlet-mapping>
 
 
 	<!--filter>
