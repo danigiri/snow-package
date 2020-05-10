@@ -41,6 +41,10 @@ ENV JETTY_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distributio
 ENV JETTY_HOME /var/lib/jetty
 ENV JETTY_BASE /jetty-base
 
+# install ts-node to be able to use it to parse JS code
+RUN apk add --no-cache --update nodejs npm
+RUN npm install -g typescript ts-node
+
 RUN apk add --no-cache curl
 RUN mkdir -p ${JETTY_HOME}
 RUN curl ${JETTY_URL} | tar zxf - -C ${JETTY_HOME} --strip-components 1
