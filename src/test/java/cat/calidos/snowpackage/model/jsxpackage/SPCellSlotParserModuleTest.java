@@ -61,11 +61,13 @@ public void testApply() {
 			"ReactDOM.render(element, document.getElementById('root'));";
 	//System.err.println(code);
 
-	String expected = "[{\"type\":\"___fragment\", \"start\":\"166\", \"end\":\"267\"}";
+	String expected = "[{\"type\":\"___fragment\", "
+						+ "\"start_line\":\"11\", \"start_column\":\"8\", "
+						+ "\"end_line\":\"14\", \"end_column\":\"6\"}]\n";
 	String slots = SPCellSlotParserModule.slots(task, code);
 	assertAll("test slot",
 		() -> assertNotNull(slots),
-		() -> assertTrue(slots.startsWith(expected), "Wrong slot, got '"+slots+"' instead")
+		() -> assertEquals(expected, slots, "Wrong slot, got '"+slots+"' instead")
 	);
 
 }
@@ -80,13 +82,15 @@ public void testStartEnd() throws Exception {
 	String code = readCode("./target/classes/test-resources/documents/example-3.jsx");
 	String slots = SPCellSlotParserModule.slots(task, code);
 	//System.err.println(slots);
-	//[{"type":"___code", "start":"9", "end":"46"},
-	//{"type":"___code", "start":"61", "end":"98"}]
+	//[{"type":"___code", "start_line":"1", "start_column":"9", "end_line":"4", "end_column":"6"},
+	//{"type":"___code", "start_line":"5", "start_column":"9", "end_line":"8", "end_column":"6"}]
+	String expectedSlot1 = "{\"type\":\"___code\", \"start_line\":\"1\", \"start_column\":\"9\", \"end_line\":\"4\", \"end_column\":\"6\"}";
+	String expectedSlot2 = "{\"type\":\"___code\", \"start_line\":\"5\", \"start_column\":\"9\", \"end_line\":\"8\", \"end_column\":\"6\"}";
 	assertAll("test slot",
-			() -> assertNotNull(slots),
-			() -> assertTrue(slots.contains("{\"type\":\"___code\", \"start\":\"9\", \"end\":\"46\"}")),
-			() -> assertTrue(slots.contains("{\"type\":\"___code\", \"start\":\"61\", \"end\":\"98\"}"))
-		);
+		() -> assertNotNull(slots),
+		() -> assertTrue(slots.contains(expectedSlot1)),
+		() -> assertTrue(slots.contains(expectedSlot2))
+	);
 }
 
 
@@ -97,7 +101,8 @@ public void testStartEndMinimal1() throws Exception {
 
 	String code = readCode("./target/classes/test-resources/documents/minimal-1.jsx");
 	String slots = SPCellSlotParserModule.slots(task, code);
-	assertEquals("[{\"type\":\"___code\", \"start\":\"6\", \"end\":\"10\"}]\n", slots);
+	String expected = "[{\"type\":\"___code\", \"start_line\":\"1\", \"start_column\":\"6\", \"end_line\":\"1\", \"end_column\":\"10\"}]\n";
+	assertEquals(expected, slots);
 
 	//	let a=<p/>;
 	//	01234567890
@@ -105,14 +110,15 @@ public void testStartEndMinimal1() throws Exception {
 }
 
 
-@Test @DisplayName("Minimal test 21")
+@Test @DisplayName("Minimal test 2")
 public void testStartEndMinimal2() throws Exception {
 
 	ReadyTask task = jsxTask();
 
 	String code = readCode("./target/classes/test-resources/documents/minimal-2.jsx");
 	String slots = SPCellSlotParserModule.slots(task, code);
-	assertEquals("[{\"type\":\"___fragment\", \"start\":\"8\", \"end\":\"12\"}]\n", slots);	// we skip <> and </>
+	String expected = "[{\"type\":\"___fragment\", \"start_line\":\"1\", \"start_column\":\"8\", \"end_line\":\"1\", \"end_column\":\"12\"}]\n";
+	assertEquals(expected, slots);	// we skip <> and </>
 
 	//	let a=<><</>p/>;
 	//	0123456789012345
