@@ -61,7 +61,8 @@ COPY --from=build ./morfeu/target/classes/jetty /jetty-base
 COPY --from=build ./target/snow-package-${VERSION}.war ${JETTY_BASE}/webapps/root.war
 
 # add typescript code
-COPY --from=build ./src/main/angular ${JETTY_HOME}/typescript
+RUN mkdip -p ${JETTY_HOME}/src/main/angular
+COPY --from=build ./src/main/angular ${JETTY_HOME}/src/main/angular
 
 # add test data
 RUN mkdir -p ${JETTY_HOME}/target/test-classes/test-resources
