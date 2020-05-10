@@ -11,9 +11,11 @@ ENV http_proxy=${HTTP_PROXY_}
 ENV MAVEN_HOME /usr/share/maven
 
 # install dependencies (bash to launch angular build, ncurses for pretty output with tput, git for npm deps)
+# notice that ts-node is not installed in usr/local/bin, so we make an alias
 RUN apk add --no-cache curl bash ncurses git
 RUN apk add --no-cache --update nodejs npm
 RUN npm install -g @angular/cli typescript ts-node
+RUN ln -s /usr/bin/ts-node /usr/local/bin/ts-node
 
 # install maven
 RUN mkdir -p ${MAVEN_HOME}
@@ -24,8 +26,8 @@ RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 RUN echo 'Using maven options ${MAVEN_OPTS}'
 RUN git clone https://github.com/danigiri/morfeu.git
 #git -c advice.detachedHead=false checkout ${MORFEU_VERSION} && \
-RUN cd morfeu && \
-	/usr/bin/mvn resources:resources install \
+RUN cd morfeu && mkdir -p target/dist && \
+	/usr/bin/mvn compile war:war package \
 	-DarchiveClasses=true -DattachClasses=true -DskipITs -Djetty.skip -Dskip-build-client=true ${MAVEN_OPTS}
 
 # we add the pom and code
@@ -34,8 +36,8 @@ COPY src src
 
 # and build (two steps to reuse the lengthy maven download)
 RUN echo 'Using maven options ${MAVEN_OPTS}'
-RUN /usr/bin/mvn compile ${MAVEN_OPTS}
-RUN /usr/bin/mvn test package ${MAVEN_OPTS}
+RUN /usr/bin/mvn compile test ${MAVEN_OPTS}
+RUN /usr/bin/mvn war:war package ${MAVEN_OPTS}
 
 
 FROM openjdk:13-alpine AS main
@@ -61,10 +63,10 @@ RUN mkdir -p ${JETTY_BASE}/webapps
 COPY --from=build ./morfeu/target/classes/jetty /jetty-base
 
 # add war
-COPY --from=build ./target/snow-package-${VERSION}.war ${JETTY_BASE}/webapps/root.war
+COPY --from=build ./target/snow-package-app-${VERSION}.war ${JETTY_BASE}/webapps/root.war
 
 # add typescript code
-RUN mkdip -p ${JETTY_HOME}/src/main/angular
+RUN mkdir -p ${JETTY_HOME}/src/main/angular
 COPY --from=build ./src/main/angular ${JETTY_HOME}/src/main/angular
 
 # add test data
