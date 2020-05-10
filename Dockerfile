@@ -27,7 +27,7 @@ RUN echo 'Using maven options ${MAVEN_OPTS}'
 RUN git clone https://github.com/danigiri/morfeu.git
 #git -c advice.detachedHead=false checkout ${MORFEU_VERSION} && \
 RUN cd morfeu && mkdir -p target/dist && \
-	/usr/bin/mvn compile war:war package \
+	/usr/bin/mvn compile war:war package install \
 	-DarchiveClasses=true -DattachClasses=true -DskipITs -Djetty.skip -Dskip-build-client=true ${MAVEN_OPTS}
 
 # we add the pom and code
