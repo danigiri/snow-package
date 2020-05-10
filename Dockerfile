@@ -22,7 +22,8 @@ RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 RUN echo 'Using maven options ${MAVEN_OPTS}'
 RUN git clone https://github.com/danigiri/morfeu.git
 RUN cd morfeu && git -c advice.detachedHead=false checkout ${MORFEU_VERSION} \
-	&& mvn package install -DskipITs -DskipTests=true -Djetty.skip -Dbuild-client=false ${MAVEN_OPTS}
+	&& mvn compile package install \
+	-DarchiveClasses=true -DattachClasses=true -DskipITs -DskipTests=true -Djetty.skip -Dbuild-client=false ${MAVEN_OPTS}
 
 # we add the pom and code
 COPY pom.xml pom.xml
