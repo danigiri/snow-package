@@ -10,7 +10,7 @@ ENV MAVEN_HOME /usr/share/maven
 # install dependencies (bash to launch angular build, ncurses for pretty output with tput, git for npm deps)
 RUN apk add --no-cache curl bash ncurses git
 RUN apk add --no-cache --update nodejs npm
-RUN npm install -g @angular/cli
+RUN npm install -g @angular/cli typescript ts-node
 
 # install maven
 RUN mkdir -p ${MAVEN_HOME}
