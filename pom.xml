@@ -99,11 +99,11 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.2.2</version>
 				<configuration>
-					<webResources>
+					<!-- webResources>
 						<resource>
-							<directory>${project.build.directory}/dist</directory> <!-- add build distribution to root of WAR -->
+							<directory>${project.build.directory}/dist</directory>
 						</resource>
-					</webResources>
+					</webResources-->
 					<attachClasses>true</attachClasses>	<!-- creates a jar with the classes and attaches an artifact -->
 				</configuration>
 			</plugin>

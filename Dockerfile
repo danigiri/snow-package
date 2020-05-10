@@ -6,6 +6,8 @@ LABEL maintainer="Daniel Giribet - dani [at] calidos [dot] cat"
 ARG MORFEU_VERSION=0.6.2
 ARG MAVEN_URL=https://apache.brunneis.com/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
 ARG MAVEN_OPTS=
+ARG HTTP_PROXY_=
+ENV http_proxy=${HTTP_PROXY_}
 ENV MAVEN_HOME /usr/share/maven
 
 # install dependencies (bash to launch angular build, ncurses for pretty output with tput, git for npm deps)
@@ -22,7 +24,7 @@ RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 RUN echo 'Using maven options ${MAVEN_OPTS}'
 RUN git clone https://github.com/danigiri/morfeu.git
 #git -c advice.detachedHead=false checkout ${MORFEU_VERSION} && \
-RUN cd morfeu && mkdir -p target/dist && \
+RUN cd morfeu && \
 	/usr/bin/mvn resources:resources install \
 	-DarchiveClasses=true -DattachClasses=true -DskipITs -Djetty.skip -Dskip-build-client=true ${MAVEN_OPTS}
 
