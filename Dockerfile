@@ -22,8 +22,8 @@ RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 RUN echo 'Using maven options ${MAVEN_OPTS}'
 RUN git clone https://github.com/danigiri/morfeu.git
 RUN cd morfeu && git -c advice.detachedHead=false checkout ${MORFEU_VERSION} \
-	&& mvn compile package install \
-	-DarchiveClasses=true -DattachClasses=true -DskipITs -DskipTests=true -Djetty.skip -Dbuild-client=false ${MAVEN_OPTS}
+	&& mvn resources:resources install \
+	-DarchiveClasses=true -DattachClasses=true -DskipITs -Djetty.skip -Dbuild-client=false ${MAVEN_OPTS}
 
 # we add the pom and code
 COPY pom.xml pom.xml
@@ -55,7 +55,7 @@ RUN curl ${JETTY_URL} | tar zxf - -C ${JETTY_HOME} --strip-components 1
 
 # create jetty-base folder and add the configuration
 RUN mkdir -p ${JETTY_BASE}/webapps
-COPY --from=build ./target/classes/jetty /jetty-base
+COPY --from=build ./morfeu/target/classes/jetty /jetty-base
 
 # add war
 COPY --from=build ./target/snow-package-${VERSION}.war ${JETTY_BASE}/webapps/root.war
