@@ -5,6 +5,7 @@ LABEL maintainer="Daniel Giribet - dani [at] calidos [dot] cat"
 # variables build stage
 ARG MORFEU_VERSION=0.6.2
 ARG MAVEN_URL=https://apache.brunneis.com/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+ARG MAVEN_OPTS=
 ENV MAVEN_HOME /usr/share/maven
 
 # install dependencies (bash to launch angular build, ncurses for pretty output with tput, git for npm deps)
@@ -20,15 +21,15 @@ RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 # checkout and build morfeu dependency, avoid building client as we do not need it for the java dependency
 RUN git clone https://github.com/danigiri/morfeu.git
 RUN cd morfeu && git -c advice.detachedHead=false checkout ${MORFEU_VERSION} \
-	&& mvn package install  -DskipITs -DskipTests=true -Djetty.skip -Dbuild-client=false
+	&& mvn package install -DskipITs -DskipTests=true -Djetty.skip -Dbuild-client=false ${MAVEN_OPTS}
 
 # we add the pom and code
 COPY pom.xml pom.xml
 COPY src src
 
 # and build (two steps to reuse the lengthy maven download)
-RUN /usr/bin/mvn compile
-RUN /usr/bin/mvn test package
+RUN /usr/bin/mvn compile ${MAVEN_OPTS}
+RUN /usr/bin/mvn test package ${MAVEN_OPTS}
 
 
 FROM openjdk:13-alpine AS main
@@ -55,6 +56,9 @@ COPY --from=build ./target/classes/jetty /jetty-base
 
 # add war
 COPY --from=build ./target/snow-package-${VERSION}.war ${JETTY_BASE}/webapps/root.war
+
+# add typescript code
+COPY --from=build ./src/main/angular ${JETTY_HOME}/src/main/angular
 
 # add test data
 RUN mkdir -p ${JETTY_HOME}/target/test-classes/test-resources
