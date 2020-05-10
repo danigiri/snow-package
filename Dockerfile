@@ -19,6 +19,7 @@ RUN curl ${MAVEN_URL} | tar zxf - -C ${MAVEN_HOME} --strip-components 1
 RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 
 # checkout and build morfeu dependency, avoid building client as we do not need it for the java dependency
+RUN echo 'Using maven options ${MAVEN_OPTS}'
 RUN git clone https://github.com/danigiri/morfeu.git
 RUN cd morfeu && git -c advice.detachedHead=false checkout ${MORFEU_VERSION} \
 	&& mvn package install -DskipITs -DskipTests=true -Djetty.skip -Dbuild-client=false ${MAVEN_OPTS}
@@ -28,6 +29,7 @@ COPY pom.xml pom.xml
 COPY src src
 
 # and build (two steps to reuse the lengthy maven download)
+RUN echo 'Using maven options ${MAVEN_OPTS}'
 RUN /usr/bin/mvn compile ${MAVEN_OPTS}
 RUN /usr/bin/mvn test package ${MAVEN_OPTS}
 
