@@ -17,9 +17,10 @@ RUN mkdir -p ${MAVEN_HOME}
 RUN curl ${MAVEN_URL} | tar zxf - -C ${MAVEN_HOME} --strip-components 1
 RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 
-# checkout and build morfeu dependency
+# checkout and build morfeu dependency, avoid building client as we do not need it for the java dependency
 RUN git clone https://github.com/danigiri/morfeu.git
-RUN cd morfeu && git checkout ${MORFEU_VERSION} && mvn package install -DskipTests=true
+RUN cd morfeu && git -c advice.detachedHead=false checkout ${MORFEU_VERSION} \
+	&& mvn package install -DskipTests=true -Dbuild-client=false
 
 # we add the pom and code
 COPY pom.xml pom.xml
