@@ -6,6 +6,7 @@ LABEL maintainer="Daniel Giribet - dani [at] calidos [dot] cat"
 ARG MORFEU_VERSION=0.6.2
 ARG MAVEN_URL=https://apache.brunneis.com/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
 ARG MAVEN_OPTS=
+ARG MAVEN_ENV_PREF=
 ENV MAVEN_HOME /usr/share/maven
 
 # install dependencies (bash to launch angular build, ncurses for pretty output with tput, git for npm deps)
@@ -22,7 +23,7 @@ RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 RUN echo 'Using maven options ${MAVEN_OPTS}'
 RUN git clone https://github.com/danigiri/morfeu.git
 RUN cd morfeu && mkdir -p target/dist && git -c advice.detachedHead=false checkout ${MORFEU_VERSION} \
-	&& mvn resources:resources install \
+	&& ${MAVEN_ENV_PREF} mvn resources:resources install \
 	-DarchiveClasses=true -DattachClasses=true -DskipITs -Djetty.skip -Dskip-build-client=true ${MAVEN_OPTS}
 
 # we add the pom and code
@@ -31,8 +32,8 @@ COPY src src
 
 # and build (two steps to reuse the lengthy maven download)
 RUN echo 'Using maven options ${MAVEN_OPTS}'
-RUN /usr/bin/mvn compile ${MAVEN_OPTS}
-RUN /usr/bin/mvn test package ${MAVEN_OPTS}
+RUN ${MAVEN_ENV_PREF} /usr/bin/mvn compile ${MAVEN_OPTS}
+RUN ${MAVEN_ENV_PREF} /usr/bin/mvn test package ${MAVEN_OPTS}
 
 
 FROM openjdk:13-alpine AS main
