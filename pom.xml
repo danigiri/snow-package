@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cat.calidos.snow-package</groupId>
 	<artifactId>snow-package-app</artifactId>	
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>Snow Package application</name>
@@ -11,7 +11,19 @@
 	<inceptionYear>2020</inceptionYear>
 	<!-- http://localhost:3000/?config=%2Fproxy%2Fconfig.json -->
 	<!--  mvn clean compile jetty:run -D__RESOURCES_PREFIX=file://$(pwd)/target/classes/ -->
-
+	
+	<!-- 
+	MORFEU
+	mvn resources:resources jetty:run \
+		-D__RESOURCES_PREFIX=http://localhost:8990/ \
+		-D__PROXY_PREFIX=http://localhost:8990
+	SNOWPACKAGE
+	mvn resources:resources jetty:run \
+		-D__RESOURCES_PREFIX=file://$(pwd)/../snowpackage-site/src/snowpackage/ \
+		-D__PROXY_PREFIX=http://localhost:3010
+	BROWSER
+	http://localhost:3000/?config=%2Fproxy%2Fsite%2Fsnowpackage%2Fconfig.json	
+	-->
 	<properties>
 		<jetty-http-port>8990</jetty-http-port>
 		<jetty-stop-port>8991</jetty-stop-port>
@@ -42,6 +54,9 @@
 			<resource>	<!-- copy the react app so we can test it -->
 				<directory>src/test/react</directory>
 				<targetPath>${project.build.outputDirectory}/test-resources/site/</targetPath>
+				<excludes>
+					<exclude>node_modules/**</exclude>
+				</excludes>
 			</resource>
 		</resources>
 	

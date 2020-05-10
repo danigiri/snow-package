@@ -70,7 +70,7 @@
 	<xs:annotation>
 		<xs:appinfo>
 				<mf:metadata>
-					<mf:desc>Root cell-model desc</mf:desc>
+					<mf:desc>Root where all code slots sit</mf:desc>
 					<mf:presentation>WELL</mf:presentation>
 					<mf:thumb>/proxy/images/code-thumb.svg</mf:thumb>
 					<mf:cell-presentation>/proxy/images/code-cell.svg</mf:cell-presentation>

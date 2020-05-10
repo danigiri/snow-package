@@ -4,14 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import cat.calidos.morfeu.problems.ConfigurationException;
-import cat.calidos.morfeu.problems.ParsingException;
 import cat.calidos.morfeu.utils.Config;
 import cat.calidos.morfeu.utils.Tezt;
 
