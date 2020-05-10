@@ -42,8 +42,8 @@ ENV JETTY_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distributio
 ENV JETTY_HOME /var/lib/jetty
 ENV JETTY_BASE /jetty-base
 
-# install ts-node to be able to use it to parse JS code
-RUN apk add --no-cache --update nodejs npm
+# install bash, typescript, node ts-node to be able to use it to parse JS code
+RUN apk add --no-cache --update bash nodejs npm
 RUN npm install -g typescript ts-node
 
 RUN apk add --no-cache curl
@@ -58,7 +58,7 @@ COPY --from=build ./target/classes/jetty /jetty-base
 COPY --from=build ./target/snow-package-${VERSION}.war ${JETTY_BASE}/webapps/root.war
 
 # add typescript code
-COPY --from=build ./src/main/angular ${JETTY_HOME}/src/main/angular
+COPY --from=build ./src/main/angular ${JETTY_HOME}/typescript
 
 # add test data
 RUN mkdir -p ${JETTY_HOME}/target/test-classes/test-resources
@@ -67,4 +67,6 @@ COPY --from=build ./target/test-classes/test-resources ${JETTY_HOME}/target/test
 # start
 WORKDIR ${JETTY_HOME}
 ENTRYPOINT java -jar ./start.jar jetty.base=${JETTY_BASE} \
-	-D__RESOURCES_PREFIX=${RESOURCES_PREFIX} -D__PROXY_PREFIX=${PROXY_PREFIX}
+	-D__RESOURCES_PREFIX=${RESOURCES_PREFIX} \
+	-D__PROXY_PREFIX=${PROXY_PREFIX} \
+	-Dtscode=/typescript/src/app/snow-package.ts
