@@ -12,8 +12,7 @@ import cat.calidos.morfeu.webapp.injection.POSTFileSaverModule;
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 @ProductionComponent(modules={HttpFilterModule.class, POSTFileSaverModule.class, ListeningExecutorServiceModule.class})
-public interface SPServletFilter extends HttpFilterComponent {
-
+public interface SPHttpFilterComponent extends HttpFilterComponent {
 
 @ProductionComponent.Builder
 interface Builder extends HttpFilterComponent.Builder {}
