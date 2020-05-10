@@ -20,7 +20,7 @@ RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 # checkout and build morfeu dependency, avoid building client as we do not need it for the java dependency
 RUN git clone https://github.com/danigiri/morfeu.git
 RUN cd morfeu && git -c advice.detachedHead=false checkout ${MORFEU_VERSION} \
-	&& mvn package install -DskipTests=true -Dbuild-client=false
+	&& mvn package install  -DskipITs -DskipTests=true -Djetty.skip -Dbuild-client=false
 
 # we add the pom and code
 COPY pom.xml pom.xml
