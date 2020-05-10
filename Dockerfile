@@ -19,7 +19,7 @@ RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 
 # checkout and build morfeu dependency
 RUN git clone https://github.com/danigiri/morfeu.git
-RUN cd morfeu && git fetch --tags && git checkout ${MORFEU_VERSION} && mvn package install -DskipTests=true
+RUN cd morfeu && git checkout ${MORFEU_VERSION} && mvn package install -DskipTests=true
 
 # we add the pom and code
 COPY pom.xml pom.xml
