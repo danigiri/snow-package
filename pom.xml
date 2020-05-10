@@ -51,6 +51,10 @@
 			<resource>
 				<directory>src/test/resources</directory>
 			</resource>
+			<!-- resource>
+				<directory>src/main/angular/dist</directory>
+				<targetPath>${project.build.directory}/dist</targetPath>
+			</resource-->
 			<resource>	<!-- copy the react app so we can test it -->
 				<directory>src/test/react</directory>
 				<targetPath>${project.build.outputDirectory}/test-resources/site/</targetPath>
@@ -88,6 +92,20 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>	<!--  mvn package war:war install -DarchiveClasses=true -DattachClasses=true -DskipITs -DskipTests=true -Djetty.skip -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.2</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<directory>${project.build.directory}/dist</directory> <!-- add build distribution to root of WAR -->
+						</resource>
+					</webResources>
+					<attachClasses>true</attachClasses>	<!-- creates a jar with the classes and attaches an artifact -->
+				</configuration>
 			</plugin>
 
 			<plugin>
