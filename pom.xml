@@ -51,6 +51,10 @@
 			<resource>
 				<directory>src/test/resources</directory>
 			</resource>
+			<resource>
+				<directory>src/main/angular/dist</directory>	<!-- will create any empty dist dir in target -->
+				<targetPath>${project.build.directory}/dist</targetPath>
+			</resource>
 			<resource>	<!-- copy the react app so we can test it -->
 				<directory>src/test/react</directory>
 				<targetPath>${project.build.outputDirectory}/test-resources/site/</targetPath>

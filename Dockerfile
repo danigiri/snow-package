@@ -68,5 +68,4 @@ COPY --from=build ./target/test-classes/test-resources ${JETTY_HOME}/target/test
 WORKDIR ${JETTY_HOME}
 ENTRYPOINT java -jar ./start.jar jetty.base=${JETTY_BASE} \
 	-D__RESOURCES_PREFIX=${RESOURCES_PREFIX} \
-	-D__PROXY_PREFIX=${PROXY_PREFIX} \
-	-Dtscode=/typescript/src/app/snow-package.ts
+	-D__PROXY_PREFIX=${PROXY_PREFIX}
