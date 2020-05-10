@@ -23,7 +23,7 @@ RUN echo 'Using maven options ${MAVEN_OPTS}'
 RUN git clone https://github.com/danigiri/morfeu.git
 RUN cd morfeu && git -c advice.detachedHead=false checkout ${MORFEU_VERSION} \
 	&& mvn resources:resources install \
-	-DarchiveClasses=true -DattachClasses=true -DskipITs -Djetty.skip -Dbuild-client=false ${MAVEN_OPTS}
+	-DarchiveClasses=true -DattachClasses=true -DskipITs -Djetty.skip -Dskip-build-client=true ${MAVEN_OPTS}
 
 # we add the pom and code
 COPY pom.xml pom.xml
