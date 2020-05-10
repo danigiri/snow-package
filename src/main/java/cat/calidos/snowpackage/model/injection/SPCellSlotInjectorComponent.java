@@ -16,7 +16,7 @@ import cat.calidos.morfeu.utils.injection.ListeningExecutorServiceModule;
 /** From a content file we
 *	@author daniel giribet
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-@ProductionComponent(modules = {SPCellSlotInjectorModule.class, StringToParsedModule.class, 
+@ProductionComponent(modules = {SPCellSlotInjectorModule.class, StringToParsedModule.class,
 								XMLDocumentBuilderModule.class, ListeningExecutorServiceModule.class})
 public interface SPCellSlotInjectorComponent {
 
@@ -31,7 +31,6 @@ interface Builder {
 @BindsInstance Builder withContent(@Named("Content") String content);
 @BindsInstance Builder andCode(@Named("Code") String code);
 @BindsInstance Builder filters(@Named("filters") String filters);
-
 
 SPCellSlotInjectorComponent build();
 

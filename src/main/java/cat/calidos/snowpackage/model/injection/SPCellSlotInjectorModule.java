@@ -6,8 +6,6 @@ import dagger.producers.Produces;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 import javax.inject.Named;
 
@@ -17,9 +15,7 @@ import org.w3c.dom.NodeList;
 import cat.calidos.morfeu.filter.injection.DaggerFilterComponent;
 import cat.calidos.morfeu.problems.ConfigurationException;
 import cat.calidos.morfeu.problems.ParsingException;
-import cat.calidos.morfeu.problems.TransformException;
 import cat.calidos.morfeu.utils.MorfeuUtils;
-import cat.calidos.morfeu.utils.injection.DaggerXMLNodeToStringComponent;
 import cat.calidos.morfeu.view.injection.DaggerViewComponent;
 import cat.calidos.snowpackage.model.SPCellSlot;
 

@@ -34,13 +34,16 @@ public void testBasicCode() throws Exception {
 			"ReactDOM.render(element, document.getElementById('root'));";
 
 	String slots = runCode(code).trim();
+	//System.err.println(slots);
 	assertAll("Checking basic code slots",
 		() -> assertNotNull(slots),
 		() -> assertTrue(slots.startsWith("["), "Does not start as an array"),
 		() -> assertTrue(slots.endsWith("]"), "Does not terminate correctly"),
 		() -> assertTrue(slots.contains("\"type\":\"___fragment\""), "Does not contain a fragment"),
-		() -> assertTrue(slots.contains("\"start\":\"164\""), "Fragment not starting correctly"),
-		() -> assertTrue(slots.contains("\"end\":\"270\"}"), "Fragment not end correctly")
+		() -> assertTrue(slots.contains("\"start_line\":\"11\""), "Fragment not starting correctly (line)"),
+		() -> assertTrue(slots.contains("\"start_column\":\"8\""), "Fragment not start correctly (column)"),
+		() -> assertTrue(slots.contains("\"end_line\":\"14\""), "Fragment not ending correctly"),
+		() -> assertTrue(slots.contains("\"end_column\":\"6\"}"), "Fragment not ending correctly")
 	);
 
 }
@@ -73,16 +76,17 @@ public void testMultipleStructures() throws Exception {
 			"ReactDOM.render(element2, document.getElementById('root'));";
 
 	String slots = runCode(code).trim();
+	System.err.println(slots);
 	assertAll("Checking basic code slots",
 		() -> assertNotNull(slots),
 		() -> assertNotNull(slots),
 		() -> assertTrue(slots.startsWith("["), "Does not start with ["),
 		() -> assertTrue(slots.endsWith("]"), "Does not terminate correctly"),
-		() -> assertTrue(slots.contains("\"type\":\"___fragment\""), "Does not contain a fragment"),
-		() -> assertTrue(slots.contains("\"start\":\"164\""), "Fragment not starting correctly"),
-		() -> assertTrue(slots.contains("\"end\":\"270\"}"), "Fragment not end correctly"),
-		() -> assertTrue(slots.contains("\"start\":\"296\""), "Fragment 2 not starting correctly"),
-		() -> assertTrue(slots.contains("\"end\":\"415\"}"), "Fragment not end correctly")
+		() -> assertTrue(slots.contains("\"type\":\"___fragment\""), "Does not contain at least a fragment"),
+		() -> assertTrue(slots.contains("\"start_line\":\"11\""), "Fragment not starting correctly (1)"),
+		() -> assertTrue(slots.contains(" \"end_line\":\"14\""), "Fragment not ending correctly (2)"),
+		() -> assertTrue(slots.contains("\"start_line\":\"16\""), "Fragment 2 not starting correctly"),
+		() -> assertTrue(slots.contains("\"end_line\":\"19\""), "Fragment not end correctly")
 	);
 
 }
