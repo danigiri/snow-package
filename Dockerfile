@@ -11,7 +11,7 @@ ENV http_proxy=${HTTP_PROXY_}
 ENV MAVEN_HOME /usr/share/maven
 
 # install dependencies (bash to launch angular build, ncurses for pretty output with tput, git for npm deps)
-# notice that ts-node is not installed in usr/local/bin, so we make an alias
+# notice that ts-node is not installed in usr/local/bin, so we make an alias as this is where snowpackage expects it
 RUN apk add --no-cache curl bash ncurses git
 RUN apk add --no-cache --update nodejs npm
 RUN npm install -g @angular/cli typescript ts-node
@@ -52,8 +52,10 @@ ENV JETTY_HOME /var/lib/jetty
 ENV JETTY_BASE /jetty-base
 
 # install bash, typescript, node ts-node to be able to use it to parse JS code
+# notice that ts-node is not installed in usr/local/bin, so we make an alias as this is where snowpackage expects it
 RUN apk add --no-cache --update bash nodejs npm
 RUN npm install -g typescript ts-node
+RUN ln -s /usr/bin/ts-node /usr/local/bin/ts-node
 
 RUN apk add --no-cache curl
 RUN mkdir -p ${JETTY_HOME}
@@ -74,8 +76,8 @@ COPY --from=build ./src/main/angular ${JETTY_HOME}/src/main/angular
 RUN mkdir -p ${JETTY_HOME}/target/test-classes/test-resources
 COPY --from=build ./target/test-classes/test-resources ${JETTY_HOME}/target/test-classes/test-resources
 
-# start
+# start (notice we override the default port from morfeu)
 WORKDIR ${JETTY_HOME}
-ENTRYPOINT java -jar ./start.jar jetty.base=${JETTY_BASE} \
+ENTRYPOINT java -jar ./start.jar jetty.base=${JETTY_BASE} -module=http jetty.http.port=8080 \
 	-D__RESOURCES_PREFIX=${RESOURCES_PREFIX} \
 	-D__PROXY_PREFIX=${PROXY_PREFIX}
