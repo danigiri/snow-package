@@ -60,7 +60,7 @@ RUN mkdir -p ${JETTY_HOME}
 RUN curl ${JETTY_URL} | tar zxf - -C ${JETTY_HOME} --strip-components 1
 
 # create jetty-base folder and add the configuration
-RUN mkdir -p ${JETTY_BASE}/webapps
+RUN mkdir -p ${JETTY_BASE}/webapps ${JETTY_BASE}/logs
 COPY --from=build ./morfeu/target/classes/jetty /jetty-base
 
 # add war
