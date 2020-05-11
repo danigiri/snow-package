@@ -78,6 +78,6 @@ COPY --from=build ./target/test-classes/test-resources ${JETTY_HOME}/target/test
 
 # start (notice we override the default port from morfeu)
 WORKDIR ${JETTY_HOME}
-ENTRYPOINT java -jar ./start.jar jetty.base=${JETTY_BASE} -module=http jetty.http.port=8080 \
+ENTRYPOINT java -jar ./start.jar jetty.base=${JETTY_BASE} -module=http jetty.http.port=8990 \
 	-D__RESOURCES_PREFIX=${RESOURCES_PREFIX} \
 	-D__PROXY_PREFIX=${PROXY_PREFIX}
