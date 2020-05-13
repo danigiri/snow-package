@@ -39,6 +39,7 @@ RUN echo 'Using maven options ${MAVEN_OPTS}'
 RUN /usr/bin/mvn compile ${MAVEN_OPTS}
 RUN cd src/main/angular && npm install
 RUN /usr/bin/mvn test war:war package ${MAVEN_OPTS}
+RUN echo 'build finished'
 
 
 FROM openjdk:13-alpine AS main
