@@ -49,12 +49,10 @@ ARG VERSION=0.0.2-SNAPSHOT
 ENV JETTY_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.24.v20191120/jetty-distribution-9.4.24.v20191120.tar.gz
 ENV JETTY_HOME /var/lib/jetty
 ARG JETTY_BASE=/jetty-base
-ENV JETTY_BASE_ENV ${JETTY_BASE}
 
 # install bash, typescript, node ts-node to be able to use it to parse JS code
 # notice that ts-node is not installed in usr/local/bin, so we make an alias as this is where snowpackage expects it
-# adding bash for the entrypoint
-RUN apk add --no-cache --update bash nodejs npm bash
+RUN apk add --no-cache --update bash nodejs npm
 RUN npm install -g typescript ts-node
 RUN ln -s /usr/bin/ts-node /usr/local/bin/ts-node
 
@@ -79,4 +77,4 @@ COPY --from=build ./target/test-classes/test-resources ${JETTY_HOME}/target/test
 
 # start (notice we override the default port from morfeu)
 WORKDIR ${JETTY_HOME}
-ENTRYPOINT ["/bin/bash", "-c", "java -jar ./start.jar jetty.base=${JETTY_BASE_ENV} --module=http jetty.http.port=8990"]
+ENTRYPOINT ["java", "-jar", "./start.jar", "jetty.base=/jetty-base", "--module=http", "jetty.http.port=8990"]
