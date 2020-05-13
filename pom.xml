@@ -22,7 +22,7 @@
 		-D__RESOURCES_PREFIX=file://$(pwd)/../snowpackage-site/src/snowpackage/ \
 		-D__PROXY_PREFIX=http://localhost:3010
 	BROWSER
-	http://localhost:3000/?config=%2Fproxy%2Fsite%2Fsnowpackage%2Fconfig.json	
+	http://localhost:3000/?config=%2Fproxy%2Fsite%2Fsnowpackage%2Fconfig.json
 	-->
 	<properties>
 		<jetty-http-port>8990</jetty-http-port>
@@ -99,11 +99,11 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.2.2</version>
 				<configuration>
-					<!-- webResources>
-						<resource>
-							<directory>${project.build.directory}/dist</directory>
+					<webResources>
+						<resource>	<!-- the images of resources like the code slots make it to the war -->
+							<directory>${project.basedir}/src/main/angular/src/assets</directory>
 						</resource>
-					</webResources-->
+					</webResources>
 					<attachClasses>true</attachClasses>	<!-- creates a jar with the classes and attaches an artifact -->
 				</configuration>
 			</plugin>
