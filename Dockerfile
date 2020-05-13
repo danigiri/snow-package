@@ -1,13 +1,12 @@
 FROM openjdk:13-alpine AS build
 
 LABEL maintainer="Daniel Giribet - dani [at] calidos [dot] cat"
+# docker build -t morfeu-webapp:latest --build-arg PROXY='http://192.168.1.30:3128/' --build-arg PROXY_HOST=192.168.1.30 --build-arg PROXY_PORT=3128 .
 
 # variables build stage
 ARG MORFEU_VERSION=0.6.2
 ARG MAVEN_URL=https://apache.brunneis.com/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
 ARG MAVEN_OPTS=
-ARG HTTP_PROXY_=
-ENV http_proxy=${HTTP_PROXY_}
 ENV MAVEN_HOME /usr/share/maven
 
 # install dependencies (bash to launch angular build, ncurses for pretty output with tput, git for npm deps)
@@ -32,6 +31,7 @@ RUN cd morfeu && mkdir -p target/dist && \
 
 # we add the pom and code
 COPY pom.xml pom.xml
+RUN /usr/bin/mvn dependency:go-offline ${MAVEN_OPTS}
 COPY src src
 
 # and build (two steps to reuse the lengthy maven download)
@@ -45,8 +45,6 @@ FROM openjdk:13-alpine AS main
 
 # variables run stage
 ARG VERSION=0.0.2-SNAPSHOT
-ENV RESOURCES_PREFIX=file://${JETTY_HOME}/classes/
-ENV PROXY_PREFIX=
 ENV JETTY_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.24.v20191120/jetty-distribution-9.4.24.v20191120.tar.gz
 ENV JETTY_HOME /var/lib/jetty
 ENV JETTY_BASE /jetty-base
@@ -78,6 +76,4 @@ COPY --from=build ./target/test-classes/test-resources ${JETTY_HOME}/target/test
 
 # start (notice we override the default port from morfeu)
 WORKDIR ${JETTY_HOME}
-ENTRYPOINT java -jar ./start.jar jetty.base=${JETTY_BASE} -module=http jetty.http.port=8990 \
-	-D__RESOURCES_PREFIX=${RESOURCES_PREFIX} \
-	-D__PROXY_PREFIX=${PROXY_PREFIX}
+ENTRYPOINT ["java", "-jar", "./start.jar", "jetty.base=${JETTY_BASE}", "-module=http", "jetty.http.port=8990"]
