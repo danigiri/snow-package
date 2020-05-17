@@ -23,8 +23,10 @@ RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 
 # checkout and build morfeu dependency, avoid building client as we do not need it for the java dependency
 RUN echo 'Using maven options ${MAVEN_OPTS}'
-RUN git clone https://github.com/danigiri/morfeu.git && git -c advice.detachedHead=false checkout ${MORFEU_VERSION}
-RUN cd morfeu && mkdir -p target/dist && \
+RUN git clone https://github.com/danigiri/morfeu.git && \
+	cd morfeu && \
+	git -c advice.detachedHead=false checkout ${MORFEU_VERSION} && \
+	mkdir -p target/dist && \
 	/usr/bin/mvn compile war:war package install \
 	-DarchiveClasses=true -DattachClasses=true -DskipITs -Djetty.skip -Dskip-build-client=true ${MAVEN_OPTS}
 
