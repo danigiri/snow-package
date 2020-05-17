@@ -4,7 +4,7 @@ LABEL maintainer="Daniel Giribet - dani [at] calidos [dot] cat"
 # docker build -t morfeu-webapp:latest --build-arg PROXY='http://192.168.1.30:3128/' --build-arg PROXY_HOST=192.168.1.30 --build-arg PROXY_PORT=3128 .
 
 # variables build stage
-ARG MORFEU_VERSION=0.6.2
+ARG MORFEU_VERSION=0.7.0
 ARG MAVEN_URL=https://apache.brunneis.com/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
 ARG MAVEN_OPTS=
 ENV MAVEN_HOME /usr/share/maven
@@ -23,8 +23,7 @@ RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 
 # checkout and build morfeu dependency, avoid building client as we do not need it for the java dependency
 RUN echo 'Using maven options ${MAVEN_OPTS}'
-RUN git clone https://github.com/danigiri/morfeu.git
-#git -c advice.detachedHead=false checkout ${MORFEU_VERSION} && \
+RUN git clone https://github.com/danigiri/morfeu.git && git -c advice.detachedHead=false checkout ${MORFEU_VERSION}
 RUN cd morfeu && mkdir -p target/dist && \
 	/usr/bin/mvn compile war:war package install \
 	-DarchiveClasses=true -DattachClasses=true -DskipITs -Djetty.skip -Dskip-build-client=true ${MAVEN_OPTS}

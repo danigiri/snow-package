@@ -83,13 +83,14 @@ public static @Named("content") String content(@Nullable Node node) {
 
 
 @Provides
-public static @Named("start") int start(@Nullable Node node, 
-										List<String> lines, 
-										List<Integer> lineCounts, 
+public static @Named("start") int start(@Nullable Node node,
+										List<String> lines,
+										List<Integer> lineCounts,
 										@Nullable JsonNode jsonNode) {
 
 	int start;
-	if (node!=null ) {
+
+	if (node!=null) {
 		start = Integer.parseInt(node.getAttributes().getNamedItem("start").getNodeValue());
 	} else {
 		int linesToCount = jsonNode.get("start_line").asInt()-1;	// starts at 1, we don't count the last line so -1
@@ -104,13 +105,14 @@ public static @Named("start") int start(@Nullable Node node,
 
 
 @Provides
-public static @Named("end") int end(@Nullable Node node, 
-									List<String> lines, 
-									List<Integer> lineCounts, 
+public static @Named("end") int end(@Nullable Node node,
+									List<String> lines,
+									List<Integer> lineCounts,
 									@Nullable JsonNode jsonNode) {
 
 	int end;
-	if (node!=null ) {
+
+	if (node!=null) {
 		end = Integer.parseInt(node.getAttributes().getNamedItem("end").getNodeValue());
 	} else {
 		int linesToCount = jsonNode.get("end_line").asInt()-1;	// starts at 1, we don't count the last line so -1
