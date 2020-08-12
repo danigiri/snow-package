@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cat.calidos.snow-package</groupId>
 	<artifactId>snow-package-app</artifactId>	
-	<version>0.7.0-SNAPSHOT</version>
+	<version>0.8.0</version>
 	<packaging>war</packaging>
 
 	<name>Snow Package application</name>
-	<description>TBD</description>
+	<description>JSX support for Morfeu</description>
 	<inceptionYear>2020</inceptionYear>
 	<!-- http://localhost:3000/?config=%2Fproxy%2Fconfig.json -->
 	<!--  mvn clean compile jetty:run -D__RESOURCES_PREFIX=file://$(pwd)/target/classes/ -->
@@ -33,7 +33,7 @@
 		<jackson-2-version>2.10.2</jackson-2-version>
 		<jetty-version>9.4.24.v20191120</jetty-version>
 		<jtwig-version>5.87.0.RELEASE</jtwig-version>
-		<morfeu-version>0.7.0-SNAPSHOT</morfeu-version>
+		<morfeu-version>0.8.0</morfeu-version>
 		<selenide-version>5.6.1</selenide-version>
 		<selenium-version>3.141.59</selenium-version>
 		<jupiter-version>5.5.2</jupiter-version>
