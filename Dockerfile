@@ -4,7 +4,7 @@ LABEL maintainer="Daniel Giribet - dani [at] calidos [dot] cat"
 # docker build -t morfeu-webapp:latest --build-arg PROXY='http://192.168.1.30:3128/' --build-arg PROXY_HOST=192.168.1.30 --build-arg PROXY_PORT=3128 .
 
 # variables build stage
-ARG MORFEU_VERSION=0.7.0
+ARG MORFEU_VERSION=0.8.1
 ARG MAVEN_URL=https://apache.brunneis.com/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
 ARG MAVEN_OPTS=
 ENV MAVEN_HOME /usr/share/maven
@@ -46,7 +46,7 @@ RUN echo 'build finished'
 FROM openjdk:13-alpine AS main
 
 # variables run stage
-ARG VERSION=0.7.0-SNAPSHOT
+ARG VERSION=0.8.1-SNAPSHOT
 ENV JETTY_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.24.v20191120/jetty-distribution-9.4.24.v20191120.tar.gz
 ENV JETTY_HOME /var/lib/jetty
 ARG JETTY_BASE=/jetty-base
