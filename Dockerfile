@@ -46,7 +46,6 @@ RUN echo 'build finished'
 FROM openjdk:13-alpine AS main
 
 # variables run stage
-ARG VERSION=0.8.1-SNAPSHOT
 ENV JETTY_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/9.4.24.v20191120/jetty-distribution-9.4.24.v20191120.tar.gz
 ENV JETTY_HOME /var/lib/jetty
 ARG JETTY_BASE=/jetty-base
@@ -66,7 +65,7 @@ RUN mkdir -p ${JETTY_BASE}/webapps ${JETTY_BASE}/logs
 COPY --from=build ./morfeu/target/classes/jetty /jetty-base
 
 # add war
-COPY --from=build ./target/snow-package-app-${VERSION}.war ${JETTY_BASE}/webapps/root.war
+COPY --from=build ./target/snow-package-app-*.war ${JETTY_BASE}/webapps/root.war
 
 # add typescript code
 RUN mkdir -p ${JETTY_HOME}/src/main/angular
