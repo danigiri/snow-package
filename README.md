@@ -5,7 +5,6 @@ Morfeu compatibility service for JS, includes support for JSX file format.
 
 ![How it works](./src/site/img/how-it-works.png)
 
-
 Please refer to the [Morfeu](https://github.com/danigiri/morfeu) documentation for further information.
 
 
