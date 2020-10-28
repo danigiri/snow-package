@@ -40,13 +40,25 @@
 		<junit-platform-version>1.5.2</junit-platform-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<scm.host_>github.com</scm.host_>
+		<developer.id_>danigiri</developer.id_>
 	</properties>
+
+	<scm>	<!-- mvn -B release:prepare release:perform -Darguments=" -Dskip-build-client=true -DskipITs -Djetty.skip -DaltDeploymentRepository=REPO::default::file://$HOME/.m2/repository" -->
+		<connection>scm:git:git@${scm.host_}:${developer.id_}/snow-package.git</connection>
+		<url>scm:git:git@${scm.host_}:${developer.id_}/snow-package.git</url>
+		<developerConnection>scm:git:git@${scm.host_}:${developer.id_}/morfeu.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>	
 
 	<build>
 
 		<resources>	<!-- skip moving node modules about -->
 			<resource>
 				<directory>src/main/resources</directory>
+				<excludes>	<!-- avoid duplicates -->
+					<exclude>metadata/</exclude>
+				</excludes>
 			</resource>
 			<resource>
 				<directory>src/test/resources</directory>
@@ -61,6 +73,11 @@
 				<excludes>
 					<exclude>node_modules/**</exclude>
 				</excludes>
+			</resource>
+			<resource>	<!--  application metadata, like the version, goes to the webapp root -->
+				<directory>src/main/resources/metadata</directory>
+				<filtering>true</filtering>
+				<targetPath>${project.build.outputDirectory}/metadata</targetPath>
 			</resource>
 		</resources>
 	
@@ -102,6 +119,10 @@
 					<webResources>
 						<resource>	<!-- the images of resources like the code slots make it to the war -->
 							<directory>${project.basedir}/src/main/angular/src/assets</directory>
+						</resource>
+						<resource>
+							<directory>${project.build.outputDirectory}/metadata</directory>	<!-- metadata -->
+							<targetPath>metadata</targetPath>
 						</resource>
 					</webResources>
 					<attachClasses>true</attachClasses>	<!-- creates a jar with the classes and attaches an artifact -->
