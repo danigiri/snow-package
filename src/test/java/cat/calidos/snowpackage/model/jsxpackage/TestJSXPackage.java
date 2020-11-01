@@ -97,9 +97,8 @@ public void testMultipleStructures() throws Exception {
 public void testIncorrectCode() throws Exception {
 
 	String code = "const element = <b>";
+	assertThrows(Exception.class, () -> runCode(code));
 
-	String slots = runCode(code);
-	assertTrue(slots.isEmpty(), "Non empty output");
 }
 
 
