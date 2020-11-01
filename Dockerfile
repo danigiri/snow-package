@@ -6,7 +6,6 @@ LABEL maintainer="Daniel Giribet - dani [at] calidos [dot] cat"
 # variables build stage
 ARG MORFEU_VERSION=v0.8.10
 ARG MAVEN_URL=https://apache.brunneis.com/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
-#ARG MAVEN_OPTS=
 ENV MAVEN_HOME /usr/share/maven
 
 # install dependencies (bash to launch angular build, ncurses for pretty output with tput, git for npm deps)
@@ -28,7 +27,7 @@ RUN git clone https://github.com/danigiri/morfeu.git && \
 	git -c advice.detachedHead=false checkout ${MORFEU_VERSION} && \
 	mkdir -p target/dist && \
 	/usr/bin/mvn compile war:war package install \
-	-DarchiveClasses=true -DattachClasses=true -DskipITs -Djetty.skip -Dskip-build-client=true ${MAVEN_OPTS}
+	-DarchiveClasses=true -DattachClasses=true -DskipITs -Djetty.skip -Dskip-build-client=true
 
 # we add the pom and code
 COPY pom.xml pom.xml
@@ -43,7 +42,6 @@ RUN cd /cache/ && npm install
 COPY src src
 
 # and build (two steps to reuse the lengthy maven download)
-#RUN echo 'Using maven options ${MAVEN_OPTS}'
 RUN /usr/bin/mvn compile 
 RUN cp -r /cache/node_modules /src/main/angular/node_modules
 RUN /usr/bin/mvn test war:war package
@@ -72,7 +70,7 @@ RUN mkdir -p ${JETTY_BASE}/webapps ${JETTY_BASE}/logs
 COPY --from=build ./morfeu/target/classes/jetty /jetty-base
 
 # add war
-COPY --from=build ./target/snow-package-app-*.war ${JETTY_BASE}/webapps/root.war
+COPY --from=build ./target/snow-package-*.war ${JETTY_BASE}/webapps/root.war
 
 # add typescript code
 RUN mkdir -p ${JETTY_HOME}/src/main/angular
