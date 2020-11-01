@@ -33,7 +33,7 @@
 		<jackson-2-version>2.10.2</jackson-2-version>
 		<jetty-version>9.4.24.v20191120</jetty-version>
 		<jtwig-version>5.87.0.RELEASE</jtwig-version>
-		<morfeu-version>0.8.9</morfeu-version>
+		<morfeu-version>0.8.10</morfeu-version>
 		<selenide-version>5.6.1</selenide-version>
 		<selenium-version>3.141.59</selenium-version>
 		<jupiter-version>5.5.2</jupiter-version>
