@@ -2,8 +2,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cat.calidos.snow-package</groupId>
-	<artifactId>snow-package</artifactId>	
-	<version>0.8.9-SNAPSHOT</version>
+	<artifactId>snow-package</artifactId>
+	<version>0.8.10-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>Snow Package application</name>
@@ -11,8 +11,8 @@
 	<inceptionYear>2020</inceptionYear>
 	<!-- http://localhost:3000/?config=%2Fproxy%2Fconfig.json -->
 	<!--  mvn clean compile jetty:run -D__RESOURCES_PREFIX=file://$(pwd)/target/classes/ -->
-	
-	<!-- 
+
+	<!--
 	MORFEU
 	mvn resources:resources jetty:run \
 		-D__RESOURCES_PREFIX=http://localhost:8990/ \
@@ -49,7 +49,7 @@
 		<url>scm:git:git@${scm.host_}:${developer.id_}/snow-package.git</url>
 		<developerConnection>scm:git:git@${scm.host_}:${developer.id_}/morfeu.git</developerConnection>
 		<tag>HEAD</tag>
-	</scm>	
+	</scm>
 
 	<build>
 
@@ -80,7 +80,7 @@
 				<targetPath>${project.build.outputDirectory}/metadata</targetPath>
 			</resource>
 		</resources>
-	
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -264,13 +264,13 @@
 		<!-- mvn package war:war install -DarchiveClasses=true -DattachClasses=true -DskipITs -DskipTests=true -Djetty.skip -->
 		<dependency>
 			<groupId>cat.calidos.morfeu</groupId>
-			<artifactId>morfeu-webapp</artifactId>	
+			<artifactId>morfeu-webapp</artifactId>
 			<version>${morfeu-version}</version>
 			<classifier>classes</classifier>	<!-- this is how the extra jar is generated in morfeu -->
 		</dependency>
 		<dependency>
 			<groupId>cat.calidos.morfeu</groupId>
-			<artifactId>morfeu-webapp</artifactId>	
+			<artifactId>morfeu-webapp</artifactId>
 			<version>${morfeu-version}</version>
 			<classifier>tests</classifier>	<!-- this is how the extra test jar is generated in morfeu -->
 			<type>test-jar</type>
