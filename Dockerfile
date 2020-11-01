@@ -4,7 +4,7 @@ LABEL maintainer="Daniel Giribet - dani [at] calidos [dot] cat"
 # docker build -t morfeu-webapp:latest --build-arg PROXY='http://192.168.1.30:3128/' --build-arg PROXY_HOST=192.168.1.30 --build-arg PROXY_PORT=3128 .
 
 # variables build stage
-ARG MORFEU_VERSION=0.8.1
+ARG MORFEU_VERSION=0.8.9
 ARG MAVEN_URL=https://apache.brunneis.com/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
 ARG MAVEN_OPTS=
 ENV MAVEN_HOME /usr/share/maven
@@ -33,12 +33,19 @@ RUN git clone https://github.com/danigiri/morfeu.git && \
 # we add the pom and code
 COPY pom.xml pom.xml
 RUN /usr/bin/mvn dependency:go-offline ${MAVEN_OPTS}
+
+# cache some node stuff to speed up builds
+COPY src/main/angular/*.json /cache/
+COPY src/main/angular/*.js /cache/
+RUN cd /cache/ && npm install
+
+# add code
 COPY src src
 
 # and build (two steps to reuse the lengthy maven download)
 RUN echo 'Using maven options ${MAVEN_OPTS}'
 RUN /usr/bin/mvn compile ${MAVEN_OPTS}
-RUN cd src/main/angular && npm install
+RUN cp -r /cache/node_modules /src/main/angular/node_modules
 RUN /usr/bin/mvn test war:war package ${MAVEN_OPTS}
 RUN echo 'build finished'
 
