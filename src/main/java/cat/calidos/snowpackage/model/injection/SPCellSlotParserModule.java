@@ -49,7 +49,7 @@ public static String NODEFOLDER_PROPERTY = "nodefolder";
 public static String NODEFOLDER = "/usr/local/bin";
 
 private static final String OUTPUT_ERROR = "";
-private static final int TIMEOUT = 8000;
+private static final int TIMEOUT = 20000;
 
 /*
 
