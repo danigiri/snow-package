@@ -10,12 +10,11 @@
 		<param-name>__RESOURCES_PREFIX</param-name>
 		<param-value>file://PLEASE_DEFINE_ME/</param-value>
 	</context-param>
-		<context-param>
+	<context-param>
 		<description>Proxy uri prefix</description>
 		<param-name>__PROXY_PREFIX</param-name>
 		<param-value>http://localhost:3001/</param-value>
 	</context-param>
-	
 
 	<!-- It is important to distinguish between 'raw' content (RESOURCES_PREFIX) from data processed and by enriched 
 		by the servlets themselves. For example, in the default maven jetty configuration: [/morfeu/documents/]test-resources/documents/document1.json 
