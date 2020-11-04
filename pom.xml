@@ -152,7 +152,7 @@
 							<executable>bash</executable>
 							<workingDirectory />
 							<arguments>
-								<argument>-c</argument>
+								<argument>-cx</argument>
 								<argument>[ -d ${checkout.folder_} ] &amp;&amp; cd ${checkout.folder_} &amp;&amp; npm install || true
 								</argument>
 							</arguments>
