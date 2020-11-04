@@ -41,7 +41,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<scm.host_>github.com</scm.host_>
 		<developer.id_>danigiri</developer.id_>
-		<checkout.folder_>${project.build.directory}/checkout/src/main/angular</checkout.folder_>
+		<checkout.folder_>${project.build.directory}/../src/main/angular</checkout.folder_>	<!-- release perform /target/ folder -->
 	</properties>
 
 	<scm>	<!-- mvn -B release:prepare release:perform -Darguments=" -Dskip-build-client=true -DskipITs -Djetty.skip -DaltDeploymentRepository=REPO::default::file://$HOME/.m2/repository" -->
