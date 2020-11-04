@@ -41,6 +41,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<scm.host_>github.com</scm.host_>
 		<developer.id_>danigiri</developer.id_>
+		<checkout.folder_>${project.build.directory}/checkout/src/main/angular</checkout.folder_>
 	</properties>
 
 	<scm>	<!-- mvn -B release:prepare release:perform -Darguments=" -Dskip-build-client=true -DskipITs -Djetty.skip -DaltDeploymentRepository=REPO::default::file://$HOME/.m2/repository" -->
@@ -135,6 +136,29 @@
 				<configuration>
 					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
+			</plugin>
+			<plugin>	<!-- when doing a release:perform, the project is checked out freshly, need a npm install -->
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>install-npm</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>bash</executable>
+							<workingDirectory/>
+							<arguments>
+								<argument>-c</argument>
+								<argument>[ -d ${checkout.folder_} ] &amp;&amp; cd ${checkout.folder_} &amp;&amp; npm install
+								</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
