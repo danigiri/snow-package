@@ -21,6 +21,9 @@ const verbose = options.verbose;
 verbose && console.error('--------------------------------------------------------------------------------------');
 verbose && console.error('Starting snow package...');
 
+// ensure we exit with non zero code on errors
+process.on('unhandledRejection', e => { throw e });
+
 getStdin().then(code => {
 
 	let out = "";

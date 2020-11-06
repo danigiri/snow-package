@@ -70,8 +70,8 @@ private String runCodeWithFormat(String code, String format) throws Exception {
 	running.spinUntil(Task.FINISHED);
 
 	FinishedTask finished = running.finishedTask();
-	if (!finished.isOK() || finished.result()!=0) {
-		throw new Exception("Could not run code");
+	if (finished.failed() || finished.result()!=0) {
+		throw new Exception("Could not run code, isOK:"+finished.isOK()+", result:"+finished.result());
 	}
 
 	return start.show()+running.show();
