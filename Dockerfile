@@ -45,7 +45,7 @@ COPY src src
 RUN /usr/bin/mvn compile 
 RUN cp -r /cache/node_modules /src/main/angular/node_modules
 RUN /usr/bin/mvn test war:war package
-RUN echo 'build finished'
+#RUN echo 'build finished'
 
 
 FROM openjdk:13-alpine AS main
