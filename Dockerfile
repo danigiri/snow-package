@@ -65,9 +65,12 @@ RUN apk add --no-cache curl
 RUN mkdir -p ${JETTY_HOME}
 RUN curl ${JETTY_URL} | tar zxf - -C ${JETTY_HOME} --strip-components 1
 
-# create jetty-base folder and add the configuration
-RUN mkdir -p ${JETTY_BASE}/webapps ${JETTY_BASE}/logs
-COPY --from=build ./morfeu/target/classes/jetty /jetty-base
+# create jetty-base folder and add the jetty configuration and folder structure
+COPY --from=build ./target/classes/jetty /jetty-base
+RUN mkdir -p ${JETTY_BASE}/webapps ${JETTY_BASE}/resources
+COPY --from=build ./target/classes/jetty-logging.properties /jetty-base/resources
+# uncomment to create logs folder if we want to persist them (also enable the module)
+# RUN mkdir -p ${JETTY_BASE}/webapps ${JETTY_BASE}/logs
 
 # add war
 COPY --from=build ./target/snow-package-*.war ${JETTY_BASE}/webapps/root.war
