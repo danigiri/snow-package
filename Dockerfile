@@ -4,7 +4,7 @@ LABEL maintainer="Daniel Giribet - dani [at] calidos [dot] cat"
 # docker build -t morfeu-webapp:latest --build-arg PROXY='http://192.168.1.30:3128/' --build-arg PROXY_HOST=192.168.1.30 --build-arg PROXY_PORT=3128 .
 
 # variables build stage
-ARG MORFEU_VERSION=v0.8.12
+ARG MORFEU_VERSION=v0.8.11
 ARG MAVEN_URL=https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
 ENV MAVEN_HOME /usr/share/maven
 
