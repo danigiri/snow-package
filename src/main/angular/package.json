@@ -22,7 +22,7 @@
     "@babel/plugin-transform-react-jsx-source": "^7.10.5",
     "@babel/plugin-transform-typescript": "^7.11.0",
     "@babel/polyfill": "^7.10.4",
-    "babel-traverse": "^6.26.0",
+    "@babel/traverse": "^7.25.6",
     "babel-types": "^6.26.0",
     "command-line-args": "^5.1.1",
     "get-stdin": "^7.0.0",
