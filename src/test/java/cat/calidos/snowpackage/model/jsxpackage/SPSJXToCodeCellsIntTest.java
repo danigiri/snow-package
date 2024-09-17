@@ -36,7 +36,11 @@ private static 	String code = "function formatName(user) {\n" +
 @Test @DisplayName("Generate code slots")
 public void testGenerateCodeSlots() throws Exception {
 
-	String codeSlots = DaggerSPCellSlotParserComponent.builder().fromPath("/X").withCode(code).build().codeSlots();
+	String codeSlots = DaggerSPCellSlotParserComponent.builder()
+														.fromPath("/X")
+														.withCode(code)
+														.filters("")
+														.build().codeSlots();
 	assertAll("checking slots",
 		() -> assertNotNull(codeSlots, "Should get a codeslots output"),
 		() -> assertTrue(codeSlots.contains("<h1>Hello, {formatName(user)}!</h1>")),
@@ -50,7 +54,11 @@ public void testGenerateCodeSlots() throws Exception {
 @Test @DisplayName("Generate complete content")
 public void testGenerateContent() throws Exception {
 
-	String codeSlots = DaggerSPCellSlotParserComponent.builder().fromPath("/X").withCode(code).build().content();
+	String codeSlots = DaggerSPCellSlotParserComponent.builder()
+														.fromPath("/X")
+														.withCode(code)
+														.filters("")
+														.build().content();
 	assertAll("checking content",
 		() -> assertNotNull(codeSlots, "Should get a complete content output"),
 		() -> assertTrue(codeSlots.startsWith("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")),
@@ -65,7 +73,7 @@ public void testGenerateContent() throws Exception {
 }
 
 /*
- *    Copyright 2020 Daniel Giribet
+ *    Copyright 2024 Daniel Giribet
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
