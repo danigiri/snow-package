@@ -47,15 +47,15 @@ public void testGenerateCodeIdentity() throws Exception {
 	Document doc = DaggerXMLParserComponent.builder().withContent(content).build().document().get();
 	List<SPCellSlot> slots = SPCellSlotInjectorModule.codeSlots(doc, jsx);
 
-	String exp = 	"012345678<Row>\n" + 
-					"	<Col size=\"12\">\n" + 
-					"	</Col>\n" + 
-					"</Row>;7890\n" + 
-					"012345678<Row>\n" + 
-					"	<Col size=\"12\"><Data number=\"1\"/></Col>\n" + 
-					"</Row>;7890\n" + 
-					"0123456789012345678901234567890123456789012345678901\n";
-	String code = SPCellSlotInjectorModule.code(slots, jsx, filters);
+	var exp = 	"012345678<Row>\n" + 
+				"	<Col size=\"12\">\n" + 
+				"	</Col>\n" + 
+				"</Row>;7890\n" + 
+				"012345678<Row>\n" + 
+				"	<Col size=\"12\"><Data number=\"1\"/></Col>\n" + 
+				"</Row>;7890\n" + 
+				"0123456789012345678901234567890123456789012345678901\n";
+	String code = SPCellSlotInjectorModule.code(slots, jsx, filters, SPCellSlotInjectorModule.params(slots,jsx));
 	assertEquals(exp, code);
 	//System.out.println(jsx);
 	//System.err.println(code);
@@ -70,7 +70,7 @@ public void testGenerateCodeModified() throws Exception {
 
 	Document doc = DaggerXMLParserComponent.builder().withContent(content).build().document().get();
 	List<SPCellSlot> slots = SPCellSlotInjectorModule.codeSlots(doc, jsx);
-	String code = SPCellSlotInjectorModule.code(slots, jsx, filters);
+	String code = SPCellSlotInjectorModule.code(slots, jsx, filters, SPCellSlotInjectorModule.params(slots,jsx));
 	assertNotNull(code);
 	//System.out.println(jsx);
 	//System.err.println(code);

@@ -108,7 +108,7 @@ public static String codeSlots(@Named("Slots") String slots, String code, @Named
 						DaggerSPCellSlotComponent.builder().with(code).json(j).build().slot()
 					));
 		Map<String, Object> v = MorfeuUtils.paramMap("cellSlots", createdSlots, "code", code);
-		String template = "templates/cellslots-to-codeslots.twig";
+		String template = "cellslots-to-codeslots.ftl";
 		out = DaggerViewComponent.builder().withTemplatePath(template).withValue(v).build().render();
 	} catch (Exception e) {
 		throw new RuntimeException("Slots parsed had incorrect structure", e);
@@ -131,7 +131,7 @@ public static String codeSlots(@Named("Slots") String slots, String code, @Named
 @Provides @Named("Content") 
 public static String content(@Named("CodeSlots") String codeSlots, String code,	@Named("Path") String path) {
 	return DaggerViewComponent.builder()
-									.withTemplatePath("templates/codeslots-to-xml.twig")
+									.withTemplatePath("codeslots-to-xml.ftl")
 									.withValue(MorfeuUtils.paramStringMap("codeslots", codeSlots, "path", path))
 									.build()
 									.render();

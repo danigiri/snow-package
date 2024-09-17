@@ -17,7 +17,7 @@ import cat.calidos.morfeu.utils.Tezt;
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class SPCellSlotInjectorComponentIntTest extends Tezt {
 
-private static final String SAVE_FILTER = DaggerSPCellSlotInjectorComponent.DEFAULT_SAVE_FILTER;
+private static final String SAVE_FILTER = SPCellSlotInjectorComponent.DEFAULT_SAVE_FILTER;
 
 @Test @DisplayName("Test inject JSX codeslots")
 public void testInjectJSXCodeSlots() throws Exception {

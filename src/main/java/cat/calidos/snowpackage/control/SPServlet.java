@@ -4,9 +4,7 @@ import java.util.Map;
 
 import cat.calidos.morfeu.control.MorfeuServlet;
 import cat.calidos.morfeu.webapp.injection.ControlComponent;
-import cat.calidos.morfeu.webapp.injection.DaggerControlComponent;
 import cat.calidos.snowpackage.control.injection.DaggerSPControlComponent;
-
 
 /**
 *	@author daniel giribet
@@ -18,9 +16,9 @@ public class SPServlet extends MorfeuServlet {
 public ControlComponent getControl(String path, Map<String, String> params) {
 	return DaggerSPControlComponent.builder()
 									.withPath(path)
-									.method(DaggerControlComponent.GET)
+									.method(ControlComponent.GET)
 									.withParams(params)
-									.andContext(context)
+									.andContext(this.context)
 									.build();
 }
 
@@ -29,9 +27,9 @@ public ControlComponent getControl(String path, Map<String, String> params) {
 public ControlComponent postControl(String path, Map<String, String> params) {
 	return DaggerSPControlComponent.builder()
 									.withPath(path)
-									.method(DaggerControlComponent.POST)
+									.method(ControlComponent.POST)
 									.withParams(params)
-									.andContext(context)
+									.andContext(this.context)
 									.build();
 }
 
@@ -39,7 +37,7 @@ public ControlComponent postControl(String path, Map<String, String> params) {
 }
 
 /*
- *    Copyright 2020 Daniel Giribet
+ *    Copyright 2024 Daniel Giribet
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.

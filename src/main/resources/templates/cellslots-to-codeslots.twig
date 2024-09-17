@@ -1,7 +1,0 @@
-{%- set cellslots = v.cellSlots -%}
-{%- set code = v.code -%}
-{% for c in cellslots -%}
-	{%- set start = c.start -%}
-	{%- set end = c.end -%}
-<codeslot type="{{c.type}}" id="{{loop.index}}" start="{{start}}" end="{{end}}">{{ code.substring(start, end) }}</codeslot>
-{%- endfor -%}

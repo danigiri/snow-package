@@ -33,6 +33,8 @@ import cat.calidos.morfeu.utils.injection.DaggerURIComponent;
 import cat.calidos.morfeu.webapp.GenericHttpServlet;
 import cat.calidos.snowpackage.model.injection.DaggerSPCellSlotInjectorComponent;
 import cat.calidos.snowpackage.model.injection.DaggerSPCellSlotParserComponent;
+import cat.calidos.snowpackage.model.injection.SPCellSlotInjectorComponent;
+import cat.calidos.snowpackage.model.injection.SPCellSlotParserComponent;
 
 /** We take a file path from the request, read it and turn it into a document
 *	@author daniel giribet
@@ -46,8 +48,8 @@ protected final static Logger log = LoggerFactory.getLogger(SPFileContentControl
 private static final String PATH = "/content/(.+\\.jsx)";
 private static final String PROBLEM = "";
 private static final String FILTERS_PARAM = "filters";	// applied just before returning the content
-private static final String DEFAULT_LOAD_FILTER = DaggerSPCellSlotParserComponent.DEFAULT_LOAD_FILTER;
-private static final String DEFAULT_SAVE_FILTER = DaggerSPCellSlotInjectorComponent.DEFAULT_SAVE_FILTER;
+private static final String DEFAULT_LOAD_FILTER = SPCellSlotParserComponent.DEFAULT_LOAD_FILTER;
+private static final String DEFAULT_SAVE_FILTER = SPCellSlotInjectorComponent.DEFAULT_SAVE_FILTER;
 
 private static String prefix;
 

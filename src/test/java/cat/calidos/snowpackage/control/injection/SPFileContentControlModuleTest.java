@@ -48,11 +48,11 @@ public void testGenerateJSXContent() throws Exception {
 
 	setupPathElements("classes/test-resources/documents/example-1.jsx");
 
-	Properties config = new Properties();
+	var config = new Properties();
 	config.put(MorfeuServlet.RESOURCES_PREFIX, "file:./target/");
 
 	String content = SPFileContentControlModule.get(config).apply(pathElems, MorfeuUtils.emptyParamStringMap());
-	//System.err.println(content);
+	// System.out.println(content);
 	assertNotNull(content);
 	compareWithXMLFile(content, "./target/classes/test-resources/documents/example-1.xml");
 
@@ -64,21 +64,14 @@ public void testGenerateJSXContentMultipleSlots() throws Exception {
 
 	setupPathElements("classes/test-resources/documents/example-2.jsx");
 
-	Properties config = new Properties();
+	var config = new Properties();
 	config.put(MorfeuServlet.RESOURCES_PREFIX, "file:./target/");
 
 	String content = SPFileContentControlModule.get(config).apply(pathElems, MorfeuUtils.emptyParamStringMap());
-	//System.err.println(content);
+	// System.out.println(content);
 	assertNotNull(content);
+	compareWithXMLFile(content, "./target/classes/test-resources/documents/example-2.xml");
 
-	Document doc = DaggerXMLParserComponent.builder().withContent(content).build().document().get();
-	NodeList children = doc.getChildNodes().item(0).getChildNodes();
-	assertAll("checking cell slots",
-		() -> assertNotNull(children),
-		() -> assertEquals(4, children.getLength()),
-		() -> assertEquals("codeslot", children.item(1).getNodeName()),
-		() -> assertEquals("codeslot", children.item(2).getNodeName())
-	);
 
 
 }
@@ -103,7 +96,7 @@ public void testSaveJSX() throws Exception {
 
 	Map<String, String> params = MorfeuUtils.paramStringMap(GenericHttpServlet.POST_VALUE, content);
 	String result = SPFileContentControlModule.post(config).apply(pathElems, params);
-	//System.err.println(result);
+	// System.out.println(result);
 
 	// check operation result first
 	assertAll("check result",
@@ -133,12 +126,12 @@ public void testSaveJSXPrecision() throws Exception {
 
 	setupPathElements("classes/test-resources/documents/example-3.jsx");
 
-	File contentFile = new File("./target/classes/test-resources/documents/example-3-edit.xml");
+	var contentFile = new File("./target/classes/test-resources/documents/example-3-edit.xml");
 	String content = FileUtils.readFileToString(contentFile, Config.DEFAULT_CHARSET);
 
 	// we copy the original JSX source to the temp folder so new content can be injected and modified
-	File originalJSXFile = new File("./target/"+jsxPath);
-	File destinationJSXFile = new File(tmp+jsxPath);
+	var originalJSXFile = new File("./target/"+jsxPath);
+	var destinationJSXFile = new File(tmp+jsxPath);
 	FileUtils.copyFile(originalJSXFile, destinationJSXFile);
 
 	Properties config = new Properties();
@@ -146,6 +139,7 @@ public void testSaveJSXPrecision() throws Exception {
 
 	Map<String, String> params = MorfeuUtils.paramStringMap(GenericHttpServlet.POST_VALUE, content);
 	String result = SPFileContentControlModule.post(config).apply(pathElems, params);
+	// System.out.println(result);
 	// check operation result first
 	assertAll("check result",
 		() -> assertNotNull(result),
@@ -153,6 +147,7 @@ public void testSaveJSXPrecision() throws Exception {
 	);
 
 	String jsx = FileUtils.readFileToString(destinationJSXFile, Config.DEFAULT_CHARSET);
+	System.out.println(result);
 	//System.err.println(jsx);
 	assertAll("check jsx output",
 			() -> assertTrue(jsx.startsWith("const a ="), "Did not start correctly"),

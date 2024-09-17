@@ -3,7 +3,7 @@
 		xsi:noNamespaceSchemaLocation="../models/snowpackage-model.xsd"
 		path="classes/test-resources/documents/filtered.jsx"
 >
-<codeslot type="___code" id="1" start="51" end="410"><Row>
+<codeslot type="___code" id="0" start="51" end="410"><Row>
 	<Col size="4">
 		<Data text="{'blahblah'+''}" number="{40+2}" />
 	</Col>

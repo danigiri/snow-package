@@ -6,6 +6,7 @@ import dagger.producers.Produces;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Named;
 
@@ -29,11 +30,12 @@ public class SPCellSlotInjectorModule {
 @Produces
 public static String code(List<SPCellSlot> codeSlots,
 							@Named("Code") String code,
-							@Named("filters") String filters) throws ConfigurationException, ParsingException{
+							@Named("filters") String filters,
+							Map<String, Object> params) throws ConfigurationException, ParsingException{
 
 	String jsx = DaggerViewComponent.builder()
-										.withTemplatePath("templates/cellslots-to-jsx.twig")
-										.withValue(MorfeuUtils.paramMap("cellslots", codeSlots, "code", code))
+										.withTemplatePath("cellslots-to-jsx.ftl")
+										.withValue(params)
 										.build()
 										.render();
 	if (!filters.isEmpty()) {
@@ -67,6 +69,16 @@ public static List<SPCellSlot> codeSlots(org.w3c.dom.Document doc,  @Named("Code
 
 	return codeSlots;
 
+}
+
+@Produces
+public static Map<String, Object> params(List<SPCellSlot> codeSlots, @Named("Code") String code) {
+	// setting the size and end here instead of in the template as freemarker is complaining
+	int size = codeSlots.size();
+	return MorfeuUtils.paramMap("cellslots", codeSlots, 
+								"code", code,
+								"size", size,
+								"end", size>0 ? codeSlots.get(0).getStart() : 0);
 }
 
 

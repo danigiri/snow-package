@@ -2,17 +2,15 @@ package cat.calidos.snowpackage.control.injection;
 
 import java.util.function.BiFunction;
 
+import javax.inject.Named;
+
 import dagger.multibindings.IntKey;
 import dagger.multibindings.IntoMap;
 import dagger.producers.Produces;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import dagger.producers.ProducerModule;
 
-import javax.inject.Named;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +52,7 @@ public static BiFunction<HttpServletRequest, HttpServletResponse, Boolean> fileT
 
 
 /*
- *    Copyright 2020 Daniel Giribet
+ *    Copyright 2024 Daniel Giribet
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.

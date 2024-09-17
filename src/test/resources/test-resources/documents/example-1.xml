@@ -2,7 +2,7 @@
 <codeslots xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="../models/snowpackage-model.xsd"
 	path="classes/test-resources/documents/example-1.jsx">
-	<codeslot type="___code" id="1" start="25" end="348"><Row>
+	<codeslot type="___code" id="0" start="25" end="348"><Row>
 			<Col size="4">
 				<Data text="blahblah" number="42" />
 			</Col>
