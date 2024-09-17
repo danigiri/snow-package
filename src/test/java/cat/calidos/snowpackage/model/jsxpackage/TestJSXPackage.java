@@ -16,7 +16,7 @@ public class TestJSXPackage extends SPTezt {
 @Test @DisplayName("Test basic JSX structure")
 public void testBasicCode() throws Exception {
 
-	String code = "function formatName(user) {\n" + 
+	var code = "function formatName(user) {\n" + 
 			"  return user.firstName + ' ' + user.lastName;\n" + 
 			"}\n" + 
 			"\n" + 
@@ -52,7 +52,7 @@ public void testBasicCode() throws Exception {
 @Test @DisplayName("Test multiple JSX structures")
 public void testMultipleStructures() throws Exception {
 
-	String code = "function formatName(user) {\n" + 
+	var code = "function formatName(user) {\n" + 
 			"  return user.firstName + ' ' + user.lastName;\n" + 
 			"}\n" + 
 			"\n" + 
@@ -76,7 +76,7 @@ public void testMultipleStructures() throws Exception {
 			"ReactDOM.render(element2, document.getElementById('root'));";
 
 	String slots = runCode(code).trim();
-	System.err.println(slots);
+	//System.err.println(slots);
 	assertAll("Checking basic code slots",
 		() -> assertNotNull(slots),
 		() -> assertNotNull(slots),
@@ -96,7 +96,7 @@ public void testMultipleStructures() throws Exception {
 @Test @DisplayName("Test incorrect code")
 public void testIncorrectCode() throws Exception {
 
-	String code = "const element = <b>";
+	var code = "const element = <b>";
 	assertThrows(Exception.class, () -> runCode(code));
 
 }
@@ -105,7 +105,7 @@ public void testIncorrectCode() throws Exception {
 }
 
 /*
- *    Copyright 2020 Daniel Giribet
+ *    Copyright 2024 Daniel Giribet
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.

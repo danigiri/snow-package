@@ -22,8 +22,8 @@ private static final String SAVE_FILTER = SPCellSlotInjectorComponent.DEFAULT_SA
 @Test @DisplayName("Test inject JSX codeslots")
 public void testInjectJSXCodeSlots() throws Exception {
 
-	String code = "./target/classes/test-resources/documents/example-1.jsx";
-	String edit = "./target/classes/test-resources/documents/example-1-edit.xml";
+	var code = "./target/classes/test-resources/documents/example-1.jsx";
+	var edit = "./target/classes/test-resources/documents/example-1-edit.xml";
 	String jsx = generateJSX(code, edit);
 	//System.out.println(jsx);
 
@@ -42,8 +42,8 @@ public void testInjectJSXCodeSlots() throws Exception {
 @Test @DisplayName("Test inject JSX codeslots with precision")
 public void testInjectJSXCodeSlotsPrecision() throws Exception {
 
-	String code = "./target/classes/test-resources/documents/example-3.jsx";
-	String edit = "./target/classes/test-resources/documents/example-3.xml";	 //unmodified
+	var code = "./target/classes/test-resources/documents/example-3.jsx";
+	var edit = "./target/classes/test-resources/documents/example-3.xml";	 //unmodified
 	String jsx = generateJSX(code, edit);
 	assertNotNull(jsx);
 
@@ -55,8 +55,8 @@ public void testInjectJSXCodeSlotsPrecision() throws Exception {
 @Test @DisplayName("Test inject minimal JSX code 1")
 public void testGenerateCodeMinimal1() throws Exception {
 
-	String code = "./target/classes/test-resources/documents/minimal-1.jsx";
-	String edit = "./target/classes/test-resources/documents/minimal-1-edit.xml";
+	var code = "./target/classes/test-resources/documents/minimal-1.jsx";
+	var edit = "./target/classes/test-resources/documents/minimal-1-edit.xml";
 	String jsx = generateJSX(code, edit);
 	assertNotNull(jsx);
 	assertEquals("let a=<p/><p/>;", jsx);
@@ -69,8 +69,8 @@ public void testGenerateCodeMinimal1() throws Exception {
 @Test @DisplayName("Test inject minimal JSX code 2")
 public void testGenerateCodeMinimal2() throws Exception {
 
-	String code = "./target/classes/test-resources/documents/minimal-2.jsx";
-	String edit = "./target/classes/test-resources/documents/minimal-2-edit.xml";
+	var code = "./target/classes/test-resources/documents/minimal-2.jsx";
+	var edit = "./target/classes/test-resources/documents/minimal-2-edit.xml";
 	String jsx = generateJSX(code, edit);
 	assertNotNull(jsx);
 	assertEquals("let a=<><p/><p/></>;", jsx);

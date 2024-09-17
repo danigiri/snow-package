@@ -83,15 +83,15 @@ public void testSaveJSX() throws Exception {
 
 	setupPathElements("classes/test-resources/documents/example-1.jsx");
 
-	File contentFile = new File("./target/classes/test-resources/documents/example-1-edit.xml");
+	var contentFile = new File("./target/classes/test-resources/documents/example-1-edit.xml");
 	String content = FileUtils.readFileToString(contentFile, Config.DEFAULT_CHARSET);
 
 	// we copy the original JSX source to the temp folder so new content can be injected and modified
-	File originalJSXFile = new File("./target/"+jsxPath);
-	File destinationJSXFile = new File(tmp+jsxPath);
+	var originalJSXFile = new File("./target/"+jsxPath);
+	var destinationJSXFile = new File(tmp+jsxPath);
 	FileUtils.copyFile(originalJSXFile, destinationJSXFile);
 
-	Properties config = new Properties();
+	var config = new Properties();
 	config.put(MorfeuServlet.RESOURCES_PREFIX, "file:"+tmp);
 
 	Map<String, String> params = MorfeuUtils.paramStringMap(GenericHttpServlet.POST_VALUE, content);
@@ -134,7 +134,7 @@ public void testSaveJSXPrecision() throws Exception {
 	var destinationJSXFile = new File(tmp+jsxPath);
 	FileUtils.copyFile(originalJSXFile, destinationJSXFile);
 
-	Properties config = new Properties();
+	var config = new Properties();
 	config.put(MorfeuServlet.RESOURCES_PREFIX, "file:"+tmp);
 
 	Map<String, String> params = MorfeuUtils.paramStringMap(GenericHttpServlet.POST_VALUE, content);
@@ -147,8 +147,7 @@ public void testSaveJSXPrecision() throws Exception {
 	);
 
 	String jsx = FileUtils.readFileToString(destinationJSXFile, Config.DEFAULT_CHARSET);
-	System.out.println(result);
-	//System.err.println(jsx);
+	// System.err.println(jsx);
 	assertAll("check jsx output",
 			() -> assertTrue(jsx.startsWith("const a ="), "Did not start correctly"),
 			() -> assertTrue(jsx.contains("<Stuff>a</Stuff>"), "Does not inject code")
@@ -185,7 +184,7 @@ private void setupPathElements(String path) {
 }
 
 /*
- *    Copyright 2020 Daniel Giribet
+ *    Copyright 2024 Daniel Giribet
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.

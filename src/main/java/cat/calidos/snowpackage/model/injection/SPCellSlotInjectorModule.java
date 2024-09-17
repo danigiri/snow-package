@@ -55,7 +55,7 @@ public static String code(List<SPCellSlot> codeSlots,
 public static List<SPCellSlot> codeSlots(org.w3c.dom.Document doc,  @Named("Code") String code)
 											throws ConfigurationException, ParsingException {
 
-	List<SPCellSlot> codeSlots = new ArrayList<SPCellSlot>();
+	var codeSlots = new ArrayList<SPCellSlot>();
 	List<Node> pendingCodeSlotNodes = new LinkedList<Node>();
 	pendingCodeSlotNodes = addChildrenToList(doc, pendingCodeSlotNodes);
 	while (!pendingCodeSlotNodes.isEmpty()) {

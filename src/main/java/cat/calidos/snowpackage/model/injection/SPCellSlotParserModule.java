@@ -65,7 +65,7 @@ public static ReadyTask runJSX(@Named("Configuration") Properties config) {
 	String nodeFolder = config.getProperty(NODEFOLDER_PROPERTY, NODEFOLDER);
 	String tsNodeCommand = config.getProperty(TSNODE_PROPERTY, TSNODE_PATH);
 	String tsCode = config.getProperty(TSCODE_PROPERTY, TSCODE_PATH);
-	String command = "PATH=$PATH:"+nodeFolder+" "+ tsNodeCommand+" "+tsCode+" --jsx";
+	var command = "PATH=$PATH:"+nodeFolder+" "+ tsNodeCommand+" "+tsCode+" --jsx";
 
 	return DaggerExecTaskComponent.builder()
 									.exec( "/bin/bash", "-c", command)
@@ -141,7 +141,7 @@ public static String content(@Named("CodeSlots") String codeSlots, String code,	
 }
 
 /*
- *    Copyright 2020 Daniel Giribet
+ *    Copyright 2024 Daniel Giribet
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.

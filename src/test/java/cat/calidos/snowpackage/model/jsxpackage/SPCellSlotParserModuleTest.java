@@ -25,7 +25,7 @@ public class SPCellSlotParserModuleTest extends SPTezt {
 @Test @DisplayName("Test generate JSX")
 public void testRunJSX() {
 
-	Properties properties = new Properties();
+	var properties = new Properties();
 	properties.putAll(MorfeuUtils.paramStringMap(SPCellSlotParserModule.NODEFOLDER_PROPERTY, "aa",
 													SPCellSlotParserModule.TSNODE_PROPERTY, "/bb",
 													SPCellSlotParserModule.TSCODE_PROPERTY, "cc.ts"));
@@ -43,7 +43,7 @@ public void testApply() {
 
 	ReadyTask task = jsxTask();
 
-	String code = "function formatName(user) {\n" + 
+	var code = "function formatName(user) {\n" + 
 			"  return user.firstName + ' ' + user.lastName;\n" + 
 			"}\n" + 
 			"\n" + 
@@ -61,7 +61,7 @@ public void testApply() {
 			"ReactDOM.render(element, document.getElementById('root'));";
 	//System.err.println(code);
 
-	String expected = "[{\"type\":\"___fragment\", "
+	var expected = "[{\"type\":\"___fragment\", "
 						+ "\"start_line\":\"11\", \"start_column\":\"8\", "
 						+ "\"end_line\":\"14\", \"end_column\":\"6\"}]\n";
 	String slots = SPCellSlotParserModule.slots(task, code);
@@ -84,8 +84,8 @@ public void testStartEnd() throws Exception {
 	//System.err.println(slots);
 	//[{"type":"___code", "start_line":"1", "start_column":"9", "end_line":"4", "end_column":"6"},
 	//{"type":"___code", "start_line":"5", "start_column":"9", "end_line":"8", "end_column":"6"}]
-	String expectedSlot1 = "{\"type\":\"___code\", \"start_line\":\"1\", \"start_column\":\"9\", \"end_line\":\"4\", \"end_column\":\"6\"}";
-	String expectedSlot2 = "{\"type\":\"___code\", \"start_line\":\"5\", \"start_column\":\"9\", \"end_line\":\"8\", \"end_column\":\"6\"}";
+	var expectedSlot1 = "{\"type\":\"___code\", \"start_line\":\"1\", \"start_column\":\"9\", \"end_line\":\"4\", \"end_column\":\"6\"}";
+	var expectedSlot2 = "{\"type\":\"___code\", \"start_line\":\"5\", \"start_column\":\"9\", \"end_line\":\"8\", \"end_column\":\"6\"}";
 	assertAll("test slot",
 		() -> assertNotNull(slots),
 		() -> assertTrue(slots.contains(expectedSlot1)),
@@ -101,7 +101,7 @@ public void testStartEndMinimal1() throws Exception {
 
 	String code = readCode("./target/classes/test-resources/documents/minimal-1.jsx");
 	String slots = SPCellSlotParserModule.slots(task, code);
-	String expected = "[{\"type\":\"___code\", \"start_line\":\"1\", \"start_column\":\"6\", \"end_line\":\"1\", \"end_column\":\"10\"}]\n";
+	var expected = "[{\"type\":\"___code\", \"start_line\":\"1\", \"start_column\":\"6\", \"end_line\":\"1\", \"end_column\":\"10\"}]\n";
 	assertEquals(expected, slots);
 
 	//	let a=<p/>;
@@ -117,7 +117,7 @@ public void testStartEndMinimal2() throws Exception {
 
 	String code = readCode("./target/classes/test-resources/documents/minimal-2.jsx");
 	String slots = SPCellSlotParserModule.slots(task, code);
-	String expected = "[{\"type\":\"___fragment\", \"start_line\":\"1\", \"start_column\":\"8\", \"end_line\":\"1\", \"end_column\":\"12\"}]\n";
+	var expected = "[{\"type\":\"___fragment\", \"start_line\":\"1\", \"start_column\":\"8\", \"end_line\":\"1\", \"end_column\":\"12\"}]\n";
 	assertEquals(expected, slots);	// we skip <> and </>
 
 	//	let a=<><</>p/>;
@@ -129,7 +129,7 @@ public void testStartEndMinimal2() throws Exception {
 
 public ReadyTask jsxTask() {
 
-	Properties properties = new Properties();
+	var properties = new Properties();
 	properties.putAll(MorfeuUtils.paramStringMap(SPCellSlotParserModule.NODEFOLDER_PROPERTY, nodeFolder,
 													SPCellSlotParserModule.TSNODE_PROPERTY, tsNodeCommand,
 													SPCellSlotParserModule.TSCODE_PROPERTY, tsCode));

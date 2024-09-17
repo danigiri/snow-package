@@ -50,7 +50,7 @@ public static @Named("content") String content(@Nullable Node node) {
 
 	// TODO: here we could check the indentation and shift to the left
 
-	StringBuffer contentBuffer = new StringBuffer();
+	var contentBuffer = new StringBuffer();
 	NodeList children = node.getChildNodes();
 	for (int i=0; i< children.getLength(); i++) {
 		try {
@@ -145,7 +145,7 @@ private static int countWhitespace(String content) {
 		return 0;
 	}
 
-	int i = 0;
+	var i = 0;
 	char c = content.charAt(0);
 	while (++i<len && (c=='\n' || c==' ' || c=='\t')) {
 			c = content.charAt(i);
@@ -158,7 +158,7 @@ private static int countWhitespace(String content) {
 
 private static String replaceWhitespace(String s, int count) {
 
-	int i = 0;
+	var i = 0;
 	while (i<count && i<s.length() && (s.charAt(i)==' ' || s.charAt(i)=='\t')) {
 		i++;
 	}
