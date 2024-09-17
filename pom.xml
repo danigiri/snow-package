@@ -29,7 +29,7 @@
 		<jetty-context-path>/</jetty-context-path>
 		<webapp-prefix>http://localhost:${jetty-http-port}${jetty-context-path}/</webapp-prefix>
 		<dagger-2-version>2.51.1</dagger-2-version>
-		<jackson-2-version>2.17.1</jackson-2-version>
+		<jackson-2-version>2.17.2</jackson-2-version>
 		<jetty-version>12.0.8</jetty-version>
 		<freemarker-version>2.3.33</freemarker-version>
 		<morfeu-version>0.8.18-SNAPSHOT</morfeu-version>
