@@ -12,13 +12,10 @@ import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 
 import cat.calidos.morfeu.control.MorfeuServlet;
 import cat.calidos.morfeu.utils.Config;
 import cat.calidos.morfeu.utils.MorfeuUtils;
-import cat.calidos.morfeu.utils.injection.DaggerXMLParserComponent;
 import cat.calidos.morfeu.webapp.GenericHttpServlet;
 import cat.calidos.snowpackage.SPTezt;
 

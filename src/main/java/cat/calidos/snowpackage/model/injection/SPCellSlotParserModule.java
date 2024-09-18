@@ -42,7 +42,7 @@ private static final String TSX = "tsx";
 private static final String PATH = "/slots/(jsx|tsx)/?";
 
 public static String TSNODE_PROPERTY = "tsnode";
-public static String TSNODE_PATH = "/usr/local/bin/ts-node";
+public static String TSNODE_PATH = "src/main/angular/node_modules/.bin/ts-node";
 public static String TSCODE_PROPERTY = "tscode";
 public static String TSCODE_PATH = "./src/main/angular/src/app/snow-package.ts";
 public static String NODEFOLDER_PROPERTY = "nodefolder";

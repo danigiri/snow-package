@@ -12,6 +12,7 @@ import cat.calidos.morfeu.runtime.api.StartingTask;
 import cat.calidos.morfeu.runtime.api.Task;
 import cat.calidos.morfeu.runtime.injection.DaggerExecTaskComponent;
 import cat.calidos.morfeu.utils.Tezt;
+import cat.calidos.snowpackage.model.injection.SPCellSlotParserModule;
 //import cat.calidos.morfeu.webapp.UITezt;
 
 /**	Run TS code as a sub-process for testing
@@ -22,12 +23,14 @@ public class SPTezt extends Tezt {
 
 protected static String DEFAULT_URL = "http://localhost:4200";
 protected static String DEFAULT_WEBAPP_BASE_URL = DEFAULT_URL+"/";
-protected static String TSNODE_PROPERTY = "tsnode";
-protected static String TSNODE_PATH = "/usr/local/bin/ts-node";
-protected static String TSCODE_PROPERTY = "tscode";
-protected static String TSCODE_PATH = "./src/main/angular/src/app/snow-package.ts";
-protected static String NODEFOLDER_PROPERTY = "nodefolder";
-protected static String NODEFOLDER = "/usr/local/bin";
+// we reuse properties from the module for the test, to avoid drift, though they can still
+// be overriden
+protected static String TSNODE_PROPERTY = SPCellSlotParserModule.TSNODE_PROPERTY;
+protected static String TSNODE_PATH = SPCellSlotParserModule.TSNODE_PATH;
+protected static String TSCODE_PROPERTY = SPCellSlotParserModule.TSCODE_PROPERTY;
+protected static String TSCODE_PATH = SPCellSlotParserModule.TSCODE_PATH;
+protected static String NODEFOLDER_PROPERTY = SPCellSlotParserModule.NODEFOLDER_PROPERTY;
+protected static String NODEFOLDER = SPCellSlotParserModule.NODEFOLDER;
 private static final String JSX = "jsx";
 
 //private SPUITezt tezt;
