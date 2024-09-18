@@ -136,14 +136,15 @@
 					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
-			<plugin>	<!-- when doing a release:perform, the project is checked out freshly, need a npm install -->
+			<plugin>	<!-- when testing, we need to ensure we have the node env setup, as we freshly checkout a copy
+							of the code for releases, we will have to recreate it -->
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>3.2.0</version>
 				<executions>
 					<execution>
 						<id>install-npm</id>
-						<phase>package</phase>
+						<phase>test</phase>
 						<goals>
 							<goal>exec</goal>
 						</goals>
@@ -152,7 +153,7 @@
 							<workingDirectory />
 							<arguments>
 								<argument>-cx</argument>
-								<argument>[ -d ${checkout.folder_} ] &amp;&amp; cd ${checkout.folder_} &amp;&amp; npm install --force || true
+								<argument>[ -d ${checkout.folder_}/node_modules ] &amp;&amp; cd ${checkout.folder_} &amp;&amp; npm install --force || true
 								</argument>
 							</arguments>
 						</configuration>
