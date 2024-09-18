@@ -10,7 +10,7 @@ import { Keyvalue } from './components/keyvalue';
 import { Readonly } from './components/readonly';
 import { Categ } from './components/categ';
 
-export function Preview(props) {
+export function Preview() {
 
 	const { component } = useParams();
 	const query = useQuery(); 
@@ -21,34 +21,34 @@ export function Preview(props) {
 	let preview;
 	switch(component) {
 		case 'Stuff':
-			preview = Stuff(content);
+			preview = new Stuff(content);
 		break;
 		case 'Data':
-			preview = Data(params);
+			preview = new Data(params);
 		break;
 		case 'Data3':
-			preview = Data3(params);
+			preview = new Data3(params);
 		break;
 		case 'Data4':
-			preview = Data4(params);
+			preview = new Data4(params);
 		break;
 		case 'Data5':
-			preview = Data4(params);
+			preview = new Data4(params);
 		break;
 		case 'Keyvalue':
-			preview = Keyvalue(params);
+			preview = new Keyvalue(params);
 		break;
 		case 'Readonly':
-			preview = Readonly(params);
+			preview = new Readonly(params);
 		break;
 		case 'Categ':
-			preview = Categ(params);
+			preview = new Categ(params);
 		break;
 	default:
-		preview = '';
+		preview = '<p>Unknown component</p>';
 	}
 
-	return  preview;
+	return preview.render();
 
 }
 
@@ -58,7 +58,7 @@ function useQuery() {
 }
 
 /*
- *	  Copyright 2020 Daniel Giribet
+ *	  Copyright 2024 Daniel Giribet
  *
  *	 Licensed under the Apache License, Version 2.0 (the "License");
  *	 you may not use this file except in compliance with the License.

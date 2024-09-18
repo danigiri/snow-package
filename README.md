@@ -21,10 +21,13 @@ Please refer to the [Morfeu](https://github.com/danigiri/morfeu) documentation f
         -D__PROXY_PREFIX=http://localhost:8990
         
     # start the morfeu frontend
-    cd morfeu/src/main/angular && npm start # ng serve --port 3000 --proxy-config proxy.conf.js --liveReload=true
+    cd morfeu/src/main/typescript && npm start
 
-    # start the snow package app
+    # start the snow package backend app
     mvn compile resources:resources jetty:run -D__RESOURCES_PREFIX=file://$(pwd)/target/classes/
+
+	# start the snow package test site
+	cd src/test/react && npm start
 
     # browser URL
     http://localhost:3000/?config=%2Fproxy%2Fconfig.json
