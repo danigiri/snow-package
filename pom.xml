@@ -42,7 +42,7 @@
 		<scm.host_>github.com</scm.host_>
 		<developer.id_>danigiri</developer.id_>
 		<maven.compiler.release>20</maven.compiler.release>
-		<checkout.folder_>${project.build.directory}/../src/main/angular</checkout.folder_>	<!-- release perform /target/ folder -->
+		<angular.folder_>/src/main/angular</angular.folder_>	<!-- release perform /target/ folder -->
 	</properties>
 
 	<scm>	<!-- mvn -B release:prepare release:perform -Darguments=" -Dskip-build-client=true -DskipITs -Djetty.skip -DaltDeploymentRepository=REPO::default::file://$HOME/.m2/repository" -->
@@ -136,8 +136,7 @@
 					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
-			<plugin>	<!-- when testing, we need to ensure we have the node env setup, as we freshly checkout a copy
-							of the code for releases, we will have to recreate it -->
+			<plugin>	<!-- when testing, we need to ensure we have the node env setup -->
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>3.2.0</version>
@@ -153,9 +152,28 @@
 							<workingDirectory />
 							<arguments>
 								<argument>-cx</argument>
-								<argument>[ -d ${checkout.folder_} ] &amp;&amp; \
-										  [ ! -d ${checkout.folder_}/node_modules ] &amp;&amp; \
-											 cd ${checkout.folder_} &amp;&amp; npm install --force || true
+								<argument>[ -d ${project.basedir}/${angular.folder_} ] &amp;&amp; \
+											[ ! -d ${project.basedir}/${angular.folder_}/node_modules ] &amp;&amp; \
+											cd ${project.basedir}/${angular.folder_} &amp;&amp; npm install --force || true
+								</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<!-- as we freshly checkout a copy of the code for releases, we will have to recreate it -->
+					<execution>
+						<id>install-npm-release</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>bash</executable>
+							<workingDirectory />
+							<arguments>
+								<argument>-cx</argument>
+								<argument>[ -d ${workingDirectory}/${angular.folder_} ] &amp;&amp; \
+											[ ! -d ${workingDirectory}/${angular.folder_}/node_modules ] &amp;&amp; \
+											cd  ${workingDirectory}/${angular.folder_} &amp;&amp; npm install --force || true
 								</argument>
 							</arguments>
 						</configuration>
