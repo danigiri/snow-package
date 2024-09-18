@@ -144,7 +144,7 @@
 				<executions>
 					<execution>
 						<id>install-npm</id>
-						<phase>test</phase>
+						<phase>initialize</phase> <!-- initialize build state, e.g. set properties... -->
 						<goals>
 							<goal>exec</goal>
 						</goals>
@@ -153,7 +153,9 @@
 							<workingDirectory />
 							<arguments>
 								<argument>-cx</argument>
-								<argument>[ -d ${checkout.folder_}/node_modules ] &amp;&amp; cd ${checkout.folder_} &amp;&amp; npm install --force || true
+								<argument>[ -d ${checkout.folder_} ] &amp;&amp; \
+										  [ ! -d ${checkout.folder_}/node_modules ] &amp;&amp; \
+											 cd ${checkout.folder_} &amp;&amp; npm install --force || true
 								</argument>
 							</arguments>
 						</configuration>
