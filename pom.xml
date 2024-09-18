@@ -42,7 +42,7 @@
 		<scm.host_>github.com</scm.host_>
 		<developer.id_>danigiri</developer.id_>
 		<maven.compiler.release>20</maven.compiler.release>
-		<angular.folder_>/src/main/angular</angular.folder_>	<!-- release perform /target/ folder -->
+		<angular.folder_>src/main/angular</angular.folder_>	<!-- release perform /target/ folder -->
 	</properties>
 
 	<scm>	<!-- mvn -B release:prepare release:perform -Darguments=" -Dskip-build-client=true -DskipITs -Djetty.skip -DaltDeploymentRepository=REPO::default::file://$HOME/.m2/repository" -->
@@ -117,7 +117,7 @@
 				<configuration>
 					<webResources>
 						<resource>	<!-- the images of resources like the code slots make it to the war -->
-							<directory>${project.basedir}/src/main/angular/src/assets</directory>
+							<directory>${project.basedir}/${angular.folder_}/src/assets</directory>
 						</resource>
 						<resource>
 							<directory>${project.build.outputDirectory}/metadata</directory>	<!-- metadata -->
@@ -136,7 +136,7 @@
 					<tagNameFormat>v@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
-			<plugin>	<!-- when testing, we need to ensure we have the node env setup -->
+			<plugin>	<!-- ensure we have the npm env, when testing or doing a fresh install with release plugin -->
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>3.2.0</version>
@@ -155,25 +155,6 @@
 								<argument>[ -d ${project.basedir}/${angular.folder_} ] &amp;&amp; \
 											[ ! -d ${project.basedir}/${angular.folder_}/node_modules ] &amp;&amp; \
 											cd ${project.basedir}/${angular.folder_} &amp;&amp; npm install --force || true
-								</argument>
-							</arguments>
-						</configuration>
-					</execution>
-					<!-- as we freshly checkout a copy of the code for releases, we will have to recreate it -->
-					<execution>
-						<id>install-npm-release</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>bash</executable>
-							<workingDirectory />
-							<arguments>
-								<argument>-cx</argument>
-								<argument>[ -d ${workingDirectory}/${angular.folder_} ] &amp;&amp; \
-											[ ! -d ${workingDirectory}/${angular.folder_}/node_modules ] &amp;&amp; \
-											cd  ${workingDirectory}/${angular.folder_} &amp;&amp; npm install --force || true
 								</argument>
 							</arguments>
 						</configuration>
