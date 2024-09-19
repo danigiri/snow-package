@@ -14,8 +14,7 @@ ARG MAVEN_CENTRAL_MIRROR=none
 ENV MAVEN_CENTRAL_MIRROR_=${MAVEN_CENTRAL_MIRROR}
 
 # install dependencies (bash to launch angular build, ncurses for pretty output with tput, git for npm deps)
-# notice that ts-node is not installed in usr/local/bin, so we make an alias as this is where snowpackage expects it
-RUN apk apt-get install bash ncurses git
+RUN apt-get install bash ncurses git
 # this installs node and npm (using the 'n' package manager)
 RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts
 RUN npm install -g @angular/cli
@@ -70,11 +69,8 @@ ARG JETTY_BASE=/jetty-base
 RUN apt-get install bash
 # this installs node and npm (using the 'n' package manager)
 RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts
-# we are using the built-in ts-node now
-# notice that ts-node is not installed in usr/local/bin, so we make an alias as this is where snowpackage expects it
-# RUN npm install -g typescript ts-node
-# RUN ln -s /usr/bin/ts-node /usr/local/bin/ts-node
 
+# install jetty
 RUN mkdir -p ${JETTY_HOME}
 RUN curl ${JETTY_URL} | tar zxf - -C ${JETTY_HOME} --strip-components 1
 
