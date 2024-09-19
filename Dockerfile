@@ -5,18 +5,20 @@ LABEL maintainer="Daniel Giribet - dani [at] calidos [dot] cat"
 
 # variables build stage
 ARG MORFEU_VERSION=v0.8.20
-ARG MAVEN_URL=https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+ARG MAVEN_URL=https://archive.apache.org/dist/maven/maven-3/3.9.8/binaries/apache-maven-3.9.8-bin.tar.gz
 ENV MORFEU_VERSION=${MORFEU_VERSION}
 ENV MAVEN_HOME /usr/share/maven
+# set a maven repo URL and a matching repo name ('central' recommended), like
+# --build-arg MAVEN_CENTRAL_MIRROR=http://REPOHOSTNAME/maven-central  --add-host=REPOHOSTNAME:IP
 ARG MAVEN_CENTRAL_MIRROR=none
 ENV MAVEN_CENTRAL_MIRROR_=${MAVEN_CENTRAL_MIRROR}
 
 # install dependencies (bash to launch angular build, ncurses for pretty output with tput, git for npm deps)
 # notice that ts-node is not installed in usr/local/bin, so we make an alias as this is where snowpackage expects it
-RUN apk add --no-cache curl bash ncurses git
-RUN apk add --no-cache --update nodejs npm
-RUN npm install -g @angular/cli typescript ts-node
-RUN ln -s /usr/bin/ts-node /usr/local/bin/ts-node
+RUN apk apt-get install bash ncurses git
+# this installs node and npm (using the 'n' package manager)
+RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts
+RUN npm install -g @angular/cli
 
 # install maven
 RUN mkdir -p ${MAVEN_HOME}
@@ -45,7 +47,7 @@ RUN /usr/bin/mvn dependency:go-offline
 # cache some node stuff to speed up builds
 COPY src/main/angular/*.json /cache/
 COPY src/main/angular/*.js /cache/
-RUN cd /cache/ && npm install
+RUN cd /cache/ && npm install --force
 
 # add code
 COPY src src
@@ -64,8 +66,8 @@ ENV JETTY_HOME /var/lib/jetty
 ENV JETTY_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/12.0.11/jetty-home-12.0.11.tar.gz
 ARG JETTY_BASE=/jetty-base
 
-# install bash, typescript, node ts-node to be able to use it to parse JS code
-RUN apk add --no-cache --update bash curl
+# install bash to launch subshell to parse jsx code
+RUN apt-get install bash
 # this installs node and npm (using the 'n' package manager)
 RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts
 # we are using the built-in ts-node now
