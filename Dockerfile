@@ -8,6 +8,8 @@ ARG MORFEU_VERSION=v0.8.20
 ARG MAVEN_URL=https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
 ENV MORFEU_VERSION=${MORFEU_VERSION}
 ENV MAVEN_HOME /usr/share/maven
+ARG MAVEN_CENTRAL_MIRROR=none
+ENV MAVEN_CENTRAL_MIRROR_=${MAVEN_CENTRAL_MIRROR}
 
 # install dependencies (bash to launch angular build, ncurses for pretty output with tput, git for npm deps)
 # notice that ts-node is not installed in usr/local/bin, so we make an alias as this is where snowpackage expects it
@@ -21,6 +23,12 @@ RUN mkdir -p ${MAVEN_HOME}
 RUN curl ${MAVEN_URL} | tar zxf - -C ${MAVEN_HOME} --strip-components 1
 RUN ln -s ${MAVEN_HOME}/bin/mvn /usr/bin/mvn
 
+# setup maven environment
+COPY src/main/resources/maven/settings.xml /tmp/settings.xml
+RUN if [ "${MAVEN_CENTRAL_MIRROR_}" != 'none' ]; then \
+  sed -i "s^MAVEN_CENTRAL_MIRROR^${MAVEN_CENTRAL_MIRROR_}^" /tmp/settings.xml && \
+  mkdir -v ${HOME}/.m2 &&  cp -v /tmp/settings.xml ${HOME}/.m2; \
+fi
 # checkout and build morfeu dependency, avoid building client as we do not need it for the java dependency
 #RUN echo 'Using maven options ${MAVEN_OPTS}'
 RUN git clone https://github.com/danigiri/morfeu.git && \
