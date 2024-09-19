@@ -1,11 +1,12 @@
-FROM openjdk:13-alpine AS build
+FROM eclipse-temurin:20 AS build
 
 LABEL maintainer="Daniel Giribet - dani [at] calidos [dot] cat"
 # docker build -t morfeu-webapp:latest --build-arg PROXY='http://192.168.1.30:3128/' --build-arg PROXY_HOST=192.168.1.30 --build-arg PROXY_PORT=3128 .
 
 # variables build stage
-ARG MORFEU_VERSION=v0.8.11
+ARG MORFEU_VERSION=v0.8.20
 ARG MAVEN_URL=https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+ENV MORFEU_VERSION=${MORFEU_VERSION}
 ENV MAVEN_HOME /usr/share/maven
 
 # install dependencies (bash to launch angular build, ncurses for pretty output with tput, git for npm deps)
@@ -48,29 +49,32 @@ RUN /usr/bin/mvn test war:war package
 #RUN echo 'build finished'
 
 
-FROM openjdk:13-alpine AS main
+FROM eclipse-temurin:20 AS main
 
-# variables run stage
-ENV JETTY_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/10.0.0.beta1/jetty-distribution-10.0.0.beta1.tar.gz
+# arguments and variables run stage
 ENV JETTY_HOME /var/lib/jetty
+ENV JETTY_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/12.0.11/jetty-home-12.0.11.tar.gz
 ARG JETTY_BASE=/jetty-base
 
 # install bash, typescript, node ts-node to be able to use it to parse JS code
+RUN apk add --no-cache --update bash curl
+# this installs node and npm (using the 'n' package manager)
+RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts
+# we are using the built-in ts-node now
 # notice that ts-node is not installed in usr/local/bin, so we make an alias as this is where snowpackage expects it
-RUN apk add --no-cache --update bash nodejs npm
-RUN npm install -g typescript ts-node
-RUN ln -s /usr/bin/ts-node /usr/local/bin/ts-node
+# RUN npm install -g typescript ts-node
+# RUN ln -s /usr/bin/ts-node /usr/local/bin/ts-node
 
-RUN apk add --no-cache curl
 RUN mkdir -p ${JETTY_HOME}
 RUN curl ${JETTY_URL} | tar zxf - -C ${JETTY_HOME} --strip-components 1
 
 # create jetty-base folder and add the jetty configuration and folder structure
-COPY --from=build ./target/classes/jetty /jetty-base
-RUN mkdir -p ${JETTY_BASE}/webapps ${JETTY_BASE}/resources
-COPY --from=build ./target/classes/jetty-logging.properties /jetty-base/resources
-# uncomment to create logs folder if we want to persist them (also enable the module)
-# RUN mkdir -p ${JETTY_BASE}/webapps ${JETTY_BASE}/logs
+COPY --from=build ./target/classes/jetty ${JETTY_BASE}
+RUN mkdir -p ${JETTY_BASE}/webapps ${JETTY_BASE}/resources ${JETTY_BASE}/lib/ext
+COPY --from=build ./target/classes/jetty-logging.properties /${JETTY_BASE}/resources
+# uncomment to create logs folder if we want to persist them (also enable the module, renaming it from .disabled)
+# RUN mkdir -p ${JETTY_BASE}/logs
+
 
 # add war
 COPY --from=build ./target/snow-package-*.war ${JETTY_BASE}/webapps/root.war
@@ -83,6 +87,8 @@ COPY --from=build ./src/main/angular ${JETTY_HOME}/src/main/angular
 RUN mkdir -p ${JETTY_HOME}/target/test-classes/test-resources
 COPY --from=build ./target/test-classes/test-resources ${JETTY_HOME}/target/test-classes/test-resources
 
-# start (notice we override the default port from morfeu)
-WORKDIR ${JETTY_HOME}
-ENTRYPOINT ["java", "-jar", "./start.jar", "jetty.base=/jetty-base", "--module=http", "jetty.http.port=8990"]
+# start jetty from its base folder (uncomment the scan interval when testing), this way of starting it means
+# we do not do a fork of the java process to run jetty, and also means ENV vars (like __RESOURCES_PREFIX) will be
+# received
+WORKDIR ${JETTY_BASE}
+ENTRYPOINT sh -c "$(java -jar ${JETTY_HOME}/start.jar jetty.deploy.scanInterval=1 --dry-run)"

@@ -45,7 +45,10 @@
 		<angular.folder_>src/main/angular</angular.folder_>	<!-- release perform /target/ folder -->
 	</properties>
 
-	<scm>	<!-- mvn -B release:prepare release:perform -Darguments=" -Dskip-build-client=true -DskipITs -Djetty.skip -DaltDeploymentRepository=REPO::default::file://$HOME/.m2/repository" -->
+	<scm>	<!-- mvn -B release:prepare release:perform \
+				-DscmReleaseCommitComment='@{prefix} @{releaseLabel} - Automated nmp install when releasing' \
+				-Darguments=" -DskipITs -Djetty.skip -DaltDeploymentRepository=REPO::default::file://$HOME/.m2/repository"
+			 -->
 		<connection>scm:git:git@${scm.host_}:${developer.id_}/snow-package.git</connection>
 		<url>scm:git:git@${scm.host_}:${developer.id_}/snow-package.git</url>
 		<developerConnection>scm:git:git@${scm.host_}:${developer.id_}/snow-package.git</developerConnection>
