@@ -4,7 +4,7 @@ LABEL maintainer="Daniel Giribet - dani [at] calidos [dot] cat"
 # docker build -t morfeu-webapp:latest --build-arg PROXY='http://192.168.1.30:3128/' --build-arg PROXY_HOST=192.168.1.30 --build-arg PROXY_PORT=3128 .
 
 # variables build stage
-ARG MORFEU_VERSION=v0.8.20
+ARG MORFEU_VERSION=v0.8.19
 ARG MAVEN_URL=https://archive.apache.org/dist/maven/maven-3/3.9.8/binaries/apache-maven-3.9.8-bin.tar.gz
 ENV MORFEU_VERSION=${MORFEU_VERSION}
 ENV MAVEN_HOME /usr/share/maven
@@ -14,7 +14,7 @@ ARG MAVEN_CENTRAL_MIRROR=none
 ENV MAVEN_CENTRAL_MIRROR_=${MAVEN_CENTRAL_MIRROR}
 
 # install dependencies (bash to launch angular build, ncurses for pretty output with tput, git for npm deps)
-RUN apt-get install bash ncurses git
+RUN apt-get update && apt-get install -y bash git
 # this installs node and npm (using the 'n' package manager)
 RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts
 RUN npm install -g @angular/cli
@@ -66,7 +66,7 @@ ENV JETTY_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/12.0.1
 ARG JETTY_BASE=/jetty-base
 
 # install bash to launch subshell to parse jsx code
-RUN apt-get install bash
+RUN apt-get install -y bash
 # this installs node and npm (using the 'n' package manager)
 RUN curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n | bash -s lts
 
