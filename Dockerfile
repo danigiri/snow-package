@@ -64,6 +64,11 @@ FROM eclipse-temurin:20 AS main
 ENV JETTY_HOME /var/lib/jetty
 ENV JETTY_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/12.0.11/jetty-home-12.0.11.tar.gz
 ARG JETTY_BASE=/jetty-base
+ARG PROXY_PREFIX=
+ENV __PROXY_PREFIX=${PROXY_PREFIX}
+ARG RESOURCES_PREFIX=
+ENV __RESOURCES_PREFIX=${RESOURCES_PREFIX}
+
 
 # install bash to launch subshell to parse jsx code
 RUN apt-get install -y bash
