@@ -1,3 +1,4 @@
+<#setting number_format="computer"><#t>
 <#assign cellslots = v.cellSlots><#t>
 <#assign code = v.code><#t>
 <#list cellslots as c><#rt>

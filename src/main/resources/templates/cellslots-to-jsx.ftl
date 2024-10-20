@@ -1,3 +1,4 @@
+<#setting number_format="computer"><#t>
 <#assign code = v.code><#t>
 <#assign i = 0><#t>
 <#assign start = 0><#t>
