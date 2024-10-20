@@ -1,5 +1,6 @@
 package cat.calidos.snowpackage.cli;
 
+import java.util.Properties;
 import java.util.concurrent.Callable;
 
 import picocli.CommandLine.Command;
@@ -7,6 +8,9 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
 import cat.calidos.morfeu.cli.MorfeuBaseCLI;
+import cat.calidos.snowpackage.control.injection.DaggerSPContentGETControlComponent;
+import cat.calidos.snowpackage.model.injection.SPCellSlotParserComponent;
+import cat.calidos.snowpackage.model.injection.SPCellSlotParserModule;
 
 
 /**
@@ -22,8 +26,21 @@ public static final String PARSE = "parse";
 @Option(names = { "-q", "--quiet" }, description = "do not print anything")
 boolean quiet = false;
 
-@Option(names = "--prefix", description = "model to use (default is file://<cwd>)")
+@Option(names = { "-v", "--verbose" }, description = "verbose diagnosptic output")
+boolean verbose = false;
+
+
+@Option(names = { "-p", "--prefix" }, description = "model to use (default is file://<cwd>)")
 String prefix;
+
+@Option(names = "--filters", description = "custom filters to apply (otherwise defaults will be used")
+String filters;
+
+@Option(names = "--tsnode", description = "path to ts-node executable")
+String tsnodePath;
+
+@Option(names = "--tscode", description = "path to ts code")
+String tscodePath;
 
 @Parameters(description = "command {parse|}")
 String command;
@@ -33,15 +50,43 @@ String path;
 
 @Override
 public Integer call() throws Exception {
+	var config = new Properties();
+	config = handlePropertyConfiguration(config, SPCellSlotParserModule.TSNODE_PROPERTY, tsnodePath);
+	config = handlePropertyConfiguration(config, SPCellSlotParserModule.TSCODE_PROPERTY, tscodePath);
+	prefix = prefix == null ? "file://" + System.getProperty("user.dir") : prefix;
+	if (verbose) {
+		System.err.println("Using prefix='"+prefix+"'");
+	}
 
 	if (command.equalsIgnoreCase(PARSE)) {
 
+		filters = filters == null ? SPCellSlotParserComponent.DEFAULT_LOAD_FILTER : filters;
+		String output = DaggerSPContentGETControlComponent
+				.builder()
+				.fromPath(path)
+				.withPrefix(prefix)
+				.filters(filters)
+				.withProperties(config)
+				.andProblem("")
+				.build()
+				.parsedCode();
 		if (!quiet) {
-			// System.out.println(output);
+			System.out.println(output);
 		}
 	}
-	// TODO Auto-generated method stub
-	return null;
+	return 0;
+}
+
+
+private Properties handlePropertyConfiguration(Properties properties, String propertyName, String value) {
+	if (value != null) {
+		properties.put(propertyName, value);
+	}
+	if (verbose) {
+		var msg = "Using "+propertyName+"'"+(tsnodePath == null ? value: "<DEFAULT>")+"'";
+		System.err.println(msg);
+	}
+	return properties;
 }
 
 

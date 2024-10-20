@@ -86,6 +86,7 @@
 		</resources>
 
 		<plugins>
+			<!-- ////////// COMPILE PHASE /////////////////// -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.13.0</version>
@@ -100,6 +101,22 @@
 				</configuration>
 			</plugin>
 
+			<!-- ////////// TEST PHASE ////////////////////// -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.2.5</version>
+				<configuration>
+					<excludes>	<!-- no UI/integration tests in unit testing -->
+						<exclude>**/*IntTest*</exclude>
+						<exclude>**/*UITest*</exclude>
+						<exclude>**/*ComponentTest*</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+
+			<!-- ////////// PACKAGE PHASE /////////////////// -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -131,14 +148,33 @@
 				</configuration>
 			</plugin>
 
-			<plugin>	<!-- we specift the name of the releases -->
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>3.0.1</version>
+			<plugin>	<!-- creating an complete jar to execute as a cli -->
+						<!-- snowpackage code in -classes.jar, flattened deps: in -jar-with-deps -->
+						<!-- alias SnowPackageCLI="java -cp "$PWD/target/morfeu-webapp-*-classes.jar":"$PWD/target/morfeu-webapp-*-jar-with-dependencies.jar"" cat.calidos.morfeu.cli.MorfeuCLI" -->
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.7.1</version>
 				<configuration>
-					<tagNameFormat>v@{project.version}</tagNameFormat>
+					<descriptorRefs> <!-- note classes are in WEB-INF due to war packaging -->
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>cat.calidos.snowpackage.SnowPackageCLI</mainClass>
+						</manifest>
+					</archive>
 				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- used for inheritance
+						merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
+
 			<plugin>	<!-- ensure we have the npm env, when testing or doing a fresh install with release plugin -->
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
@@ -239,18 +275,6 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.2.5</version>
-				<configuration>
-					<excludes>	<!-- no UI/integration tests in unit testing -->
-						<exclude>**/*IntTest*</exclude>
-						<exclude>**/*UITest*</exclude>
-						<exclude>**/*ComponentTest*</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>3.2.5</version>
 				<configuration>
@@ -273,6 +297,16 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+
+			<!-- ////////// RELEASING /////////////////////// -->
+			<plugin>	<!-- we specift the name of the releases -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>3.0.1</version>
+				<configuration>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
+				</configuration>
 			</plugin>
 		</plugins>
 
