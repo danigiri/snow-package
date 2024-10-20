@@ -24,8 +24,8 @@ import cat.calidos.snowpackage.SPTezt;
 *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public class SPFileContentControlModuleTest extends SPTezt {
 
-private String jsxPath;
-private List<String> pathElems;
+public String jsxPath;
+public List<String> pathElems;
 private String tmp;
 
 
@@ -169,6 +169,7 @@ public void testGenerateJSXContentFiltered() throws Exception {
 }
 
 
+//this is useful to test the content controller
 private void setupPathElements(String path) {
 
 	jsxPath = path;

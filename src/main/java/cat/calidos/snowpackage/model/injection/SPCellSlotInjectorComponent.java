@@ -11,20 +11,25 @@ import cat.calidos.morfeu.model.injection.XMLDocumentBuilderModule;
 import cat.calidos.morfeu.model.injection.StringToParsedModule;
 import cat.calidos.morfeu.problems.ConfigurationException;
 import cat.calidos.morfeu.problems.ParsingException;
+
 import cat.calidos.morfeu.utils.injection.ListeningExecutorServiceModule;
 
-/** From a content file we
-*	@author daniel giribet
-*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-@ProductionComponent(modules = {SPCellSlotInjectorModule.class, StringToParsedModule.class,
-								XMLDocumentBuilderModule.class, ListeningExecutorServiceModule.class})
+
+/**
+ * From a content file we
+ * 
+ * @author daniel giribet
+ *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+@ProductionComponent(modules = { SPCellSlotInjectorModule.class, StringToParsedModule.class,
+		XMLDocumentBuilderModule.class, ListeningExecutorServiceModule.class })
 public interface SPCellSlotInjectorComponent {
 
-public static String DEFAULT_SAVE_FILTER = "replace{\"replacements\":"+
-											"{\"from\":\"=\\\"\\\\{([^}]*?)}\\\"\",\"to\":\"={$1}\"}}";
+public static String DEFAULT_SAVE_FILTER = "replace{\"replacements\":"
+		+ "{\"from\":\"=\\\"\\\\{([^}]*?)}\\\"\",\"to\":\"={$1}\"}}";
 
 ListenableFuture<String> code() throws ConfigurationException, ParsingException;
 
+//@formatter:off
 @ProductionComponent.Builder
 interface Builder {
 
@@ -35,6 +40,7 @@ interface Builder {
 SPCellSlotInjectorComponent build();
 
 }
+//@formatter:on
 
 }
 
@@ -51,4 +57,3 @@ SPCellSlotInjectorComponent build();
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-

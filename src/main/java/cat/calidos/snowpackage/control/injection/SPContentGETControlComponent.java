@@ -1,26 +1,34 @@
 package cat.calidos.snowpackage.control.injection;
 
+import java.util.Properties;
+
+import javax.annotation.Nullable;
+import javax.inject.Named;
+
+import dagger.BindsInstance;
 import dagger.producers.ProductionComponent;
 
 import cat.calidos.morfeu.utils.injection.ListeningExecutorServiceModule;
-import cat.calidos.morfeu.webapp.injection.HttpFilterComponent;
-import cat.calidos.morfeu.webapp.injection.HttpFilterModule;
-import cat.calidos.morfeu.webapp.injection.POSTFileSaverModule;
 
 
-/**
- * List modules that will be called on the filter, namely any special code slot wrapping ones and
- * the POST saver
- * 
- * @author daniel giribet
- *//////////////////////////////////////////////////////////////////////////////////////////////////
-@ProductionComponent(modules = { HttpFilterModule.class, POSTFileSaverModule.class,
+@ProductionComponent(modules = { SPContentGETControlModule.class, SPContentFetchModule.class,
 		ListeningExecutorServiceModule.class })
-public interface SPHttpFilterComponent extends HttpFilterComponent {
+public interface SPContentGETControlComponent {
+
+String parsedCode();
 
 //@formatter:off
 @ProductionComponent.Builder
-interface Builder extends HttpFilterComponent.Builder {}
+interface Builder {
+
+	@BindsInstance Builder fromPath(@Named("Path") String path);
+	@BindsInstance Builder withPrefix(@Named("Prefix") String prefix);
+	@BindsInstance Builder filters(@Named("Filters") String filters);	
+	@BindsInstance Builder withProperties(@Nullable Properties config); // will use empty configuration if not set
+	@BindsInstance Builder andProblem(@Named("Problem") String problem); // if exception we will return this
+
+	SPContentGETControlComponent build();
+}
 //@formatter:on
 
 }
