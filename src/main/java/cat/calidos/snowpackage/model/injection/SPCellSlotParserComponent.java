@@ -28,8 +28,6 @@ public static String TSCODE_PATH = "./src/main/angular/src/app/snow-package.ts";
 public static String NODEFOLDER_PROPERTY = "nodefolder";
 public static String NODEFOLDER = "/usr/local/bin";
 
-
-
 @Named("Slots")
 String slots();
 
