@@ -66,7 +66,7 @@ public Integer call() throws Exception {
 	if (command.equalsIgnoreCase(PARSE)) {
 
 		filters = filters == null ? SPCellSlotParserComponent.DEFAULT_LOAD_FILTER : filters;
-		String output = DaggerSPContentGETControlComponent
+		output = DaggerSPContentGETControlComponent
 				.builder()
 				.fromPath(path)
 				.withPrefix(prefix)
