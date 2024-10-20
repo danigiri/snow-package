@@ -14,26 +14,37 @@ import cat.calidos.morfeu.runtime.api.ReadyTask;
 import cat.calidos.morfeu.utils.Config;
 import cat.calidos.morfeu.utils.MorfeuUtils;
 import cat.calidos.snowpackage.SPTezt;
+import cat.calidos.snowpackage.model.injection.SPCellSlotParserComponent;
 import cat.calidos.snowpackage.model.injection.SPCellSlotParserModule;
 
-/**
-*	@author daniel giribet
-*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-public class SPCellSlotParserModuleTest extends SPTezt {
 
+/**
+ * @author daniel giribet
+ *///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+public class SPCellSlotParserModuleTest extends SPTezt {
 
 @Test @DisplayName("Test generate JSX")
 public void testRunJSX() {
 
 	var properties = new Properties();
-	properties.putAll(MorfeuUtils.paramStringMap(SPCellSlotParserModule.NODEFOLDER_PROPERTY, "aa",
-													SPCellSlotParserModule.TSNODE_PROPERTY, "/bb",
-													SPCellSlotParserModule.TSCODE_PROPERTY, "cc.ts"));
+	properties
+			.putAll(
+					MorfeuUtils
+							.paramStringMap(
+									SPCellSlotParserComponent.NODEFOLDER_PROPERTY,
+									"aa",
+									SPCellSlotParserComponent.TSNODE_PROPERTY,
+									"/bb",
+									SPCellSlotParserComponent.TSCODE_PROPERTY,
+									"cc.ts"));
 
 	ReadyTask task = SPCellSlotParserModule.runJSX(properties);
-	assertAll("basic checks",
-		() -> assertNotNull(task),
-		() -> assertTrue(task.toString().contains("aa /bb cc.ts --jsx"), "Wrong task "+task.toString()));
+	assertAll(
+			"basic checks",
+			() -> assertNotNull(task),
+			() -> assertTrue(
+					task.toString().contains("aa /bb cc.ts --jsx"),
+					"Wrong task " + task.toString()));
 
 }
 
@@ -43,6 +54,7 @@ public void testApply() {
 
 	ReadyTask task = jsxTask();
 
+	//@formatter:off
 	var code = "function formatName(user) {\n" + 
 			"  return user.firstName + ' ' + user.lastName;\n" + 
 			"}\n" + 
@@ -59,19 +71,22 @@ public void testApply() {
 			"      </>;\n" + 
 			"\n" + 
 			"ReactDOM.render(element, document.getElementById('root'));";
-	//System.err.println(code);
+	//@formatter:on
 
+	// System.err.println(code);
+
+	//@formatter:off
 	var expected = "[{\"type\":\"___fragment\", "
 						+ "\"start_line\":\"11\", \"start_column\":\"8\", "
 						+ "\"end_line\":\"14\", \"end_column\":\"6\"}]\n";
+	//@formatter:on
 	String slots = SPCellSlotParserModule.slots(task, code);
-	assertAll("test slot",
-		() -> assertNotNull(slots),
-		() -> assertEquals(expected, slots, "Wrong slot, got '"+slots+"' instead")
-	);
+	assertAll(
+			"test slot",
+			() -> assertNotNull(slots),
+			() -> assertEquals(expected, slots, "Wrong slot, got '" + slots + "' instead"));
 
 }
-
 
 
 @Test @DisplayName("Test start and end of code cells")
@@ -81,16 +96,16 @@ public void testStartEnd() throws Exception {
 
 	String code = readCode("./target/classes/test-resources/documents/example-3.jsx");
 	String slots = SPCellSlotParserModule.slots(task, code);
-	//System.err.println(slots);
-	//[{"type":"___code", "start_line":"1", "start_column":"9", "end_line":"4", "end_column":"6"},
-	//{"type":"___code", "start_line":"5", "start_column":"9", "end_line":"8", "end_column":"6"}]
+	// System.err.println(slots);
+	// [{"type":"___code", "start_line":"1", "start_column":"9", "end_line":"4", "end_column":"6"},
+	// {"type":"___code", "start_line":"5", "start_column":"9", "end_line":"8", "end_column":"6"}]
 	var expectedSlot1 = "{\"type\":\"___code\", \"start_line\":\"1\", \"start_column\":\"9\", \"end_line\":\"4\", \"end_column\":\"6\"}";
 	var expectedSlot2 = "{\"type\":\"___code\", \"start_line\":\"5\", \"start_column\":\"9\", \"end_line\":\"8\", \"end_column\":\"6\"}";
-	assertAll("test slot",
-		() -> assertNotNull(slots),
-		() -> assertTrue(slots.contains(expectedSlot1)),
-		() -> assertTrue(slots.contains(expectedSlot2))
-	);
+	assertAll(
+			"test slot",
+			() -> assertNotNull(slots),
+			() -> assertTrue(slots.contains(expectedSlot1)),
+			() -> assertTrue(slots.contains(expectedSlot2)));
 }
 
 
@@ -104,9 +119,9 @@ public void testStartEndMinimal1() throws Exception {
 	var expected = "[{\"type\":\"___code\", \"start_line\":\"1\", \"start_column\":\"6\", \"end_line\":\"1\", \"end_column\":\"10\"}]\n";
 	assertEquals(expected, slots);
 
-	//	let a=<p/>;
-	//	01234567890
-	//	      *   * 
+	// let a=<p/>;
+	// 01234567890
+	// * *
 }
 
 
@@ -118,11 +133,11 @@ public void testStartEndMinimal2() throws Exception {
 	String code = readCode("./target/classes/test-resources/documents/minimal-2.jsx");
 	String slots = SPCellSlotParserModule.slots(task, code);
 	var expected = "[{\"type\":\"___fragment\", \"start_line\":\"1\", \"start_column\":\"8\", \"end_line\":\"1\", \"end_column\":\"12\"}]\n";
-	assertEquals(expected, slots);	// we skip <> and </>
+	assertEquals(expected, slots); // we skip <> and </>
 
-	//	let a=<><</>p/>;
-	//	0123456789012345
-	//	      *   * 
+	// let a=<><</>p/>;
+	// 0123456789012345
+	// * *
 
 }
 
@@ -130,9 +145,16 @@ public void testStartEndMinimal2() throws Exception {
 public ReadyTask jsxTask() {
 
 	var properties = new Properties();
-	properties.putAll(MorfeuUtils.paramStringMap(SPCellSlotParserModule.NODEFOLDER_PROPERTY, nodeFolder,
-													SPCellSlotParserModule.TSNODE_PROPERTY, tsNodeCommand,
-													SPCellSlotParserModule.TSCODE_PROPERTY, tsCode));
+	properties
+			.putAll(
+					MorfeuUtils
+							.paramStringMap(
+									SPCellSlotParserComponent.NODEFOLDER_PROPERTY,
+									nodeFolder,
+									SPCellSlotParserComponent.TSNODE_PROPERTY,
+									tsNodeCommand,
+									SPCellSlotParserComponent.TSCODE_PROPERTY,
+									tsCode));
 	return SPCellSlotParserModule.runJSX(properties);
 
 }
@@ -142,22 +164,18 @@ private String readCode(String path) throws IOException {
 	return FileUtils.readFileToString(new File(path), Config.DEFAULT_CHARSET);
 }
 
-
 }
 
 /*
- *    Copyright 2020 Daniel Giribet
+ * Copyright 2024 Daniel Giribet
  *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
-

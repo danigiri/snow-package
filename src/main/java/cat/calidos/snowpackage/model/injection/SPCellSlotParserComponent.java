@@ -21,6 +21,14 @@ public interface SPCellSlotParserComponent {
 public static String	JSX					= "jsx";
 public static String	DEFAULT_LOAD_FILTER	= "replace{\"replacements\":"
 		+ "{\"from\":\"=\\\\s*\\\\{([^}]*?)}\",\"to\":\"=\\\"{$1}\\\"\"}}";
+public static String TSNODE_PROPERTY = "tsnode";
+public static String TSNODE_PATH = "src/main/angular/node_modules/.bin/ts-node";
+public static String TSCODE_PROPERTY = "tscode";
+public static String TSCODE_PATH = "./src/main/angular/src/app/snow-package.ts";
+public static String NODEFOLDER_PROPERTY = "nodefolder";
+public static String NODEFOLDER = "/usr/local/bin";
+
+
 
 @Named("Slots")
 String slots();

@@ -150,7 +150,10 @@
 
 			<plugin>	<!-- creating an complete jar to execute as a cli -->
 						<!-- snowpackage code in -classes.jar, flattened deps: in -jar-with-deps -->
-						<!-- alias SnowPackageCLI="java -cp "$PWD/target/morfeu-webapp-*-classes.jar":"$PWD/target/morfeu-webapp-*-jar-with-dependencies.jar"" cat.calidos.morfeu.cli.MorfeuCLI" -->
+						<!-- 
+							alias SnowPackageCLI="java -cp "$PWD"/snow-package-0.8.23-SNAPSHOT-classes.jar:"$PWD"/snow-package-0.8.23-SNAPSHOT-jar-with-dependencies.jar cat.calidos.snowpackage.cli.SnowPackageCLI" 
+							SnowPackageCLI -v -t=../src/main/angular/node_modules/.bin/ts-node  -c=../src/main/angular/src/app/snow-package.ts  parse /classes/test-resources/site/src/root.jsx
+						-->
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>3.7.1</version>
 				<configuration>
