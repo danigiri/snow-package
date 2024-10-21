@@ -91,11 +91,11 @@ COPY --from=build ./target/classes/jetty-logging.properties /${JETTY_BASE}/resou
 COPY --from=build ./target/snow-package-*.war ${JETTY_BASE}/webapps/root.war
 
 # add typescript code
-RUN mkdir -p ${JETTY_HOME}/src/main/angular
+RUN mkdir -p ${JETTY_BASE}/src/main/angular
 COPY --from=build ./src/main/angular ${JETTY_HOME}/src/main/angular
 
 # add test data
-RUN mkdir -p ${JETTY_HOME}/target/test-classes/test-resources
+RUN mkdir -p ${JETTY_BASE}/target/test-classes/test-resources
 COPY --from=build ./target/test-classes/test-resources ${JETTY_HOME}/target/test-classes/test-resources
 
 # start jetty from its base folder (uncomment the scan interval when testing), this way of starting it means
