@@ -92,7 +92,7 @@ COPY --from=build ./target/snow-package-*.war ${JETTY_BASE}/webapps/root.war
 
 # add typescript code
 RUN mkdir -p ${JETTY_BASE}/src/main/angular
-COPY --from=build ./src/main/angular ${JETTY_HOME}/src/main/angular
+COPY --from=build ./src/main/angular ${JETTY_BASE}/src/main/angular
 
 # add test data
 RUN mkdir -p ${JETTY_BASE}/target/test-classes/test-resources
