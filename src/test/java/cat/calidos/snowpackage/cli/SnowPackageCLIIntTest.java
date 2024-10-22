@@ -15,8 +15,8 @@ public class SnowPackageCLIIntTest extends SPTezt {
 public void parseContent() {
 
 	var path = "test-resources/documents/example-1.jsx"; // note this has no classes/ prepended,
-	var prefix = testAwareFullPathFrom(".");
-	var args = new String[] { "-q", "--prefix", prefix, "-tnode", tsNodeCommand, "--tscode", tsCode,
+	String prefix = testAwareFullPathFrom(".");
+	var args = new String[] { "-q", "--prefix", prefix, "--tsnode", tsNodeCommand, "--tscode", tsCode,
 			SnowPackageCLI.PARSE, path };
 	Pair<Integer, String> result = SnowPackageCLI.mainImpl(new SnowPackageCLI(), args);
 
