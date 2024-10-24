@@ -102,15 +102,15 @@ public static BiFunction<List<String>, Map<String, String>, String> post(@Named(
 		}
 
 		// it's unclear why we apply for filters separately here, with no default =0
-		try {
-			content = applyFilters(content, params.get(FILTERS_PARAM));
-		} catch (Exception e) {
-			problem += "Problem when applying filters " + e.getMessage();
-			log.error(problem);
-		}
-
 		String filters = params.containsKey(FILTERS_PARAM) ? params.get(FILTERS_PARAM)
 				: DEFAULT_SAVE_FILTER;
+//		try {
+//			content = applyFilters(content, filters);
+//		} catch (Exception e) {
+//			problem += "Problem when applying filters " + e.getMessage();
+//			log.error(problem);
+//		}
+
 
 		if (problem == null) {
 			try {

@@ -24,15 +24,16 @@
 	http://localhost:3000/?config=%2Fproxy%2Fsite%2Fsnowpackage%2Fconfig.json
 	-->
 	<properties>
+		<maven.compiler.release>21</maven.compiler.release>
 		<jetty-http-port>8990</jetty-http-port>
 		<jetty-stop-port>8991</jetty-stop-port>
 		<jetty-context-path>/</jetty-context-path>
 		<webapp-prefix>http://localhost:${jetty-http-port}${jetty-context-path}/</webapp-prefix>
 		<dagger-2-version>2.51.1</dagger-2-version>
 		<jackson-2-version>2.17.2</jackson-2-version>
-		<jetty-version>12.0.9</jetty-version>
+		<jetty-version>12.0.14</jetty-version>
 		<freemarker-version>2.3.33</freemarker-version>
-		<morfeu-version>0.8.24-SNAPSHOT</morfeu-version>
+		<morfeu-version>0.8.24</morfeu-version>
 		<selenide-version>5.6.1</selenide-version>
 		<selenium-version>3.141.59</selenium-version>
 		<jupiter-version>5.5.2</jupiter-version>
@@ -41,7 +42,6 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<scm.host_>github.com</scm.host_>
 		<developer.id_>danigiri</developer.id_>
-		<maven.compiler.release>21</maven.compiler.release>
 		<angular.folder_>src/main/angular</angular.folder_>	<!-- release perform /target/ folder -->
 	</properties>
 

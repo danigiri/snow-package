@@ -4,7 +4,7 @@ LABEL maintainer="Daniel Giribet - dani [at] calidos [dot] cat"
 # docker build -t morfeu-webapp:latest --build-arg PROXY='http://192.168.1.30:3128/' --build-arg PROXY_HOST=192.168.1.30 --build-arg PROXY_PORT=3128 .
 
 # variables build stage
-ARG MORFEU_VERSION=v0.8.23
+ARG MORFEU_VERSION=v0.8.24
 ARG MAVEN_URL=https://archive.apache.org/dist/maven/maven-3/3.9.8/binaries/apache-maven-3.9.8-bin.tar.gz
 ENV MORFEU_VERSION=${MORFEU_VERSION}
 ENV MAVEN_HOME /usr/share/maven
@@ -62,7 +62,7 @@ FROM eclipse-temurin:21 AS main
 
 # arguments and variables run stage
 ENV JETTY_HOME /var/lib/jetty
-ENV JETTY_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/12.0.11/jetty-home-12.0.11.tar.gz
+ENV JETTY_URL https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-home/12.0.14/jetty-home-12.0.14.tar.gz
 ARG JETTY_BASE=/jetty-base
 ARG PROXY_PREFIX=
 ENV __PROXY_PREFIX=${PROXY_PREFIX}
